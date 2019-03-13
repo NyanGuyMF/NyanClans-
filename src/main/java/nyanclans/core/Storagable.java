@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
-package nyanclans;
+package nyanclans.core;
 
 /**
  * Represents the object which can be saved, loaded and deleted.
@@ -29,16 +29,6 @@ public interface Storagable {
      * <tt>false</tt> if not.
      */
     boolean save();
-
-    /**
-     * Loads object from storage.
-     * <p>
-     * Should be used after creating new instance of object.
-     *
-     * @return <tt>true</tt> if loaded successfully and
-     * <tt>false</tt> if not.
-     */
-    boolean load();
 
     /**
      * Reloading object from storage.

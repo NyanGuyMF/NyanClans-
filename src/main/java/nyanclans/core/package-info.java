@@ -14,34 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
-package nyanclans;
-
-import org.bukkit.plugin.java.JavaPlugin;
-
-/** @author nyanguymf */
-public final class NyanClansPlugin extends JavaPlugin {
-    @Override public void onLoad() {
-        /*
-         * TODO:
-         *   init & load yaml configurations;
-         *   connect to database;
-         */
-    }
-
-    @Override public void onEnable() {
-        /*
-         * TODO:
-         *   connect to Vault;
-         *   connect to ProtocolLib;
-         */
-    }
-
-    @Override public void onDisable() {
-        /*
-         * TODO:
-         *   break connection with database;
-         *   save configurations;
-         *   clear caches;
-         */
-    }
-}
+/**
+ * The main package of NyanClans plug-in.
+ * <p>
+ * It contains the main class of plugin {@link nyanclans.core.NyanClansPlugin},
+ * some plug-in interfaces like {@link nyanclans.core.Storagable}
+ * and other packages.
+ * <p>
+ * If you're looking for some clan player info - check {@link nyanclans.core.player}
+ * package.
+ *
+ * @author nyanguymf
+ */
+package nyanclans.core;

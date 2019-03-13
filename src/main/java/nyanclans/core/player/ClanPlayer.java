@@ -16,9 +16,67 @@
  */
 package nyanclans.core.player;
 
+import java.sql.SQLException;
+
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.field.DatabaseField;
+
 import nyanclans.core.Storagable;
+import nyanclans.core.clan.Clan;
+import nyanclans.core.clan.Rank;
 
-/** @author nyanguymf */
-public interface ClanPlayer extends Storagable {
+/** @author NyanGuyMF */
+public class ClanPlayer implements Storagable {
+    private static Dao<ClanPlayer, Integer> dao;
 
+    @DatabaseField(id=true, canBeNull=false, columnName="player_name", unique=true)
+    protected final String name = "";
+
+    @DatabaseField(foreign=true, foreignAutoRefresh=true)
+    protected Clan clan;
+
+    @DatabaseField(foreign=true, foreignAutoRefresh=true)
+    protected Rank rank;
+
+    public static void initDao(final Dao<ClanPlayer, Integer> dao) {
+        if (ClanPlayer.dao != null) {
+            ClanPlayer.dao = dao;
+        }
+    }
+
+    @Override
+    public boolean save() {
+        try {
+            ClanPlayer.dao.update(this);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean reload() {
+        try {
+            ClanPlayer.dao.refresh(this);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean delete() {
+        try {
+            ClanPlayer.dao.delete(this);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
 }

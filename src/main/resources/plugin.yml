@@ -1,6 +1,6 @@
 name: NyanClans
 version: ${project.version}
-main: nyanclans.NyanClansPlugin
+main: nyanclans.core.NyanClansPlugin
 author: NyanGuyMF
 
 description: |-

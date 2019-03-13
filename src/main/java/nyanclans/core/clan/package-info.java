@@ -15,15 +15,8 @@
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
 /**
- * The main package of NyanClans plug-in.
- * <p>
- * It contains the main class of plugin {@link nyanclans.NyanClansPlugin},
- * some plug-in interfaces like {@link nyanclans.Storagable}
- * and other packages.
- * <p>
- * If you're looking for some clan player info - check {@link nyanclans.player}
- * package.
+ * Provides main clan class and clan ranks.
  *
  * @author nyanguymf
  */
-package nyanclans;
+package nyanclans.core.clan;
