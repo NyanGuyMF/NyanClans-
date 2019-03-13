@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
-package nyanclans.core;
+package nyanclans.storage;
 
 /**
  * Represents the object which can be saved, loaded and deleted.

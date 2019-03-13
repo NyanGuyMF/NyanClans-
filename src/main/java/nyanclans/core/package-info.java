@@ -18,7 +18,7 @@
  * The main package of NyanClans plug-in.
  * <p>
  * It contains the main class of plugin {@link nyanclans.core.NyanClansPlugin},
- * some plug-in interfaces like {@link nyanclans.core.Storagable}
+ * some plug-in interfaces like {@link nyanclans.storage.Storagable}
  * and other packages.
  * <p>
  * If you're looking for some clan player info - check {@link nyanclans.core.player}

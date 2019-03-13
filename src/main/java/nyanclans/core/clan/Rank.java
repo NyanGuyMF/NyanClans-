@@ -23,7 +23,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import nyanclans.core.Storagable;
+import nyanclans.storage.Storagable;
 
 /*
  * TODO: RankBuilder abstract class, ModerRankBuilder,

@@ -21,9 +21,9 @@ import java.sql.SQLException;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
 
-import nyanclans.core.Storagable;
 import nyanclans.core.clan.Clan;
 import nyanclans.core.clan.Rank;
+import nyanclans.storage.Storagable;
 
 /** @author NyanGuyMF */
 public class ClanPlayer implements Storagable {
