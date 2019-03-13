@@ -24,12 +24,6 @@ public abstract class SubCommand<K> {
     private final String name;
 
     /**
-     * Command aliases, basically it
-     * /command «alias[0]|alias[1]|alias[n]» [args].
-     */
-    private final String[] aliases;
-
-    /**
      * Player's permission to use this command,
      * basically it looks like «nyanclans.dev.recreate».
      */
@@ -39,12 +33,10 @@ public abstract class SubCommand<K> {
      * Creates new sub command, which is /command «sub command» [args].
      *
      * @param   name        Command name, {@link #name}.
-     * @param   aliases     Command aliases, {@link #aliases}.
      * @param   permission  Permission to use command, {@link #permission}.
      */
-    public SubCommand(final String name, final String[] aliases, final K permission) {
+    public SubCommand(final String name, final K permission) {
         this.name       = name;
-        this.aliases    = aliases;
         this.permission = permission;
     }
 
@@ -62,11 +54,6 @@ public abstract class SubCommand<K> {
     /** Gets sub command's name, {@link #name} */
     public final String getName() {
         return name;
-    }
-
-    /** Gets array of sub command aliases, {@link #aliases} */
-    public final String[] getAliases() {
-        return aliases;
     }
 
     /** Gets permission to use command, {@link #permission} */
