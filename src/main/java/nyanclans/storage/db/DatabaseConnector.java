@@ -17,6 +17,7 @@
 package nyanclans.storage.db;
 
 import static com.j256.ormlite.dao.DaoManager.createDao;
+import static com.j256.ormlite.table.TableUtils.createTableIfNotExists;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,10 +54,13 @@ public final class DatabaseConnector {
 
         if (!configFile.exists()) {
             configFile.createNewFile();
+            config = new DatabaseConfig(pluginFolder);
+            config.save();
+        } else {
+            config = new DatabaseConfig(pluginFolder);
         }
 
-        config = new DatabaseConfig(configFile);
-        config.loadAndSave();
+        config.load();
     }
 
     /**
@@ -138,7 +142,8 @@ public final class DatabaseConnector {
             conn = new JdbcConnectionSource(
                 "jdbc:h2:"
                 + pluginFolder.getAbsolutePath()
-                + File.pathSeparatorChar
+                + File.separatorChar
+                + config.getDatabase()
             );
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -148,6 +153,48 @@ public final class DatabaseConnector {
 
         setState(ConnectionStatus.SUCCESS);
         return getState();
+    }
+
+    /**
+     * Creating database tables for {@link ClanPlayer},
+     * {@link Clan} and {@link Rank} classes.
+     * <p>
+     * If tables are already exists it will not
+     * drop and create, just ignore (create if not exists query).
+     *
+     * @return <tt>true</tt> if all tables was created successfully.
+     */
+    public boolean createTables() {
+        boolean isAllConnected = true;
+
+        try {
+            createTableIfNotExists(conn, ClanPlayer.class);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            if (isAllConnected) {
+                isAllConnected = false;
+            }
+        }
+
+        try {
+            createTableIfNotExists(conn, Clan.class);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            if (isAllConnected) {
+                isAllConnected = false;
+            }
+        }
+
+        try {
+            createTableIfNotExists(conn, Rank.class);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            if (isAllConnected) {
+                isAllConnected = false;
+            }
+        }
+
+        return isAllConnected;
     }
 
     /**
@@ -161,13 +208,19 @@ public final class DatabaseConnector {
      */
     public boolean disconnect() {
         try {
-            conn.close();
+            if (conn != null) {
+                conn.close();
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
             return false;
         }
 
         return true;
+    }
+
+    public boolean isConnected() {
+        return conn != null;
     }
 
     /** Gets state */

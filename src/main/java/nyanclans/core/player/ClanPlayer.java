@@ -27,7 +27,7 @@ import nyanclans.core.clan.Rank;
 
 /** @author NyanGuyMF */
 public class ClanPlayer implements Storagable {
-    private static Dao<ClanPlayer, Integer> dao;
+    private static Dao<ClanPlayer, String> dao;
 
     @DatabaseField(id=true, canBeNull=false, columnName="player_name", unique=true)
     protected final String name = "";
@@ -38,9 +38,18 @@ public class ClanPlayer implements Storagable {
     @DatabaseField(foreign=true, foreignAutoRefresh=true)
     protected Rank rank;
 
-    public static void initDao(final Dao<ClanPlayer, Integer> dao) {
+    public static void initDao(final Dao<ClanPlayer, String> dao) {
         if (ClanPlayer.dao != null) {
             ClanPlayer.dao = dao;
+        }
+    }
+
+    public static boolean exists(final String player) {
+        try {
+            return ClanPlayer.dao.idExists(player);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 

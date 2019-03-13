@@ -18,8 +18,7 @@ package nyanclans.core.clan;
 
 import java.sql.SQLException;
 
-import javax.persistence.Id;
-
+import com.google.common.collect.ImmutableMap;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -37,7 +36,8 @@ import nyanclans.core.Storagable;
 public final class Rank implements Storagable {
     private static Dao<Rank, Integer> dao;
 
-    @Id private long id;
+    @DatabaseField(generatedId=true)
+    private int id;
 
     @DatabaseField(foreign=true, foreignAutoRefresh=true)
     private Clan clan;
@@ -51,6 +51,21 @@ public final class Rank implements Storagable {
     public static void initDao(final Dao<Rank, Integer> dao) {
         if (Rank.dao != null) {
             Rank.dao = dao;
+        }
+    }
+
+    public static boolean exists(final Clan clan, final String name) {
+        try {
+            return
+            Rank.dao.queryForFieldValues(
+                ImmutableMap.<String, Object>builder()
+                    .put("name", name)
+                    .put("clan", clan)
+                    .build()
+            ).size() != 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -91,12 +106,12 @@ public final class Rank implements Storagable {
     }
 
     /** Gets id */
-    public long getId() {
+    public int getId() {
         return id;
     }
 
     /** Sets id */
-    public void setId(final long id) {
+    public void setId(final int id) {
         this.id = id;
     }
 

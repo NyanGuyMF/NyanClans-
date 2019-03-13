@@ -41,7 +41,7 @@ public final class DatabaseConfig extends BukkitYamlConfiguration {
     /**
      * Initialize database configuration.
      * <p>
-     * Make sure you created database.yml configuration file
+     * Make sure you've created database.yml configuration file
      * before calling this constructor, {@link FileNotFoundException}
      * will be thrown if database.yml file doesn't exists in given folder.
      *

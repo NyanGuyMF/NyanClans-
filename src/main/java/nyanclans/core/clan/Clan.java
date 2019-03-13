@@ -17,10 +17,10 @@
 package nyanclans.core.clan;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
 
 import javax.persistence.Column;
-import javax.persistence.Id;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
@@ -33,10 +33,9 @@ import nyanclans.core.player.ClanPlayer;
 /** @author NyanGuyMF */
 @DatabaseTable(tableName = "clans")
 public final class Clan implements Storagable {
-    private static Dao<Clan, Integer> dao;
-    @Id protected long id;
+    private static Dao<Clan, String> dao;
 
-    @Column(unique=true)
+    @DatabaseField(id=true, unique=true)
     protected String name = "";
 
     @DatabaseField(foreign=true, foreignAutoRefresh=true)
@@ -45,11 +44,20 @@ public final class Clan implements Storagable {
     @Column private double balance = 0.0;
 
     @ForeignCollectionField
-    protected List<ClanPlayer> members;
+    private Collection<ClanPlayer> members = new HashSet<>();
 
-    public static void initDao(final Dao<Clan, Integer> dao) {
+    public static void initDao(final Dao<Clan, String> dao) {
         if (Clan.dao != null) {
             Clan.dao = dao;
+        }
+    }
+
+    public static boolean exists(final String clan) {
+        try {
+            return Clan.dao.idExists(clan);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -89,16 +97,6 @@ public final class Clan implements Storagable {
         return true;
     }
 
-    /** Gets id */
-    public long getId() {
-        return id;
-    }
-
-    /** Sets id */
-    public void setId(final long id) {
-        this.id = id;
-    }
-
     /** Gets name */
     public String getName() {
         return name;
@@ -127,5 +125,15 @@ public final class Clan implements Storagable {
     /** Sets balance */
     public void setBalance(final double balance) {
         this.balance = balance;
+    }
+
+    /** Gets members */
+    public Collection<ClanPlayer> getMembers() {
+        return members;
+    }
+
+    /** Sets members */
+    public void setMembers(final Collection<ClanPlayer> members) {
+        this.members = members;
     }
 }
