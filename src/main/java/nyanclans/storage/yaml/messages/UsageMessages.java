@@ -8,16 +8,28 @@
  *
  * NyanClans is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
-/**
- * Contains YAML configuration files: database.yml as
- * {@link nyanclans.storage.yaml.DatabaseConfig}
- *
- * @author nyanguymf
- */
-package nyanclans.storage.yaml;
+package nyanclans.storage.yaml.messages;
+
+import de.exlll.configlib.annotation.ConfigurationElement;
+
+/** @author NyanGuyMF */
+@ConfigurationElement
+public final class UsageMessages {
+    private DevCommandsUsage devCommands = new DevCommandsUsage();
+
+    /** Gets devCommands */
+    public DevCommandsUsage getDevCommands() {
+        return devCommands;
+    }
+
+    /** Sets devCommands */
+    public void setDevCommands(final DevCommandsUsage devCommands) {
+        this.devCommands = devCommands;
+    }
+}

@@ -21,27 +21,19 @@ import java.io.IOException;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import nyanclans.commands.dev.DeveloperCommand;
 import nyanclans.storage.db.DatabaseConnector;
+import nyanclans.storage.yaml.messages.MessagesConfig;
 
 /** @author NyanGuyMF */
 public final class NyanClansPlugin extends JavaPlugin {
     private DatabaseConnector databaseConnector;
+    private MessagesConfig messagesConfig;
 
-    public NyanClansPlugin() {    }
+    public NyanClansPlugin() {}
 
     @Override public void onLoad() {
-        /*
-         * TODO:
-         *   init & load yaml configurations;
-         *   connect to database and init daos;
-         */
-        if (!super.getDataFolder().exists()) {
-            super.getDataFolder().mkdir();
-        }
-
-        databaseConnector = databaseConnect(super.getDataFolder());
-        databaseConnector.createTables();
-        databaseConnector.initDaos();
+        loadConfigs(super.getDataFolder());
     }
 
     @Override public void onEnable() {
@@ -50,6 +42,7 @@ public final class NyanClansPlugin extends JavaPlugin {
          *   connect to Vault;
          *   connect to ProtocolLib;
          */
+        registerCommands();
     }
 
     @Override public void onDisable() {
@@ -63,6 +56,63 @@ public final class NyanClansPlugin extends JavaPlugin {
         } else {
             super.getLogger().info("Couldn't disconnect from database.");
         }
+    }
+
+    /** Registers all plug-in commands. */
+    private void registerCommands() {
+        new DeveloperCommand(messagesConfig).register(this);
+    }
+
+    /**
+     * Loads all configurations.
+     * <p>
+     * Will create standard plug-in's folder if it wasn't
+     * exist yet.
+     *
+     * @param   pluginFolder    Plug-in's folder provided by Bukkit.
+     */
+    private void loadConfigs(final File pluginFolder) {
+        if (!pluginFolder.exists()) {
+            pluginFolder.mkdir();
+        }
+
+        databaseConnector = databaseConnect(pluginFolder);
+        databaseConnector.createTables();
+        databaseConnector.initDaos();
+
+        messagesConfig = loadMessagesYaml(pluginFolder);
+    }
+
+    /**
+     * Initializes {@link MessagesConfig} class instance.
+     * <p>
+     * Will create new <tt>messages.yml</tt> file if it wasn't
+     * exist yet. If cannot create it will disable plug-in
+     * and return <tt>null</tt> value.
+     *
+     * @param   pluginFolder    Plug-in's folder provided by Bukkit.
+     * @return {@link MessagesConfig} or <tt>null</tt>.
+     */
+    private MessagesConfig loadMessagesYaml(final File pluginFolder) {
+        File messages = new File(pluginFolder, "messages.yml");
+        MessagesConfig config;
+
+        if (!messages.exists()) {
+            try {
+                messages.createNewFile();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                super.getPluginLoader().disablePlugin(this);
+                return null;
+            }
+            config = new MessagesConfig(pluginFolder);
+            config.saveAndLoad();
+        } else {
+            config = new MessagesConfig(pluginFolder);
+            config.loadAndSave();
+        }
+
+        return config;
     }
 
     /** @see {@link DatabaseConnector#DatabaseConnector(File)} */

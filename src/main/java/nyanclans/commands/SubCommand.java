@@ -29,13 +29,19 @@ public abstract class SubCommand<K> {
      */
     private final K permission;
 
+    /** Should be shown if command sender didn't gave arguments. */
+    private String usage;
+
     /**
      * Creates new sub command, which is /command «sub command» [args].
      *
      * @param   name        Command name, {@link #name}.
      * @param   permission  Permission to use command, {@link #permission}.
      */
-    public SubCommand(final String name, final K permission) {
+    public SubCommand(
+            final String name, final K permission,
+            final String usage
+    ) {
         this.name       = name;
         this.permission = permission;
     }
@@ -51,6 +57,11 @@ public abstract class SubCommand<K> {
      */
     public abstract boolean hasPermission(final CommandSender sender);
 
+    @Override
+    public String toString() {
+        return "SubCommand [name=" + name + ", permission=" + permission + "]";
+    }
+
     /** Gets sub command's name, {@link #name} */
     public final String getName() {
         return name;
@@ -59,5 +70,15 @@ public abstract class SubCommand<K> {
     /** Gets permission to use command, {@link #permission} */
     public final K getPermission() {
         return permission;
+    }
+
+    /** Gets {@link #usage} */
+    public final String getUsage() {
+        return usage;
+    }
+
+    /** Sets {@link #usage} */
+    public final void setUsage(final String usage) {
+        this.usage = usage;
     }
 }

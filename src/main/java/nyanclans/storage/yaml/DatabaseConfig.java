@@ -49,7 +49,12 @@ public final class DatabaseConfig extends BukkitYamlConfiguration {
      * @throws  FileNotFoundException   if there is no database.yml file.
      */
     public DatabaseConfig(final File pluginFolder) {
-        super(new File(pluginFolder, "database.yml").toPath());
+        super(
+            new File(pluginFolder, "database.yml").toPath(),
+            BukkitYamlProperties.builder()
+                .setFormatter(YamlFieldNameFormater.getInstance())
+                .build()
+        );
     }
 
     /** Gets databaseDriver */
