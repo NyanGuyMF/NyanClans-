@@ -19,7 +19,7 @@ package nyanclans.commands;
 import org.bukkit.command.CommandSender;
 
 /** @author NyanGuyMF */
-public abstract class SubCommand<K> {
+public abstract class SubCommand<PermissionType> {
     /** Command name, basically its /command «name» [args]. */
     private final String name;
 
@@ -27,7 +27,7 @@ public abstract class SubCommand<K> {
      * Player's permission to use this command,
      * basically it looks like «nyanclans.dev.recreate».
      */
-    private final K permission;
+    private final PermissionType permission;
 
     /** Should be shown if command sender didn't gave arguments. */
     private String usage;
@@ -39,7 +39,7 @@ public abstract class SubCommand<K> {
      * @param   permission  Permission to use command, {@link #permission}.
      */
     public SubCommand(
-            final String name, final K permission,
+            final String name, final PermissionType permission,
             final String usage
     ) {
         this.name       = name;
@@ -68,7 +68,7 @@ public abstract class SubCommand<K> {
     }
 
     /** Gets permission to use command, {@link #permission} */
-    public final K getPermission() {
+    public final PermissionType getPermission() {
         return permission;
     }
 
