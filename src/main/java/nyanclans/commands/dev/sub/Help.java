@@ -20,34 +20,32 @@ import org.bukkit.command.CommandSender;
 
 import nyanclans.commands.SubCommand;
 import nyanclans.storage.yaml.messages.MessageBuilder;
+import nyanclans.storage.yaml.messages.MessageListBuilder;
 import nyanclans.storage.yaml.messages.MessagesConfig;
 
-/** @author NyanGuyMF */
-public final class Reload extends SubCommand<String> {
-    private MessagesConfig messagesConfig;
+/** @author nyanguymf */
+public final class Help extends SubCommand<String> {
+    private MessagesConfig messages;
 
-    public Reload(final MessagesConfig messages) {
+    public Help(final MessagesConfig messages) {
         super(
-            "reload", "nyanclans.dev.reload",
+            "help", "nyanclans.dev.help",
             ""
         );
 
-        messagesConfig = messages;
+        this.messages = messages;
     }
 
     @Override
     public boolean execute(final CommandSender sender, final String command, final String[] args) {
         if (!hasPermission(sender)) {
-            new MessageBuilder()
-                .message(messagesConfig.error().getNoPermission())
+            new MessageBuilder().message(messages.error().getNoPermission())
                 .args(super.getName())
                 .send(sender);
             return true;
         }
 
-        messagesConfig.loadAndSave(); // it will reload messages
-        new MessageBuilder()
-            .message(messagesConfig.info().getReloadSuccess())
+        new MessageListBuilder().message(messages.help().getDev().values())
             .send(sender);
 
         return true;
@@ -55,6 +53,6 @@ public final class Reload extends SubCommand<String> {
 
     @Override
     public boolean hasPermission(final CommandSender sender) {
-        return sender.hasPermission(super.getPermission());
+        return true;
     }
 }

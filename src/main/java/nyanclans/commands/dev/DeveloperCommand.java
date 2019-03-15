@@ -27,6 +27,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import nyanclans.commands.SubCommand;
+import nyanclans.commands.dev.sub.Help;
 import nyanclans.commands.dev.sub.PlayerInfo;
 import nyanclans.commands.dev.sub.Reload;
 import nyanclans.storage.yaml.messages.MessageBuilder;
@@ -101,5 +102,6 @@ public final class DeveloperCommand implements CommandExecutor, Observer<Message
     private void setupSubCommands(final MessagesConfig messages) {
         addSubCommand(new PlayerInfo(messages));
         addSubCommand(new Reload(messages));
+        addSubCommand(new Help(messages));
     }
 }

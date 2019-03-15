@@ -27,6 +27,8 @@ import de.exlll.configlib.annotation.ConfigurationElement;
 public final class HelpMessages {
     private Map<String, String> dev = ImmutableMap.<String, String>builder()
             .put("player", "&e/clandev player &6«&cplayer name&6» &f- show info about player")
+            .put("reload", "&e/clandev reload &f- reload message configuration")
+            .put("help", "&e/clandev help &f- this menu")
             .build();
 
     /** Gets dev */
@@ -35,7 +37,7 @@ public final class HelpMessages {
     }
 
     /** Sets dev */
-    public void setDev(Map<String, String> devCommands) {
-        this.dev = devCommands;
+    public void setDev(final Map<String, String> devCommands) {
+        dev = devCommands;
     }
 }
