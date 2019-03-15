@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
-package nyanclans.commands.dev;
+package nyanclans.core.commands.dev;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,10 +26,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import nyanclans.commands.SubCommand;
-import nyanclans.commands.dev.sub.Help;
-import nyanclans.commands.dev.sub.PlayerInfo;
-import nyanclans.commands.dev.sub.Reload;
+import nyanclans.core.commands.SubCommand;
+import nyanclans.core.commands.dev.sub.Help;
+import nyanclans.core.commands.dev.sub.PlayerInfo;
+import nyanclans.core.commands.dev.sub.Reload;
 import nyanclans.storage.yaml.messages.MessageBuilder;
 import nyanclans.storage.yaml.messages.MessagesConfig;
 import nyanclans.utils.Observer;

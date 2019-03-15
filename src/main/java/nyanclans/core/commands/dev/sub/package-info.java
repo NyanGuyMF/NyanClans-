@@ -19,4 +19,4 @@
  *
  * @author NyanGuyMF
  */
-package nyanclans.commands.dev.sub;
+package nyanclans.core.commands.dev.sub;

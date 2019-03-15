@@ -14,38 +14,45 @@
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
-package nyanclans.commands.dev.sub;
+package nyanclans.core.commands.dev.sub;
 
 import org.bukkit.command.CommandSender;
 
-import nyanclans.commands.SubCommand;
+import nyanclans.core.commands.SubCommand;
+import nyanclans.storage.yaml.messages.MessageBuilder;
+import nyanclans.storage.yaml.messages.MessageListBuilder;
 import nyanclans.storage.yaml.messages.MessagesConfig;
-import nyanclans.utils.Observer;
 
 /** @author nyanguymf */
-public final class PlayerInfo extends SubCommand<String> implements Observer<MessagesConfig> {
+public final class Help extends SubCommand<String> {
+    private MessagesConfig messages;
 
-    public PlayerInfo(final MessagesConfig messages) {
+    public Help(final MessagesConfig messages) {
         super(
-            "player", "nyanclans.dev.playerinfo",
-            messages.usage().getDev().getPlayer()
+            "help", "nyanclans.dev.help",
+            ""
         );
-        messages.addObserver(this);
+
+        this.messages = messages;
     }
 
     @Override
     public boolean execute(final CommandSender sender, final String command, final String[] args) {
-        sender.sendMessage("Not implemented yet");
+        if (!hasPermission(sender)) {
+            new MessageBuilder().message(messages.error().getNoPermission())
+                .args(super.getName())
+                .send(sender);
+            return true;
+        }
+
+        new MessageListBuilder().message(messages.help().getDev().values())
+            .send(sender);
+
         return true;
     }
 
     @Override
     public boolean hasPermission(final CommandSender sender) {
-        return sender.hasPermission(super.getPermission());
-    }
-
-    @Override
-    public void update(final MessagesConfig obs) {
-        super.setUsage(obs.usage().getDev().getPlayer());
+        return true;
     }
 }

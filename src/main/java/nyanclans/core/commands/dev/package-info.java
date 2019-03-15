@@ -16,10 +16,10 @@
  */
 /**
  * Provides main developer command executor
- * {@link nyanclans.commands.dev.DeveloperCommand}
+ * {@link nyanclans.core.commands.dev.DeveloperCommand}
  * and tab completer for this plug-in command
- * {@link nyanclans.commands.dev.DeveloperCompleter}.
+ * {@link nyanclans.core.commands.dev.DeveloperCompleter}.
  *
  * @author NyanGuyMF
  */
-package nyanclans.commands.dev;
+package nyanclans.core.commands.dev;

@@ -17,8 +17,8 @@
 /**
  * Provides useful classes for implementations of
  * plug-in commands such as sub commands class -
- * {@link nyanclans.commands.SubCommand}.
+ * {@link nyanclans.core.commands.SubCommand}.
  *
  * @author NyanGuyMF
  */
-package nyanclans.commands;
+package nyanclans.core.commands;

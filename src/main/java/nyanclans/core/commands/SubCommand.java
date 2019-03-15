@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
-package nyanclans.commands;
+package nyanclans.core.commands;
 
 import org.bukkit.command.CommandSender;
 

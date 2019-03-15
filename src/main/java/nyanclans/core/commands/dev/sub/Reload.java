@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
-package nyanclans.commands.dev.sub;
+package nyanclans.core.commands.dev.sub;
 
 import org.bukkit.command.CommandSender;
 
-import nyanclans.commands.SubCommand;
+import nyanclans.core.commands.SubCommand;
 import nyanclans.storage.yaml.messages.MessageBuilder;
 import nyanclans.storage.yaml.messages.MessagesConfig;
 

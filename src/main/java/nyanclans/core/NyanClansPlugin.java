@@ -21,7 +21,7 @@ import java.io.IOException;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import nyanclans.commands.dev.DeveloperCommand;
+import nyanclans.core.commands.dev.DeveloperCommand;
 import nyanclans.storage.db.DatabaseConnector;
 import nyanclans.storage.yaml.messages.MessagesConfig;
 
