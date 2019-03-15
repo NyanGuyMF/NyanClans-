@@ -16,8 +16,6 @@
  */
 package nyanclans.commands.dev;
 
-import static nyanclans.utils.StringUtils.translateColors;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +28,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import nyanclans.commands.SubCommand;
 import nyanclans.commands.dev.sub.PlayerInfo;
+import nyanclans.commands.dev.sub.Reload;
+import nyanclans.storage.yaml.messages.MessageBuilder;
 import nyanclans.storage.yaml.messages.MessagesConfig;
 import nyanclans.utils.Observer;
 
@@ -43,7 +43,9 @@ public final class DeveloperCommand implements CommandExecutor, Observer<Message
         setupSubCommands(messages);
         messages.addObserver(this);
 
-        usageMessage = translateColors(messages.getUsageMessages().getDevCommands().getDevCommand());
+        usageMessage = new MessageBuilder()
+                .message(messages.usage().getDev().getDevCommand())
+                .build();
     }
 
     @Override
@@ -69,14 +71,27 @@ public final class DeveloperCommand implements CommandExecutor, Observer<Message
 
     @Override
     public void update(final MessagesConfig obs) {
-        usageMessage = translateColors(obs.getUsageMessages().getDevCommands().getDevCommand());
+        usageMessage = new MessageBuilder()
+                .message(obs.usage().getDev().getDevCommand())
+                .build();
     }
 
+    /** Registers this command for given plug-in. */
     public void register(final JavaPlugin plugin) {
         PluginCommand command = plugin.getCommand("clandev");
-        System.out.println(command);
         command.setExecutor(this);
         command.setTabCompleter(new DeveloperCompleter(subCommands.keySet()));
+    }
+
+    /**
+     * Add new sub command to developer command.
+     * <p>
+     * It will override old command if it was already added.
+     *
+     * @param   subCommand  New {@link SubCommand} instance to add.
+     */
+    public void addSubCommand(final SubCommand<String> subCommand) {
+        subCommands.put(subCommand.getName(), subCommand);
     }
 
     private void usage(final CommandSender receiver) {
@@ -84,7 +99,7 @@ public final class DeveloperCommand implements CommandExecutor, Observer<Message
     }
 
     private void setupSubCommands(final MessagesConfig messages) {
-        SubCommand<String> playerInfo = new PlayerInfo(messages);
-        subCommands.put(playerInfo.getName(), playerInfo);
+        addSubCommand(new PlayerInfo(messages));
+        addSubCommand(new Reload(messages));
     }
 }

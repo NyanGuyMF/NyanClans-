@@ -24,16 +24,24 @@ import java.util.List;
 
 import de.exlll.configlib.configs.yaml.BukkitYamlConfiguration;
 import nyanclans.storage.yaml.YamlFieldNameFormater;
+import nyanclans.storage.yaml.messages.error.ErrorMessages;
+import nyanclans.storage.yaml.messages.help.HelpMessages;
+import nyanclans.storage.yaml.messages.info.InfoMessages;
+import nyanclans.storage.yaml.messages.usage.UsageMessages;
 import nyanclans.utils.Observable;
 import nyanclans.utils.Observer;
 
 /** @author NyanGuyMF */
-public final class MessagesConfig extends BukkitYamlConfiguration implements Observable<MessagesConfig> {
+public class MessagesConfig extends BukkitYamlConfiguration implements Observable<MessagesConfig> {
     private final List<Observer<MessagesConfig>> ignoreObservers;
 
-    private HelpMessages helpMessages;
+    private HelpMessages help;
 
-    private UsageMessages usageMessages;
+    private UsageMessages usage;
+
+    private ErrorMessages error;
+
+    private InfoMessages info;
 
     /**
      * Creates new {@link MessagesConfig} instance.
@@ -58,14 +66,21 @@ public final class MessagesConfig extends BukkitYamlConfiguration implements Obs
         );
 
         ignoreObservers = new ArrayList<>();
-        setHelpMessages(new HelpMessages());
-        setUsageMessages(new UsageMessages());
+
+        setHelp(new HelpMessages());
+        setUsage(new UsageMessages());
+        setError(new ErrorMessages());
+        setInfo(new InfoMessages());
     }
 
     public void saveAndLoad() {
         super.save();
         super.load();
     }
+
+    /*----------------------------------*
+     *    Form Observable interface     *
+     *----------------------------------*/
 
     @Override
     public void addObserver(final Observer<MessagesConfig> obs) {
@@ -82,23 +97,47 @@ public final class MessagesConfig extends BukkitYamlConfiguration implements Obs
         ignoreObservers.parallelStream().forEach(obs -> obs.update(this));
     }
 
-    /** Gets helpMessages */
-    public HelpMessages getHelpMessages() {
-        return helpMessages;
+    /*---------------------------------------*
+     *     Getters and setters goes here     *
+     *---------------------------------------*/
+
+    /** Gets help */
+    public HelpMessages help() {
+        return help;
     }
 
-    /** Sets helpMessages */
-    public void setHelpMessages(final HelpMessages helpMessages) {
-        this.helpMessages = helpMessages;
+    /** Sets help */
+    public void setHelp(final HelpMessages helpMessages) {
+        help = helpMessages;
     }
 
-    /** Gets usageMessages */
-    public UsageMessages getUsageMessages() {
-        return usageMessages;
+    /** Gets usage */
+    public UsageMessages usage() {
+        return usage;
     }
 
-    /** Sets usageMessages */
-    public void setUsageMessages(final UsageMessages usageMessages) {
-        this.usageMessages = usageMessages;
+    /** Sets usage */
+    public void setUsage(final UsageMessages usageMessages) {
+        usage = usageMessages;
+    }
+
+    /** Gets error */
+    public ErrorMessages error() {
+        return error;
+    }
+
+    /** Sets error */
+    public void setError(final ErrorMessages error) {
+        this.error = error;
+    }
+
+    /** Gets info */
+    public InfoMessages info() {
+        return info;
+    }
+
+    /** Sets info */
+    public void setInfo(final InfoMessages info) {
+        this.info = info;
     }
 }

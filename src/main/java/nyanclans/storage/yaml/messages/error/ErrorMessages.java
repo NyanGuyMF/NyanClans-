@@ -14,28 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
-package nyanclans.storage.yaml.messages;
-
-import java.util.Map;
-
-import com.google.common.collect.ImmutableMap;
+package nyanclans.storage.yaml.messages.error;
 
 import de.exlll.configlib.annotation.ConfigurationElement;
 
 /** @author NyanGuyMF */
 @ConfigurationElement
-public final class HelpMessages {
-    private Map<String, String> devCommands = ImmutableMap.<String, String>builder()
-            .put("player", "&e/clandev player &6«&cplayer name&6» &f- show info about player")
-            .build();
+public final class ErrorMessages {
+    private String noPermission = "&cYou have no permission for &6{0} &ccommand.";
 
-    /** Gets devCommands */
-    public Map<String, String> getDevCommands() {
-        return devCommands;
+    /** Gets noPermission */
+    public String getNoPermission() {
+        return noPermission;
     }
 
-    /** Sets devCommands */
-    public void setDevCommands(Map<String, String> devCommands) {
-        this.devCommands = devCommands;
+    /** Sets noPermission */
+    public void setNoPermission(String noPermission) {
+        this.noPermission = noPermission;
     }
 }

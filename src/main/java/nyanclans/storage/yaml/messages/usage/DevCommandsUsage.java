@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
-package nyanclans.storage.yaml.messages;
+package nyanclans.storage.yaml.messages.usage;
 
 import de.exlll.configlib.annotation.ConfigurationElement;
 
@@ -24,6 +24,7 @@ public final class DevCommandsUsage {
     private String devCommand = "&eEnter &c/clandev help &efor help";
     private String player = "&e/clandev player &6«&cplayer name&6»";
     private String fresh  = "&e/clandev fresh";
+    private String reload = "&e/clandev reload";
 
     public DevCommandsUsage() {}
 
@@ -55,5 +56,15 @@ public final class DevCommandsUsage {
     /** Sets fresh */
     public void setFresh(final String fresh) {
         this.fresh = fresh;
+    }
+
+    /** Gets reload */
+    public String getReload() {
+        return reload;
+    }
+
+    /** Sets reload */
+    public void setReload(final String reload) {
+        this.reload = reload;
     }
 }

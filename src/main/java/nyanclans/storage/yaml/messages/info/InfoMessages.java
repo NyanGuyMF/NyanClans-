@@ -14,22 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
-package nyanclans.storage.yaml.messages;
+package nyanclans.storage.yaml.messages.info;
 
 import de.exlll.configlib.annotation.ConfigurationElement;
 
 /** @author NyanGuyMF */
 @ConfigurationElement
-public final class UsageMessages {
-    private DevCommandsUsage devCommands = new DevCommandsUsage();
+public final class InfoMessages {
+    private String reloadSuccess = "&3NyanClans &8» &aMessage configuration has been reloaded.";
 
-    /** Gets devCommands */
-    public DevCommandsUsage getDevCommands() {
-        return devCommands;
+    /** Gets message for successful message configuration reload. */
+    public String getReloadSuccess() {
+        return reloadSuccess;
     }
 
-    /** Sets devCommands */
-    public void setDevCommands(final DevCommandsUsage devCommands) {
-        this.devCommands = devCommands;
+    /** Sets message for successful message configuration reload. */
+    public void setReloadSuccess(final String reloadSuccess) {
+        this.reloadSuccess = reloadSuccess;
     }
 }

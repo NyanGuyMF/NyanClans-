@@ -14,28 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
-package nyanclans.utils;
+package nyanclans.storage.yaml.messages;
 
-/**
- * Contains useful utilities to handle {@link String} values.
- *
- * @see #translateColors(String)
- * @see #insertArgs(String, String...)
- *
- * @author NyanGuyMF
- */
-public final class StringUtils {
-    /**
-     * Translates user-friendly colors to default Bukkit colors.
-     * <p>
-     * Simply replaces all '&' characters in given string with
-     * '§' (ua7 in Unicode (u00a8)) character.
-     *
-     * @param   str     String with colors to translate.
-     * @return {@link String} with translated colors.
-     */
-    public static String translateColors(final String str) {
-        return str.replace('&', '\u00a7');
+import org.bukkit.command.CommandSender;
+
+/** @author nyanguymf */
+public final class MessageBuilder {
+    private String message;
+
+    /** Sets new message. */
+    public MessageBuilder message(final String message) {
+        this.message = message;
+        return this;
     }
 
     /**
@@ -46,18 +36,36 @@ public final class StringUtils {
      * with arguments {@code {"Notch", "NyanGuyMF"}} will
      * be <tt>"Hello, Notch! I'm NyanGuyMF c:"</tt>.
      *
-     * @param   str     String value to insert arguments.
      * @param   args    Values to insert into String.
-     * @return String with argument in it.
      */
-    public static String insertArgs(String str, final String... args) {
+    public MessageBuilder args(final String... args) {
         if (args.length == 0)
-            return str;
+            return this;
 
         for (int c = 0; c < args.length; c++) {
-            str = str.replace("{" + c + "}", args[c]);
+            message = message.replace("{" + c + "}", args[c]);
         }
 
-        return str;
+        return this;
+    }
+
+    /** Sends colored message to given {@link CommandSender}. */
+    public void send(final CommandSender receiver) {
+        receiver.sendMessage(build());
+    }
+
+    public String build() {
+        return colored().message;
+    }
+
+    /**
+     * Translates user-friendly colors to default Bukkit colors.
+     * <p>
+     * Simply replaces all '&' characters in given string with
+     * '§' (ua7 in Unicode (u00a8)) character.
+     */
+    private MessageBuilder colored() {
+        message = message.replace('&', '\u00a7');
+        return this;
     }
 }
