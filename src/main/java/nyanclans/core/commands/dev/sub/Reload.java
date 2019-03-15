@@ -46,6 +46,7 @@ public final class Reload extends SubCommand<String> {
         }
 
         messagesConfig.loadAndSave(); // it will reload messages
+        messagesConfig.notifyObservers();
         new MessageBuilder()
             .message(messagesConfig.info().getReloadSuccess())
             .send(sender);
