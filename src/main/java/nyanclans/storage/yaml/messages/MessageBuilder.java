@@ -22,6 +22,7 @@ import org.bukkit.command.CommandSender;
 public final class MessageBuilder {
     private String message;
 
+    public MessageBuilder() {}
 
     public MessageBuilder(final String message) {
         message(message);
