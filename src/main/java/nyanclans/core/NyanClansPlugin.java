@@ -77,8 +77,11 @@ public final class NyanClansPlugin extends JavaPlugin {
         }
 
         databaseConnector = databaseConnect(pluginFolder);
-        databaseConnector.createTables();
-        databaseConnector.initDaos();
+
+        if (databaseConnector != null) {
+            databaseConnector.initDaos();
+            databaseConnector.createTables();
+        }
 
         messagesConfig = loadMessagesYaml(pluginFolder);
     }
@@ -128,7 +131,7 @@ public final class NyanClansPlugin extends JavaPlugin {
             case CONNECTION_ERROR:
             case INVALID_DRIVER:
             default:
-                System.out.println("Error while connecting to database");
+                super.getLogger().info("Error while connecting to database");
                 return null;
             }
         } catch (IOException ex) {

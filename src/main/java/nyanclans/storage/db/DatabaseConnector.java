@@ -17,7 +17,7 @@
 package nyanclans.storage.db;
 
 import static com.j256.ormlite.dao.DaoManager.createDao;
-import static com.j256.ormlite.table.TableUtils.createTableIfNotExists;
+import static com.j256.ormlite.table.TableUtils.createTable;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +37,9 @@ public final class DatabaseConnector {
     public enum ConnectionStatus { SUCCESS, INVALID_DRIVER, CONNECTION_ERROR }
     private final DatabaseConfig config;
     private final File pluginFolder;
+    private Dao<ClanPlayer, String> playerDao;
+    private Dao<Clan, String> clanDao;
+    private Dao<Rank, Integer> rankDao;
     private ConnectionStatus state;
     private ConnectionSource conn;
 
@@ -74,7 +77,8 @@ public final class DatabaseConnector {
         boolean isAllConnected = true;
 
         try {
-            ClanPlayer.initDao(createDao(conn, ClanPlayer.class));
+            setPlayerDao(createDao(conn, ClanPlayer.class));
+            ClanPlayer.initDao(getPlayerDao());
         } catch (SQLException ex) {
             ex.printStackTrace();
             if (isAllConnected) {
@@ -83,7 +87,8 @@ public final class DatabaseConnector {
         }
 
         try {
-            Clan.initDao(createDao(conn, Clan.class));
+            setClanDao(createDao(conn, Clan.class));
+            Clan.initDao(getClanDao());
         } catch (SQLException ex) {
             ex.printStackTrace();
             if (isAllConnected) {
@@ -92,7 +97,8 @@ public final class DatabaseConnector {
         }
 
         try {
-            Rank.initDao(createDao(conn, Rank.class));
+            setRankDao(createDao(conn, Rank.class));
+            Rank.initDao(getRankDao());
         } catch (SQLException ex) {
             ex.printStackTrace();
             if (isAllConnected) {
@@ -168,7 +174,9 @@ public final class DatabaseConnector {
         boolean isAllConnected = true;
 
         try {
-            createTableIfNotExists(conn, ClanPlayer.class);
+            if (!getPlayerDao().isTableExists()) {
+                createTable(conn, ClanPlayer.class);
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             if (isAllConnected) {
@@ -177,7 +185,9 @@ public final class DatabaseConnector {
         }
 
         try {
-            createTableIfNotExists(conn, Clan.class);
+            if (!getClanDao().isTableExists()) {
+                createTable(conn, Clan.class);
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             if (isAllConnected) {
@@ -186,7 +196,9 @@ public final class DatabaseConnector {
         }
 
         try {
-            createTableIfNotExists(conn, Rank.class);
+            if (!getRankDao().isTableExists()) {
+                createTable(conn, Rank.class);
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             if (isAllConnected) {
@@ -231,5 +243,35 @@ public final class DatabaseConnector {
     /** Sets state */
     private void setState(final ConnectionStatus state) {
         this.state = state;
+    }
+
+    /** Gets playerDao */
+    public Dao<ClanPlayer, String> getPlayerDao() {
+        return playerDao;
+    }
+
+    /** Sets playerDao */
+    public void setPlayerDao(final Dao<ClanPlayer, String> playerDao) {
+        this.playerDao = playerDao;
+    }
+
+    /** Gets clanDao */
+    public Dao<Clan, String> getClanDao() {
+        return clanDao;
+    }
+
+    /** Sets clanDao */
+    public void setClanDao(final Dao<Clan, String> clanDao) {
+        this.clanDao = clanDao;
+    }
+
+    /** Gets rankDao */
+    public Dao<Rank, Integer> getRankDao() {
+        return rankDao;
+    }
+
+    /** Sets rankDao */
+    public void setRankDao(final Dao<Rank, Integer> rankDao) {
+        this.rankDao = rankDao;
     }
 }
