@@ -16,10 +16,14 @@
  */
 package nyanclans.core.commands;
 
+import java.util.Objects;
+
 import org.bukkit.command.CommandSender;
 
+import nyanclans.storage.yaml.messages.MessageBuilder;
+
 /** @author NyanGuyMF */
-public abstract class SubCommand<PermissionType> {
+public abstract class SubCommand<CommandPerformer, PermissionType> {
     /** Command name, basically its /command «name» [args]. */
     private final String name;
 
@@ -46,16 +50,60 @@ public abstract class SubCommand<PermissionType> {
         this.permission = permission;
     }
 
-    public abstract boolean execute(CommandSender sender, String command, String[] args);
+    public abstract boolean execute(CommandPerformer performer, String command, String[] args);
 
     /**
-     * Check if {@link CommandSender} has permission
+     * Check if {@link CommandPerformer} has permission
      * to perform this command.
      *
-     * @param   sender  Command sender instance to check.
+     * @param   performer  Command sender instance to check.
      * @return <tt>true</tt> if has.
      */
-    public abstract boolean hasPermission(final CommandSender sender);
+    public abstract boolean hasPermission(final CommandPerformer performer);
+
+    /**
+     * Sends usage message to command performer if it's
+     * instance of {@link CommandSender} class.
+     *
+     * @param   performer  The one who performed command.
+     * @return Always <tt>true</tt>.
+     */
+    public boolean sendUsage(final CommandPerformer performer) {
+        if (performer instanceof CommandSender) {
+            new MessageBuilder()
+                .message(getUsage())
+                .send((CommandSender) performer);
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, permission);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj)
+            return true;
+
+        if (obj == null)
+            return false;
+
+        if (!(obj instanceof SubCommand))
+            return false;
+
+        SubCommand<CommandPerformer, PermissionType> other;
+        try {
+            other = (SubCommand<CommandPerformer, PermissionType>) obj;
+        } catch (ClassCastException ex) {
+            return false;
+        }
+
+        return Objects.equals(name, other.name) && Objects.equals(permission, other.permission);
+    }
 
     @Override
     public String toString() {
