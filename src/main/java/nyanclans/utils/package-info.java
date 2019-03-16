@@ -16,7 +16,7 @@
  */
 /**
  * Provides utilities for plug-in such as Observer
- * pattern classes and text format utilities.
+ * pattern classes.
  *
  * @author NyanGuyMF
  */
