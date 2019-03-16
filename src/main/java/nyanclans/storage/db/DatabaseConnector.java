@@ -235,6 +235,11 @@ public final class DatabaseConnector {
         return conn != null;
     }
 
+    /** Gets current connection source. */
+    public ConnectionSource getConnection() {
+        return conn;
+    }
+
     /** Gets state */
     public ConnectionStatus getState() {
         return state;

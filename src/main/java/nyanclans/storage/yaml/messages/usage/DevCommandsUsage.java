@@ -23,6 +23,7 @@ import de.exlll.configlib.annotation.ConfigurationElement;
 public final class DevCommandsUsage {
     private String devCommand = "&eEnter &c/clandev help &efor help";
     private String player = "&e/clandev player &6«&cplayer name&6»";
+    private String fresh = "&e/clandev fresh &6«&cplayer&6| &ctable&6| &call&6» &6[&cplayer&6| &ctable&6]";
 
     public DevCommandsUsage() {}
 
@@ -44,5 +45,15 @@ public final class DevCommandsUsage {
     /** Sets player */
     public void setPlayer(final String player) {
         this.player = player;
+    }
+
+    /** Gets fresh */
+    public String getFresh() {
+        return fresh;
+    }
+
+    /** Sets fresh */
+    public void setFresh(final String fresh) {
+        this.fresh = fresh;
     }
 }

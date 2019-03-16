@@ -23,7 +23,7 @@ import nyanclans.storage.yaml.messages.MessageBuilder;
 import nyanclans.storage.yaml.messages.MessagesConfig;
 
 /** @author NyanGuyMF */
-public final class Reload extends SubCommand<String> {
+public final class Reload extends SubCommand<CommandSender, String> {
     private MessagesConfig messagesConfig;
 
     public Reload(final MessagesConfig messages) {
@@ -52,10 +52,5 @@ public final class Reload extends SubCommand<String> {
             .send(sender);
 
         return true;
-    }
-
-    @Override
-    public boolean hasPermission(final CommandSender sender) {
-        return sender.hasPermission(super.getPermission());
     }
 }

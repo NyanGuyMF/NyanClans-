@@ -24,7 +24,7 @@ import nyanclans.storage.yaml.messages.MessageListBuilder;
 import nyanclans.storage.yaml.messages.MessagesConfig;
 
 /** @author nyanguymf */
-public final class Help extends SubCommand<String> {
+public final class Help extends SubCommand<CommandSender, String> {
     private MessagesConfig messages;
 
     public Help(final MessagesConfig messages) {
@@ -48,11 +48,6 @@ public final class Help extends SubCommand<String> {
         new MessageListBuilder().message(messages.help().getDev().values())
             .send(sender);
 
-        return true;
-    }
-
-    @Override
-    public boolean hasPermission(final CommandSender sender) {
         return true;
     }
 }

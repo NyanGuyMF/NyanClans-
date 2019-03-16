@@ -24,6 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import nyanclans.core.commands.dev.DeveloperCommand;
 import nyanclans.storage.db.DatabaseConnector;
 import nyanclans.storage.yaml.messages.MessagesConfig;
+import nyanclans.utils.PluginUtils;
 
 /** @author NyanGuyMF */
 public final class NyanClansPlugin extends JavaPlugin {
@@ -42,6 +43,10 @@ public final class NyanClansPlugin extends JavaPlugin {
          *   connect to Vault;
          *   connect to ProtocolLib;
          */
+        if (!PluginUtils.isInitialized()) {
+            PluginUtils.init(this);
+        }
+
         registerCommands();
     }
 
@@ -60,7 +65,7 @@ public final class NyanClansPlugin extends JavaPlugin {
 
     /** Registers all plug-in commands. */
     private void registerCommands() {
-        new DeveloperCommand(messagesConfig).register(this);
+        new DeveloperCommand(messagesConfig, databaseConnector).register(this);
     }
 
     /**

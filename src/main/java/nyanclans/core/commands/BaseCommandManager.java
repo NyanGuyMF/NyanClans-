@@ -46,4 +46,9 @@ public class BaseCommandManager<CommandPerformer, PermissionType>
     public final SubCommand<CommandPerformer, PermissionType> getSubCommand(final String subCommandName) {
         return subCommands.get(subCommandName);
     }
+
+    /** Gets subCommands */
+    public Map<String, SubCommand<CommandPerformer, PermissionType>> getSubCommands() {
+        return subCommands;
+    }
 }

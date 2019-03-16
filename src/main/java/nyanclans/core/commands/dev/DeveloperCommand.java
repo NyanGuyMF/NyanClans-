@@ -17,8 +17,6 @@
 package nyanclans.core.commands.dev;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,10 +25,11 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import nyanclans.core.commands.BaseCommandManager;
-import nyanclans.core.commands.SubCommand;
+import nyanclans.core.commands.dev.sub.Fresh;
 import nyanclans.core.commands.dev.sub.Help;
 import nyanclans.core.commands.dev.sub.PlayerInfo;
 import nyanclans.core.commands.dev.sub.Reload;
+import nyanclans.storage.db.DatabaseConnector;
 import nyanclans.storage.yaml.messages.MessageBuilder;
 import nyanclans.storage.yaml.messages.MessagesConfig;
 import nyanclans.utils.Observer;
@@ -39,17 +38,19 @@ import nyanclans.utils.Observer;
 public final class DeveloperCommand
         extends BaseCommandManager<CommandSender, String>
         implements CommandExecutor, Observer<MessagesConfig> {
-    private final Map<String, SubCommand<CommandSender, String>> subCommands;
+    private final DatabaseConnector databaseConnector;
     private String usageMessage;
 
-    public DeveloperCommand(final MessagesConfig messages) {
-        subCommands = new HashMap<>();
-        setupSubCommands(messages);
-        messages.addObserver(this);
-
+    public DeveloperCommand(
+            final MessagesConfig messages, final DatabaseConnector databaseConnector
+    ) {
+        this.databaseConnector = databaseConnector;
         usageMessage = new MessageBuilder()
                 .message(messages.usage().getDev().getDevCommand())
                 .build();
+
+        setupSubCommands(messages);
+        messages.addObserver(this);
     }
 
     @Override
@@ -84,7 +85,7 @@ public final class DeveloperCommand
     public void register(final JavaPlugin plugin) {
         PluginCommand command = plugin.getCommand("clandev");
         command.setExecutor(this);
-        command.setTabCompleter(new DeveloperCompleter(subCommands.keySet()));
+        command.setTabCompleter(new DeveloperCompleter(super.getSubCommands().keySet()));
     }
 
     private void usage(final CommandSender receiver) {
@@ -95,5 +96,6 @@ public final class DeveloperCommand
         addSubCommand(new PlayerInfo(messages));
         addSubCommand(new Reload(messages));
         addSubCommand(new Help(messages));
+        addSubCommand(new Fresh(messages, databaseConnector));
     }
 }

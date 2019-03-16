@@ -22,6 +22,7 @@ import de.exlll.configlib.annotation.ConfigurationElement;
 @ConfigurationElement
 public final class ErrorMessages {
     private String noPermission = "&cYou have no permission for &6{0} &ccommand.";
+    private String freshTable = "&cCouldn't fresh table «&6{0}&c».";
 
     /** Gets noPermission */
     public String getNoPermission() {
@@ -29,7 +30,17 @@ public final class ErrorMessages {
     }
 
     /** Sets noPermission */
-    public void setNoPermission(String noPermission) {
+    public void setNoPermission(final String noPermission) {
         this.noPermission = noPermission;
+    }
+
+    /** Gets freshTable */
+    public String getFreshTable() {
+        return freshTable;
+    }
+
+    /** Sets freshTable */
+    public void setFreshTable(String freshTable) {
+        this.freshTable = freshTable;
     }
 }

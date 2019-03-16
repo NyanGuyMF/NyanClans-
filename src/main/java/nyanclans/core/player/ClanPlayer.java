@@ -17,8 +17,12 @@
 package nyanclans.core.player;
 
 import java.sql.SQLException;
+import java.util.Date;
+
+import org.bukkit.entity.Player;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 
 import nyanclans.core.clan.Clan;
@@ -30,13 +34,32 @@ public class ClanPlayer implements Storagable {
     private static Dao<ClanPlayer, String> dao;
 
     @DatabaseField(id=true, canBeNull=false, columnName="player_name", unique=true)
-    protected final String name = "";
+    private String name = "";
 
     @DatabaseField(foreign=true, foreignAutoRefresh=true)
-    protected Clan clan;
+    private Clan clan;
 
     @DatabaseField(foreign=true, foreignAutoRefresh=true)
-    protected Rank rank;
+    private Rank rank;
+
+    @DatabaseField(dataType=DataType.DATE_STRING)
+    private Date clanJoin;
+
+    @DatabaseField(dataType=DataType.DATE_STRING)
+    private Date firstServerJoin;
+
+    @DatabaseField(dataType=DataType.DATE_STRING)
+    private Date lastServerJoin;
+
+    protected ClanPlayer() {}
+
+    public ClanPlayer(final Player bukkitPlayer) {
+        setName(bukkitPlayer.getName());
+    }
+
+    public ClanPlayer(final String playerName) {
+        setName(playerName);
+    }
 
     public static void initDao(final Dao<ClanPlayer, String> dao) {
         if (ClanPlayer.dao != null) {
@@ -51,6 +74,17 @@ public class ClanPlayer implements Storagable {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean create() {
+        try {
+            ClanPlayer.dao.create(this);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -87,5 +121,65 @@ public class ClanPlayer implements Storagable {
         }
 
         return true;
+    }
+
+    /** Gets name */
+    public String getName() {
+        return name;
+    }
+
+    /** Sets name */
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    /** Gets clan */
+    public Clan getClan() {
+        return clan;
+    }
+
+    /** Sets clan */
+    public void setClan(final Clan clan) {
+        this.clan = clan;
+    }
+
+    /** Gets rank */
+    public Rank getRank() {
+        return rank;
+    }
+
+    /** Sets rank */
+    public void setRank(final Rank rank) {
+        this.rank = rank;
+    }
+
+    /** Gets clanJoin */
+    public Date getClanJoin() {
+        return clanJoin;
+    }
+
+    /** Sets clanJoin */
+    public void setClanJoin(final Date clanJoin) {
+        this.clanJoin = clanJoin;
+    }
+
+    /** Gets firstServerJoin */
+    public Date getFirstServerJoin() {
+        return firstServerJoin;
+    }
+
+    /** Sets firstServerJoin */
+    public void setFirstServerJoin(final Date firstServerJoin) {
+        this.firstServerJoin = firstServerJoin;
+    }
+
+    /** Gets lastServerJoin */
+    public Date getLastServerJoin() {
+        return lastServerJoin;
+    }
+
+    /** Sets lastServerJoin */
+    public void setLastServerJoin(final Date lastServerJoin) {
+        this.lastServerJoin = lastServerJoin;
     }
 }

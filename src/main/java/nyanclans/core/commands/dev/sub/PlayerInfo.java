@@ -23,7 +23,7 @@ import nyanclans.storage.yaml.messages.MessagesConfig;
 import nyanclans.utils.Observer;
 
 /** @author nyanguymf */
-public final class PlayerInfo extends SubCommand<String> implements Observer<MessagesConfig> {
+public final class PlayerInfo extends SubCommand<CommandSender, String> implements Observer<MessagesConfig> {
 
     public PlayerInfo(final MessagesConfig messages) {
         super(
@@ -37,11 +37,6 @@ public final class PlayerInfo extends SubCommand<String> implements Observer<Mes
     public boolean execute(final CommandSender sender, final String command, final String[] args) {
         sender.sendMessage("Not implemented yet");
         return true;
-    }
-
-    @Override
-    public boolean hasPermission(final CommandSender sender) {
-        return sender.hasPermission(super.getPermission());
     }
 
     @Override

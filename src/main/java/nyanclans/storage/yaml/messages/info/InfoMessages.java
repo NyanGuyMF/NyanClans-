@@ -22,6 +22,7 @@ import de.exlll.configlib.annotation.ConfigurationElement;
 @ConfigurationElement
 public final class InfoMessages {
     private String reloadSuccess = "&3NyanClans &8» &aMessage configuration has been reloaded.";
+    private String freshSuccess = "&3NyanClans &8» &6«&b{0}&6» &afreshed successfully.";
 
     /** Gets message for successful message configuration reload. */
     public String getReloadSuccess() {
@@ -31,5 +32,15 @@ public final class InfoMessages {
     /** Sets message for successful message configuration reload. */
     public void setReloadSuccess(final String reloadSuccess) {
         this.reloadSuccess = reloadSuccess;
+    }
+
+    /** Gets freshSuccess */
+    public String getFreshSuccess() {
+        return freshSuccess;
+    }
+
+    /** Sets freshSuccess */
+    public void setFreshSuccess(final String freshSuccess) {
+        this.freshSuccess = freshSuccess;
     }
 }
