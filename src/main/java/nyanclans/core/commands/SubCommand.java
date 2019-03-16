@@ -48,6 +48,7 @@ public abstract class SubCommand<CommandPerformer, PermissionType> {
     ) {
         this.name       = name;
         this.permission = permission;
+        this.usage      = usage;
     }
 
     public abstract boolean execute(CommandPerformer performer, String command, String[] args);
