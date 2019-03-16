@@ -85,9 +85,7 @@ public abstract class SubCommand<CommandPerformer, PermissionType> {
      */
     public boolean sendUsage(final CommandPerformer performer) {
         if (performer instanceof CommandSender) {
-            new MessageBuilder()
-                .message(getUsage())
-                .send((CommandSender) performer);
+            new MessageBuilder(getUsage()).send((CommandSender) performer);
         }
 
         return true;

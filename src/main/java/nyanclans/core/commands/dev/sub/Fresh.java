@@ -37,7 +37,6 @@ public final class Fresh extends SubCommandManager<CommandSender, String> {
     private final DatabaseConnector databaseConnector;
     private MessagesConfig messages;
 
-    // &e/clandef fresh &6«&cplayer&6, &ctable&6, &call&6» &6[&cplayer&6, &ctable&6]
     public Fresh(final MessagesConfig messages, final DatabaseConnector databaseConnector) {
         super(
             "fresh", "naynclans.dev.fresh",
@@ -47,8 +46,7 @@ public final class Fresh extends SubCommandManager<CommandSender, String> {
         this.databaseConnector = databaseConnector;
         this.messages = messages;
 
-        AllCommand all = new AllCommand(super.getUsage());
-        super.addSubCommand(all);
+        super.addSubCommand(new AllCommand(super.getUsage()));
     }
 
     @Override
@@ -78,16 +76,13 @@ public final class Fresh extends SubCommandManager<CommandSender, String> {
             final CommandSender performer, final String command,
             final String[] args
         ) {
-            boolean isAllFreshed = true;
-
-            isAllFreshed = isAllFreshed
-                        && freshTable("Clan", databaseConnector.getClanDao(), performer)
+            boolean isAllFreshed =
+                        freshTable("Clan", databaseConnector.getClanDao(), performer)
                         && freshTable("Player", databaseConnector.getPlayerDao(), performer)
                         && freshTable("Rank", databaseConnector.getRankDao(), performer);
 
             if (isAllFreshed) {
-                new MessageBuilder()
-                    .message(messages.info().getFreshSuccess())
+                new MessageBuilder(messages.info().getFreshSuccess())
                     .args("All")
                     .send(performer);
             }
@@ -113,8 +108,7 @@ public final class Fresh extends SubCommandManager<CommandSender, String> {
                 return true;
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                new MessageBuilder()
-                    .message(messages.error().getFreshTable())
+                new MessageBuilder(messages.error().getFreshTable())
                     .args(tableName)
                     .send(performer);
                 return false;

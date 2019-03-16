@@ -32,25 +32,21 @@ import nyanclans.core.commands.dev.sub.Reload;
 import nyanclans.storage.db.DatabaseConnector;
 import nyanclans.storage.yaml.messages.MessageBuilder;
 import nyanclans.storage.yaml.messages.MessagesConfig;
-import nyanclans.utils.Observer;
 
 /** @author NyanGuyMF */
 public final class DeveloperCommand
         extends BaseCommandManager<CommandSender, String>
-        implements CommandExecutor, Observer<MessagesConfig> {
+        implements CommandExecutor {
     private final DatabaseConnector databaseConnector;
-    private String usageMessage;
+    private MessagesConfig messages;
 
     public DeveloperCommand(
             final MessagesConfig messages, final DatabaseConnector databaseConnector
     ) {
+        this.messages          = messages;
         this.databaseConnector = databaseConnector;
-        usageMessage = new MessageBuilder()
-                .message(messages.usage().getDev().getDevCommand())
-                .build();
 
         setupSubCommands(messages);
-        messages.addObserver(this);
     }
 
     @Override
@@ -59,7 +55,7 @@ public final class DeveloperCommand
         final String label, final String[] args
     ) {
         if (args.length == 0) {
-            sender.sendMessage(usageMessage);
+            new MessageBuilder(messages.usage().getDev().getDevCommand()).send(sender);
             return true;
         }
 
@@ -68,17 +64,9 @@ public final class DeveloperCommand
 
         if (super.hasSubCommand(subCommand))
             return super.getSubCommand(subCommand).execute(sender, subCommand, subCommandArgs);
-        else {
-            usage(sender);
-            return true;
-        }
-    }
 
-    @Override
-    public void update(final MessagesConfig obs) {
-        usageMessage = new MessageBuilder()
-                .message(obs.usage().getDev().getDevCommand())
-                .build();
+        new MessageBuilder(messages.usage().getDev().getDevCommand()).send(sender);
+        return true;
     }
 
     /** Registers this command for given plug-in. */
@@ -86,10 +74,6 @@ public final class DeveloperCommand
         PluginCommand command = plugin.getCommand("clandev");
         command.setExecutor(this);
         command.setTabCompleter(new DeveloperCompleter(super.getSubCommands().keySet()));
-    }
-
-    private void usage(final CommandSender receiver) {
-        receiver.sendMessage(usageMessage);
     }
 
     private void setupSubCommands(final MessagesConfig messages) {

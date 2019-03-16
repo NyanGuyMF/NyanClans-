@@ -26,9 +26,23 @@ import org.bukkit.command.CommandSender;
 public final class MessageListBuilder {
     private List<String> message;
 
+    public MessageListBuilder(final Collection<String> message) {
+        message(message);
+    }
+
+    public MessageListBuilder(final List<String> message) {
+        message(message);
+    }
+
     /** Sets new message. */
     public MessageListBuilder message(final Collection<String> message) {
         this.message = message.parallelStream().collect(Collectors.toList());
+        return this;
+    }
+
+    /** Sets new message. */
+    public MessageListBuilder message(final List<String> message) {
+        this.message = message;
         return this;
     }
 

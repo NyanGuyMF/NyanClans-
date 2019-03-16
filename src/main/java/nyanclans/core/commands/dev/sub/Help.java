@@ -39,14 +39,13 @@ public final class Help extends SubCommand<CommandSender, String> {
     @Override
     public boolean execute(final CommandSender sender, final String command, final String[] args) {
         if (!hasPermission(sender)) {
-            new MessageBuilder().message(messages.error().getNoPermission())
+            new MessageBuilder(messages.error().getNoPermission())
                 .args(super.getName())
                 .send(sender);
             return true;
         }
 
-        new MessageListBuilder().message(messages.help().getDev().values())
-            .send(sender);
+        new MessageListBuilder(messages.help().getDev().values()).send(sender);
 
         return true;
     }

@@ -38,8 +38,7 @@ public final class Reload extends SubCommand<CommandSender, String> {
     @Override
     public boolean execute(final CommandSender sender, final String command, final String[] args) {
         if (!hasPermission(sender)) {
-            new MessageBuilder()
-                .message(messagesConfig.error().getNoPermission())
+            new MessageBuilder(messagesConfig.error().getNoPermission())
                 .args(super.getName())
                 .send(sender);
             return true;
@@ -47,9 +46,7 @@ public final class Reload extends SubCommand<CommandSender, String> {
 
         messagesConfig.loadAndSave(); // it will reload messages
         messagesConfig.notifyObservers();
-        new MessageBuilder()
-            .message(messagesConfig.info().getReloadSuccess())
-            .send(sender);
+        new MessageBuilder(messagesConfig.info().getReloadSuccess()).send(sender);
 
         return true;
     }

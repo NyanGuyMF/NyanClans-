@@ -30,6 +30,7 @@ import nyanclans.storage.yaml.messages.info.InfoMessages;
 import nyanclans.storage.yaml.messages.usage.UsageMessages;
 import nyanclans.utils.Observable;
 import nyanclans.utils.Observer;
+import nyanclans.utils.PluginUtils;
 
 /** @author NyanGuyMF */
 public class MessagesConfig extends BukkitYamlConfiguration implements Observable<MessagesConfig> {
@@ -94,7 +95,9 @@ public class MessagesConfig extends BukkitYamlConfiguration implements Observabl
 
     @Override
     public void notifyObservers() {
-        ignoreObservers.parallelStream().forEach(obs -> obs.update(this));
+        ignoreObservers.parallelStream().forEach(obs ->
+            PluginUtils.runTaskAsync(() -> obs.update(this))
+        );
     }
 
     /*---------------------------------------*
