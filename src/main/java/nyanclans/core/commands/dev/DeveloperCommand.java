@@ -26,6 +26,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import nyanclans.core.commands.BaseCommandManager;
 import nyanclans.core.commands.SubCommand;
 import nyanclans.core.commands.dev.sub.Help;
 import nyanclans.core.commands.dev.sub.PlayerInfo;
@@ -35,8 +36,10 @@ import nyanclans.storage.yaml.messages.MessagesConfig;
 import nyanclans.utils.Observer;
 
 /** @author NyanGuyMF */
-public final class DeveloperCommand implements CommandExecutor, Observer<MessagesConfig> {
-    private final Map<String, SubCommand<String>> subCommands;
+public final class DeveloperCommand
+        extends BaseCommandManager<CommandSender, String>
+        implements CommandExecutor, Observer<MessagesConfig> {
+    private final Map<String, SubCommand<CommandSender, String>> subCommands;
     private String usageMessage;
 
     public DeveloperCommand(final MessagesConfig messages) {
@@ -62,8 +65,8 @@ public final class DeveloperCommand implements CommandExecutor, Observer<Message
         final String subCommand = args[0].toLowerCase();
         final String[] subCommandArgs = Arrays.copyOfRange(args, 1, args.length);
 
-        if (subCommands.containsKey(subCommand))
-            return subCommands.get(subCommand).execute(sender, subCommand, subCommandArgs);
+        if (super.hasSubCommand(subCommand))
+            return super.getSubCommand(subCommand).execute(sender, subCommand, subCommandArgs);
         else {
             usage(sender);
             return true;
@@ -82,17 +85,6 @@ public final class DeveloperCommand implements CommandExecutor, Observer<Message
         PluginCommand command = plugin.getCommand("clandev");
         command.setExecutor(this);
         command.setTabCompleter(new DeveloperCompleter(subCommands.keySet()));
-    }
-
-    /**
-     * Add new sub command to developer command.
-     * <p>
-     * It will override old command if it was already added.
-     *
-     * @param   subCommand  New {@link SubCommand} instance to add.
-     */
-    public void addSubCommand(final SubCommand<String> subCommand) {
-        subCommands.put(subCommand.getName(), subCommand);
     }
 
     private void usage(final CommandSender receiver) {
