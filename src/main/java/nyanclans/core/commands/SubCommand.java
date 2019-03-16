@@ -56,11 +56,25 @@ public abstract class SubCommand<CommandPerformer, PermissionType> {
     /**
      * Check if {@link CommandPerformer} has permission
      * to perform this command.
+     * <p>
+     * By default if performer is instance of {@link CommandSender}
+     * it checks {@link CommandSender#hasPermission(String)} with
+     * {@link #permission}.
+     * <p>
+     * Override it if you use not {@link CommandSender} or other
+     * permission class.
      *
      * @param   performer  Command sender instance to check.
      * @return <tt>true</tt> if has.
      */
-    public abstract boolean hasPermission(final CommandPerformer performer);
+    public boolean hasPermission(final CommandPerformer performer) {
+        try {
+            if (performer instanceof CommandSender)
+                return ((CommandSender) performer).hasPermission(getPermission().toString());
+        } catch (ClassCastException ignore) {}
+
+        return false;
+    }
 
     /**
      * Sends usage message to command performer if it's
