@@ -47,6 +47,7 @@ public final class NyanClansPlugin extends JavaPlugin {
             PluginUtils.init(this);
         }
 
+
         registerCommands();
     }
 
@@ -133,8 +134,6 @@ public final class NyanClansPlugin extends JavaPlugin {
                 super.getLogger().info("Connected to database.");
                 return databaseConnector;
 
-            case CONNECTION_ERROR:
-            case INVALID_DRIVER:
             default:
                 super.getLogger().info("Error while connecting to database");
                 return null;
