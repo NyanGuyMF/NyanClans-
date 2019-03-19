@@ -22,7 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 /**
- * Provides utilities for methods of {@link JavaPluin}
+ * Provides utilities for methods of {@link JavaPlugin}
  * without having Singleton main class and private instance
  * of it in any classes.
  * <p>
