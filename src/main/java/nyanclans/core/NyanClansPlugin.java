@@ -25,15 +25,18 @@ import nyanclans.core.commands.dev.DeveloperCommand;
 import nyanclans.storage.db.DatabaseConnector;
 import nyanclans.storage.yaml.messages.MessagesConfig;
 import nyanclans.utils.PluginUtils;
+import nyanclans.utils.dependency.DependencyManager;
 
 /** @author NyanGuyMF */
 public final class NyanClansPlugin extends JavaPlugin {
     private DatabaseConnector databaseConnector;
+    private DependencyManager dependencyManager;
     private MessagesConfig messagesConfig;
 
     public NyanClansPlugin() {}
 
     @Override public void onLoad() {
+        dependencyManager = new DependencyManager(super.getDataFolder(), this);
         loadConfigs(super.getDataFolder());
     }
 
@@ -46,7 +49,6 @@ public final class NyanClansPlugin extends JavaPlugin {
         if (!PluginUtils.isInitialized()) {
             PluginUtils.init(this);
         }
-
 
         registerCommands();
     }
@@ -82,7 +84,12 @@ public final class NyanClansPlugin extends JavaPlugin {
             pluginFolder.mkdir();
         }
 
-        databaseConnector = databaseConnect(pluginFolder);
+        try {
+            databaseConnector = databaseConnect(pluginFolder);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            databaseConnector = null;
+        }
 
         if (databaseConnector != null) {
             databaseConnector.initDaos();
@@ -125,22 +132,21 @@ public final class NyanClansPlugin extends JavaPlugin {
     }
 
     /** @see {@link DatabaseConnector#DatabaseConnector(File)} */
-    private DatabaseConnector databaseConnect(final File pluginFolder) {
-        try {
-            DatabaseConnector databaseConnector = new DatabaseConnector(pluginFolder);
+    private DatabaseConnector databaseConnect(final File pluginFolder) throws IOException {
+        DatabaseConnector databaseConnector = new DatabaseConnector(pluginFolder, dependencyManager);
 
-            switch (databaseConnector.connect()) {
-            case SUCCESS:
-                super.getLogger().info("Connected to database.");
-                return databaseConnector;
+        // We cannot connect without database driver.
+        if (!databaseConnector.loadDriver())
+            return databaseConnector;
 
-            default:
-                super.getLogger().info("Error while connecting to database");
-                return null;
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
+        switch (databaseConnector.connect()) {
+        case SUCCESS:
+            super.getLogger().info("Connected to database.");
+
+        default:
+            super.getLogger().info("Error while connecting to database");
         }
+
+        return databaseConnector;
     }
 }

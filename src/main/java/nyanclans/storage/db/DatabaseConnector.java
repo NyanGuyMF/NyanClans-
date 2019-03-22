@@ -31,12 +31,15 @@ import nyanclans.core.clan.Clan;
 import nyanclans.core.clan.Rank;
 import nyanclans.core.player.ClanPlayer;
 import nyanclans.storage.yaml.DatabaseConfig;
+import nyanclans.utils.dependency.DatabaseDriver;
+import nyanclans.utils.dependency.DependencyManager;
 
 /** @author NyanGuyMF */
 public final class DatabaseConnector {
     public enum ConnectionStatus { SUCCESS, INVALID_DRIVER, CONNECTION_ERROR }
     private final DatabaseConfig config;
     private final File pluginFolder;
+    private final DependencyManager dependencyManager;
     private Dao<ClanPlayer, String> playerDao;
     private Dao<Clan, String> clanDao;
     private Dao<Rank, Integer> rankDao;
@@ -51,9 +54,12 @@ public final class DatabaseConnector {
      * Bukkit, default is {serverDir}/plugins/{pluginName}
      * @throws IOException if couldn't create configuration file.
      */
-    public DatabaseConnector(final File pluginFolder) throws IOException {
-        this.pluginFolder     = pluginFolder;
-        final File configFile = new File(pluginFolder, "database.yml");
+    public DatabaseConnector(
+        final File pluginFolder, final DependencyManager dependencyManager
+    ) throws IOException {
+        this.pluginFolder      = pluginFolder;
+        this.dependencyManager = dependencyManager;
+        final File configFile  = new File(pluginFolder, "database.yml");
 
         if (!configFile.exists()) {
             configFile.createNewFile();
@@ -64,6 +70,73 @@ public final class DatabaseConnector {
         }
 
         config.load();
+    }
+
+    /**
+     * Loads database driver as dependency from configuration.
+     *
+     * @return <tt>true</tt> if loaded successfully.
+     */
+    public boolean loadDriver() {
+        DatabaseDriver secureDriver = dependencyManager.getSecureDriver(config.getDatabaseDriver());
+        boolean isLoaded = false;
+
+        if (!dependencyManager.isDriverFileExists(config.getDatabaseDriver())) {
+            if (!downloadDriver(secureDriver))
+                return false;
+        }
+
+        System.out.println("Loading database driver.");
+
+        if (secureDriver != null) {
+            if (dependencyManager.loadDriver(secureDriver)) {
+                System.out.println("Database driver loaded.");
+                isLoaded = true;
+            } else {
+                System.err.println("Couldn't load database driver.");
+            }
+        } else {
+            System.out.println("Loading unsecure database driver: " + config.getDatabaseDriver());
+
+            if (dependencyManager.loadCustomDriver(config.getDatabaseDriver())) {
+                System.out.println("Database driver loaded.");
+                isLoaded = true;
+            } else {
+                System.err.println("Couldn't load database driver.");
+            }
+        }
+
+        return isLoaded;
+    }
+
+    private boolean downloadDriver(final DatabaseDriver driver) {
+        if (driver == null)
+            return false;
+
+        System.out.println("Downloading database driver...");
+        boolean isDownloaded = false;
+
+        switch (dependencyManager.downloadDriver(driver)) {
+        case SUCCESS:
+            System.out.println("Database driver downloaded successfully.");
+            isDownloaded = true;
+            break;
+        case HASH_ERROR:
+            System.out.println("Downloaded database driver has invalid hash code.");
+            break;
+        case CONNECTION_ERROR:
+            System.out.println("Couldn't connect to server with driver.");
+            break;
+        case DOWNLOAD_ERROR:
+            System.out.println("Couldn't download database driver.");
+            break;
+
+        default:
+            System.out.println("Unhandled error while downloading database driver.");
+            break;
+        }
+
+        return isDownloaded;
     }
 
     /**
@@ -229,6 +302,11 @@ public final class DatabaseConnector {
         }
 
         return true;
+    }
+
+    /** @return the config */
+    public DatabaseConfig getConfig() {
+        return config;
     }
 
     public boolean isConnected() {
