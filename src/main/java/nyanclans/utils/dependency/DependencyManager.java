@@ -123,15 +123,11 @@ public final class DependencyManager {
      * @return {@link DatabaseDriver} instance for given name or <tt>null</tt>.
      */
     public DatabaseDriver getSecureDriver(final String driverName) {
-        DatabaseDriver secureDriver = null;
+        for (DatabaseDriver driver : DatabaseDriver.values())
+            if (driver.getDriverName().equalsIgnoreCase(driverName))
+                return driver;
 
-        for (DatabaseDriver driver : DatabaseDriver.values()) {
-            if (driver.getDriverName().equalsIgnoreCase(driverName)) {
-                secureDriver = driver;
-            }
-        }
-
-        return secureDriver;
+        return null;
     }
 
     /**
