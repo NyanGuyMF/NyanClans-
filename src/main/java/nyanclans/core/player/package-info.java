@@ -17,8 +17,6 @@
 /**
  * Provides main {@link nyanclans.core.player.ClanPlayer} interface and
  * implementations with different storages.
- * <p>
- * TODO: add implementations
  *
  * @author nyanguymf
  */
