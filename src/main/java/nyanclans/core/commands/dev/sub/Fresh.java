@@ -28,19 +28,18 @@ import com.j256.ormlite.dao.Dao;
 
 import nyanclans.core.commands.SubCommand;
 import nyanclans.core.commands.SubCommandManager;
-import nyanclans.storage.db.DatabaseConnector;
-import nyanclans.storage.yaml.messages.MessageBuilder;
-import nyanclans.storage.yaml.messages.MessagesConfig;
+import nyanclans.storage.yaml.db.DatabaseConnector;
+import nyanclans.storage.yaml.messages.MessagesManager;
 
 /** @author NyanGuyMF */
 public final class Fresh extends SubCommandManager<CommandSender, String> {
     private final DatabaseConnector databaseConnector;
-    private MessagesConfig messages;
+    private MessagesManager messages;
 
-    public Fresh(final MessagesConfig messages, final DatabaseConnector databaseConnector) {
+    public Fresh(final MessagesManager messages, final DatabaseConnector databaseConnector) {
         super(
             "fresh", "naynclans.dev.fresh",
-            messages.usage().getDev().getFresh()
+            messages.usage("dev", "fresh")
         );
 
         this.databaseConnector = databaseConnector;
@@ -82,9 +81,7 @@ public final class Fresh extends SubCommandManager<CommandSender, String> {
                         && freshTable("Rank", databaseConnector.getRankDao(), performer);
 
             if (isAllFreshed) {
-                new MessageBuilder(messages.info().getFreshSuccess())
-                    .args("All")
-                    .send(performer);
+                performer.sendMessage(messages.info("fresh-success", "All"));
             }
 
             return true;
@@ -108,9 +105,7 @@ public final class Fresh extends SubCommandManager<CommandSender, String> {
                 return true;
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                new MessageBuilder(messages.error().getFreshTable())
-                    .args(tableName)
-                    .send(performer);
+                performer.sendMessage(messages.error("fresh-table", tableName));
                 return false;
             }
         }

@@ -20,8 +20,6 @@ import java.util.Objects;
 
 import org.bukkit.command.CommandSender;
 
-import nyanclans.storage.yaml.messages.MessageBuilder;
-
 /** @author NyanGuyMF */
 public abstract class SubCommand<CommandPerformer, PermissionType> {
     /** Command name, basically its /command «name» [args]. */
@@ -85,7 +83,7 @@ public abstract class SubCommand<CommandPerformer, PermissionType> {
      */
     public boolean sendUsage(final CommandPerformer performer) {
         if (performer instanceof CommandSender) {
-            new MessageBuilder(getUsage()).send((CommandSender) performer);
+            ((CommandSender) performer).sendMessage(getUsage());
         }
 
         return true;

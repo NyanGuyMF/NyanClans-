@@ -29,19 +29,18 @@ import nyanclans.core.commands.dev.sub.Fresh;
 import nyanclans.core.commands.dev.sub.Help;
 import nyanclans.core.commands.dev.sub.PlayerInfo;
 import nyanclans.core.commands.dev.sub.Reload;
-import nyanclans.storage.db.DatabaseConnector;
-import nyanclans.storage.yaml.messages.MessageBuilder;
-import nyanclans.storage.yaml.messages.MessagesConfig;
+import nyanclans.storage.yaml.db.DatabaseConnector;
+import nyanclans.storage.yaml.messages.MessagesManager;
 
 /** @author NyanGuyMF */
 public final class DeveloperCommand
         extends BaseCommandManager<CommandSender, String>
         implements CommandExecutor {
     private final DatabaseConnector databaseConnector;
-    private MessagesConfig messages;
+    private MessagesManager messages;
 
     public DeveloperCommand(
-            final MessagesConfig messages, final DatabaseConnector databaseConnector
+            final MessagesManager messages, final DatabaseConnector databaseConnector
     ) {
         this.messages          = messages;
         this.databaseConnector = databaseConnector;
@@ -55,7 +54,7 @@ public final class DeveloperCommand
         final String label, final String[] args
     ) {
         if (args.length == 0) {
-            new MessageBuilder(messages.usage().getDev().getDevCommand()).send(sender);
+            sender.sendMessage(messages.usage("dev", "dev"));
             return true;
         }
 
@@ -65,7 +64,7 @@ public final class DeveloperCommand
         if (super.hasSubCommand(subCommand))
             return super.getSubCommand(subCommand).execute(sender, subCommand, subCommandArgs);
 
-        new MessageBuilder(messages.usage().getDev().getDevCommand()).send(sender);
+        sender.sendMessage(messages.usage("dev", "clandev"));
         return true;
     }
 
@@ -76,7 +75,7 @@ public final class DeveloperCommand
         command.setTabCompleter(new DeveloperCompleter(super.getSubCommands().keySet()));
     }
 
-    private void setupSubCommands(final MessagesConfig messages) {
+    private void setupSubCommands(final MessagesManager messages) {
         addSubCommand(new PlayerInfo(messages));
         addSubCommand(new Reload(messages));
         addSubCommand(new Help(messages));

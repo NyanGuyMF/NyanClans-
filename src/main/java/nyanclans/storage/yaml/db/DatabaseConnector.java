@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
-package nyanclans.storage.db;
+package nyanclans.storage.yaml.db;
 
 import static com.j256.ormlite.dao.DaoManager.createDao;
 import static com.j256.ormlite.table.TableUtils.createTable;

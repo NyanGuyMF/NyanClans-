@@ -19,15 +19,13 @@ package nyanclans.core.commands.dev.sub;
 import org.bukkit.command.CommandSender;
 
 import nyanclans.core.commands.SubCommand;
-import nyanclans.storage.yaml.messages.MessageBuilder;
-import nyanclans.storage.yaml.messages.MessageListBuilder;
-import nyanclans.storage.yaml.messages.MessagesConfig;
+import nyanclans.storage.yaml.messages.MessagesManager;
 
 /** @author nyanguymf */
 public final class Help extends SubCommand<CommandSender, String> {
-    private MessagesConfig messages;
+    private MessagesManager messages;
 
-    public Help(final MessagesConfig messages) {
+    public Help(final MessagesManager messages) {
         super(
             "help", "nyanclans.dev.help",
             ""
@@ -39,13 +37,13 @@ public final class Help extends SubCommand<CommandSender, String> {
     @Override
     public boolean execute(final CommandSender sender, final String command, final String[] args) {
         if (!hasPermission(sender)) {
-            new MessageBuilder(messages.error().getNoPermission())
-                .args(super.getName())
-                .send(sender);
+            sender.sendMessage(messages.error("no-permission", super.getName()));
             return true;
         }
 
-        new MessageListBuilder(messages.help().getDev().values()).send(sender);
+        messages.allHelpFor("dev", false).forEach(msg -> {
+            sender.sendMessage(MessagesManager.colored(msg));
+        });
 
         return true;
     }

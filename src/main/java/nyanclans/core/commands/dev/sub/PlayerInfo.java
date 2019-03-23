@@ -19,16 +19,16 @@ package nyanclans.core.commands.dev.sub;
 import org.bukkit.command.CommandSender;
 
 import nyanclans.core.commands.SubCommand;
-import nyanclans.storage.yaml.messages.MessagesConfig;
+import nyanclans.storage.yaml.messages.MessagesManager;
 import nyanclans.utils.Observer;
 
 /** @author nyanguymf */
-public final class PlayerInfo extends SubCommand<CommandSender, String> implements Observer<MessagesConfig> {
+public final class PlayerInfo extends SubCommand<CommandSender, String> implements Observer<MessagesManager> {
 
-    public PlayerInfo(final MessagesConfig messages) {
+    public PlayerInfo(final MessagesManager messages) {
         super(
             "player", "nyanclans.dev.playerinfo",
-            messages.usage().getDev().getPlayer()
+            messages.usage("dev", "player")
         );
         messages.addObserver(this);
     }
@@ -40,7 +40,7 @@ public final class PlayerInfo extends SubCommand<CommandSender, String> implemen
     }
 
     @Override
-    public void update(final MessagesConfig obs) {
-        super.setUsage(obs.usage().getDev().getPlayer());
+    public void update(final MessagesManager obs) {
+        super.setUsage(obs.usage("dev", "player"));
     }
 }
