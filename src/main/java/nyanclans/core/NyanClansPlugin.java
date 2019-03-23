@@ -22,8 +22,8 @@ import java.io.IOException;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import nyanclans.core.commands.dev.DeveloperCommand;
-import nyanclans.storage.db.DatabaseConnector;
-import nyanclans.storage.yaml.messages.MessagesConfig;
+import nyanclans.storage.yaml.db.DatabaseConnector;
+import nyanclans.storage.yaml.messages.MessagesManager;
 import nyanclans.utils.PluginUtils;
 import nyanclans.utils.dependency.DependencyManager;
 
@@ -31,7 +31,7 @@ import nyanclans.utils.dependency.DependencyManager;
 public final class NyanClansPlugin extends JavaPlugin {
     private DatabaseConnector databaseConnector;
     private DependencyManager dependencyManager;
-    private MessagesConfig messagesConfig;
+    private MessagesManager messagesConfig;
 
     public NyanClansPlugin() {}
 
@@ -100,18 +100,18 @@ public final class NyanClansPlugin extends JavaPlugin {
     }
 
     /**
-     * Initializes {@link MessagesConfig} class instance.
+     * Initializes {@link MessagesManager} class instance.
      * <p>
      * Will create new <tt>messages.yml</tt> file if it wasn't
      * exist yet. If cannot create it will disable plug-in
      * and return <tt>null</tt> value.
      *
      * @param   pluginFolder    Plug-in's folder provided by Bukkit.
-     * @return {@link MessagesConfig} or <tt>null</tt>.
+     * @return {@link MessagesManager} or <tt>null</tt>.
      */
-    private MessagesConfig loadMessagesYaml(final File pluginFolder) {
+    private MessagesManager loadMessagesYaml(final File pluginFolder) {
         File messages = new File(pluginFolder, "messages.yml");
-        MessagesConfig config;
+        MessagesManager config;
 
         if (!messages.exists()) {
             try {
@@ -121,10 +121,10 @@ public final class NyanClansPlugin extends JavaPlugin {
                 super.getPluginLoader().disablePlugin(this);
                 return null;
             }
-            config = new MessagesConfig(pluginFolder);
+            config = new MessagesManager(pluginFolder);
             config.saveAndLoad();
         } else {
-            config = new MessagesConfig(pluginFolder);
+            config = new MessagesManager(pluginFolder);
             config.loadAndSave();
         }
 
@@ -142,9 +142,11 @@ public final class NyanClansPlugin extends JavaPlugin {
         switch (databaseConnector.connect()) {
         case SUCCESS:
             super.getLogger().info("Connected to database.");
+            break;
 
         default:
             super.getLogger().info("Error while connecting to database");
+            break;
         }
 
         return databaseConnector;
