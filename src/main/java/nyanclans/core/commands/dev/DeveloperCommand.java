@@ -54,7 +54,7 @@ public final class DeveloperCommand
         final String label, final String[] args
     ) {
         if (args.length == 0) {
-            sender.sendMessage(messages.usage("dev", "dev"));
+            sender.sendMessage(messages.usage("dev", "clandev"));
             return true;
         }
 
