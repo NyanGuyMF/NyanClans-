@@ -16,13 +16,18 @@
  */
 package nyanclans.core.clan;
 
+import static java.util.Objects.hash;
+
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 
 import javax.persistence.Column;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -46,6 +51,9 @@ public final class Clan implements Storagable {
     @ForeignCollectionField
     private Collection<ClanPlayer> members = new HashSet<>();
 
+    @DatabaseField(columnName="created_at", dataType=DataType.DATE_STRING)
+    private Date createdAt;
+
     public static void initDao(final Dao<Clan, String> dao) {
         if (Clan.dao != null) {
             Clan.dao = dao;
@@ -61,8 +69,18 @@ public final class Clan implements Storagable {
         }
     }
 
-    @Override
-    public boolean save() {
+    @Override public boolean create() {
+        try {
+            Clan.dao.create(this);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override public boolean save() {
         try {
             Clan.dao.update(this);
         } catch (SQLException e) {
@@ -73,8 +91,7 @@ public final class Clan implements Storagable {
         return true;
     }
 
-    @Override
-    public boolean reload() {
+    @Override public boolean reload() {
         try {
             Clan.dao.refresh(this);
         } catch (SQLException ex) {
@@ -85,8 +102,7 @@ public final class Clan implements Storagable {
         return true;
     }
 
-    @Override
-    public boolean delete() {
+    @Override public boolean delete() {
         try {
             Clan.dao.delete(this);
         } catch (SQLException ex) {
@@ -95,6 +111,24 @@ public final class Clan implements Storagable {
         }
 
         return true;
+    }
+
+    @Override public int hashCode() {
+        return hash(name);
+    }
+
+    @Override public boolean equals(final Object obj) {
+        if (this == obj)
+            return true;
+
+        if (obj == null)
+            return false;
+
+        if (!(obj instanceof Clan))
+            return false;
+
+        Clan other = (Clan) obj;
+        return Objects.equals(name, other.name);
     }
 
     /** Gets name */
@@ -135,5 +169,15 @@ public final class Clan implements Storagable {
     /** Sets members */
     public void setMembers(final Collection<ClanPlayer> members) {
         this.members = members;
+    }
+
+    /** @return the createdAt */
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    /** Sets createdAt */
+    public void setCreatedAt(final Date createdAt) {
+        this.createdAt = createdAt;
     }
 }

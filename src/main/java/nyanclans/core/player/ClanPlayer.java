@@ -16,8 +16,11 @@
  */
 package nyanclans.core.player;
 
+import static java.util.Objects.hash;
+
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Objects;
 
 import org.bukkit.entity.Player;
 
@@ -27,10 +30,11 @@ import com.j256.ormlite.field.DatabaseField;
 
 import nyanclans.core.clan.Clan;
 import nyanclans.core.clan.Rank;
+import nyanclans.core.clan.RankPermission;
 import nyanclans.storage.Storagable;
 
 /** @author NyanGuyMF */
-public class ClanPlayer implements Storagable {
+public class ClanPlayer implements Storagable, Rankable<Rank, RankPermission> {
     private static Dao<ClanPlayer, String> dao;
 
     @DatabaseField(id=true, canBeNull=false, columnName="player_name", unique=true)
@@ -61,6 +65,18 @@ public class ClanPlayer implements Storagable {
         setName(playerName);
     }
 
+    @Override
+    public boolean hasPermission(final RankPermission permission) {
+        if (rank == null)
+            return false;
+
+        for (RankPermission perm : rank.getPermissions())
+            if (perm.equals(permission))
+                return true;
+
+        return false;
+    }
+
     public static void initDao(final Dao<ClanPlayer, String> dao) {
         if (ClanPlayer.dao != null) {
             ClanPlayer.dao = dao;
@@ -76,7 +92,7 @@ public class ClanPlayer implements Storagable {
         }
     }
 
-    public boolean create() {
+    @Override public boolean create() {
         try {
             ClanPlayer.dao.create(this);
         } catch (SQLException ex) {
@@ -87,8 +103,7 @@ public class ClanPlayer implements Storagable {
         return true;
     }
 
-    @Override
-    public boolean save() {
+    @Override public boolean save() {
         try {
             ClanPlayer.dao.update(this);
         } catch (SQLException ex) {
@@ -99,8 +114,7 @@ public class ClanPlayer implements Storagable {
         return true;
     }
 
-    @Override
-    public boolean reload() {
+    @Override public boolean reload() {
         try {
             ClanPlayer.dao.refresh(this);
         } catch (SQLException ex) {
@@ -111,8 +125,7 @@ public class ClanPlayer implements Storagable {
         return true;
     }
 
-    @Override
-    public boolean delete() {
+    @Override public boolean delete() {
         try {
             ClanPlayer.dao.delete(this);
         } catch (SQLException ex) {
@@ -121,6 +134,25 @@ public class ClanPlayer implements Storagable {
         }
 
         return true;
+    }
+
+    @Override public int hashCode() {
+        return hash(name);
+    }
+
+    @Override public boolean equals(final Object obj) {
+        if (this == obj)
+            return true;
+
+        if (obj == null)
+            return false;
+
+        if (!(obj instanceof ClanPlayer))
+            return false;
+
+        ClanPlayer other = (ClanPlayer) obj;
+
+        return Objects.equals(name, other.name);
     }
 
     /** Gets name */
@@ -144,11 +176,13 @@ public class ClanPlayer implements Storagable {
     }
 
     /** Gets rank */
+    @Override
     public Rank getRank() {
         return rank;
     }
 
     /** Sets rank */
+    @Override
     public void setRank(final Rank rank) {
         this.rank = rank;
     }

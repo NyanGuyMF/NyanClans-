@@ -23,10 +23,16 @@ package nyanclans.storage;
  */
 public interface Storagable {
     /**
+     * Creates new object on storage.
+     *
+     * @return <tt>true</tt> if created successfully.
+     */
+    boolean create();
+
+    /**
      * Saves object to storage.
      *
-     * @return <tt>true</tt> if saved successfully and
-     * <tt>false</tt> if not.
+     * @return <tt>true</tt> if saved successfully.
      */
     boolean save();
 
@@ -35,8 +41,7 @@ public interface Storagable {
      * <p>
      * Should be used if you want get latest version of object.
      *
-     * @return <tt>true</tt> if reloaded successfully and
-     * <tt>false</tt> if not.
+     * @return <tt>true</tt> if reloaded successfully.
      */
     boolean reload();
 
@@ -45,8 +50,7 @@ public interface Storagable {
      * <p>
      * Be careful while using it, usually it's undone.
      *
-     * @return <tt>true</tt> if deleted successfully and
-     * <tt>false</tt> if not.
+     * @return <tt>true</tt> if deleted successfully.
      */
     boolean delete();
 }

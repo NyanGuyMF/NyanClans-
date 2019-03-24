@@ -17,6 +17,8 @@
 package nyanclans.core.clan;
 
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.HashSet;
 
 import com.google.common.collect.ImmutableMap;
 import com.j256.ormlite.dao.Dao;
@@ -48,6 +50,8 @@ public final class Rank implements Storagable {
     @DatabaseField(canBeNull=false)
     private String alias;
 
+    private Collection<RankPermission> permissions = new HashSet<>();
+
     public static void initDao(final Dao<Rank, Integer> dao) {
         if (Rank.dao != null) {
             Rank.dao = dao;
@@ -69,8 +73,18 @@ public final class Rank implements Storagable {
         }
     }
 
-    @Override
-    public boolean save() {
+    @Override public boolean create() {
+        try {
+            Rank.dao.create(this);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override public boolean save() {
         try {
             Rank.dao.update(this);
         } catch (SQLException e) {
@@ -81,8 +95,7 @@ public final class Rank implements Storagable {
         return true;
     }
 
-    @Override
-    public boolean reload() {
+    @Override public boolean reload() {
         try {
             Rank.dao.refresh(this);
         } catch (SQLException ex) {
@@ -93,8 +106,7 @@ public final class Rank implements Storagable {
         return true;
     }
 
-    @Override
-    public boolean delete() {
+    @Override public boolean delete() {
         try {
             Rank.dao.delete(this);
         } catch (SQLException ex) {
@@ -143,5 +155,15 @@ public final class Rank implements Storagable {
     /** Sets alias */
     public void setAlias(final String alias) {
         this.alias = alias;
+    }
+
+    /** @return the permissions */
+    public Collection<RankPermission> getPermissions() {
+        return permissions;
+    }
+
+    /** Sets permissions */
+    public void setPermissions(final Collection<RankPermission> permissions) {
+        this.permissions = permissions;
     }
 }
