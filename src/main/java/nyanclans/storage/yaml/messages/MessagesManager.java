@@ -80,6 +80,7 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
 
     private final Map<String, String> error = ImmutableMap.<String,String>builder()
             .put("no-permission", "&cYou have no permission for &6{0} &ccommand.")
+            .put("only-player", "&cOnly players can use «&6{0}&c» command.")
             .put("fresh-table", "&cCouldn't fresh table «&6{0}&c».")
             .build();
 
@@ -113,6 +114,14 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
                 .put("fresh", "&e/clandev fresh &6«&cplayer&6| &ctable&6| &call&6» &6[&cplayer&6| &ctable&6]")
                 .build()
         );
+        usage.put(
+            "clan",
+            ImmutableMap.<String, String>builder()
+                .put("clan", "&eEnter &c/clan help &efor help")
+                .put("create", "&e/clan create &6«&cclan name&6»")
+                .put("delete", "&e/clan delete")
+                .build()
+        );
 
         help.put(
             "dev",
@@ -120,6 +129,14 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
                 .put("player", "&e/clandev player &6«&cplayer name&6» &f- show info about player")
                 .put("reload", "&e/clandev reload &f- reload message configuration")
                 .put("help", "&e/clandev help &f- this menu")
+                .build()
+        );
+
+        help.put(
+            "clan",
+            ImmutableMap.<String, String>builder()
+                .put("create", "&e/clan create &6«&cclan name&6» &f- create new clan")
+                .put("delete", "&e/clan delete &f- delete your clan")
                 .build()
         );
     }
@@ -206,7 +223,7 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
         if (args.length == 0)
             return error(key, MessagesManager.TRANSLATE);
         else
-            return args(error(key, MessagesManager.TRANSLATE), args);
+            return colored(args(error(key, false), args));
     }
 
     /**
@@ -249,7 +266,7 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
         if (args.length == 0)
             return info(key, MessagesManager.TRANSLATE);
         else
-            return args(info(key, MessagesManager.TRANSLATE), args);
+            return colored(args(info(key, false), args));
     }
 
     /**
@@ -297,7 +314,7 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
         if (args.length == 0)
             return help(command, subCommand, MessagesManager.TRANSLATE);
         else
-            return args(help(command, subCommand, MessagesManager.TRANSLATE), args);
+            return colored(args(help(command, subCommand, false), args));
     }
 
     /**
@@ -351,7 +368,7 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
         if (args.length == 0)
             return usage(command, subCommand, MessagesManager.TRANSLATE);
         else
-            return args(usage(command, subCommand, MessagesManager.TRANSLATE), args);
+            return colored(args(usage(command, subCommand, false), args));
     }
 
     /**
