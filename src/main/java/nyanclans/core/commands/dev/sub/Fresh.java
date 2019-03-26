@@ -27,12 +27,11 @@ import org.bukkit.command.CommandSender;
 import com.j256.ormlite.dao.Dao;
 
 import nyanclans.core.commands.SubCommand;
-import nyanclans.core.commands.SubCommandManager;
 import nyanclans.storage.yaml.db.DatabaseConnector;
 import nyanclans.storage.yaml.messages.MessagesManager;
 
 /** @author NyanGuyMF */
-public final class Fresh extends SubCommandManager<String> {
+public final class Fresh extends SubCommand<String> {
     private final DatabaseConnector databaseConnector;
     private MessagesManager messages;
 
@@ -45,7 +44,6 @@ public final class Fresh extends SubCommandManager<String> {
         this.databaseConnector = databaseConnector;
         this.messages = messages;
 
-        super.addSubCommand(new AllCommand(super.getUsage()));
     }
 
     @Override
@@ -58,54 +56,40 @@ public final class Fresh extends SubCommandManager<String> {
         final String subCommand = args[0].toLowerCase();
         final String[] subCommandArgs = Arrays.copyOfRange(args, 1, args.length);
 
-        if (!super.hasSubCommand(subCommand))
-            return super.sendUsage(performer);
+        switch (subCommand) {
+        case "all":
+            return freshAll(performer);
 
-        return super.getSubCommand(subCommand).execute(performer, subCommandArgs);
+        default:
+            return super.sendUsage(performer);
+        }
     }
 
-    private final class AllCommand extends SubCommand<String> {
-        public AllCommand(final String usage) {
-            super("all", "nyanclans.dev.fresh.all", usage);
-        }
+    private boolean freshAll(final CommandSender performer) {
+        freshTable("Clan", databaseConnector.getClanDao(), performer);
+        freshTable("Player", databaseConnector.getPlayerDao(), performer);
+        freshTable("Rank", databaseConnector.getRankDao(), performer);
 
-        @Override
-        public boolean execute(
-            final CommandSender performer, final String[] args
-        ) {
-            boolean isAllFreshed =
-                        freshTable("Clan", databaseConnector.getClanDao(), performer)
-                        && freshTable("Player", databaseConnector.getPlayerDao(), performer)
-                        && freshTable("Rank", databaseConnector.getRankDao(), performer);
+        performer.sendMessage(messages.info("fresh-success", "All"));
 
-            if (isAllFreshed) {
-                performer.sendMessage(messages.info("fresh-success", "All"));
+        return true;
+    }
+
+    private boolean freshTable(
+        final String tableName, final Dao<?, ?> dao,
+        final CommandSender performer
+    ) {
+        try {
+            if (dao.isTableExists()) {
+                dropTable(dao, false);
             }
 
+            createTable(dao);
             return true;
-        }
-
-        @Override
-        public boolean hasPermission(final CommandSender performer) {
-            return true; // already checked
-        }
-
-        private boolean freshTable(
-            final String tableName, final Dao<?, ?> dao,
-            final CommandSender performer
-        ) {
-            try {
-                if (dao.isTableExists()) {
-                    dropTable(dao, false);
-                }
-
-                createTable(dao);
-                return true;
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                performer.sendMessage(messages.error("fresh-table", tableName));
-                return false;
-            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            performer.sendMessage(messages.error("fresh-table", tableName));
+            return false;
         }
     }
 }
