@@ -23,6 +23,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import nyanclans.core.player.ClanPlayer;
 import nyanclans.utils.PluginUtils;
@@ -38,6 +39,10 @@ public final class PlayerJoinHandler implements Listener {
         }
 
         handleJoinEvent(event);
+    }
+
+    public void register(final JavaPlugin plugin) {
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     private void handleJoinEvent(final PlayerJoinEvent event) {

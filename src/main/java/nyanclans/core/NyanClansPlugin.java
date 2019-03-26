@@ -18,11 +18,15 @@ package nyanclans.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import nyanclans.core.commands.clan.ClanCommand;
 import nyanclans.core.commands.dev.DeveloperCommand;
+import nyanclans.core.events.PlayerJoinHandler;
+import nyanclans.core.player.ClanPlayer;
 import nyanclans.core.rank.RankBuildDirector;
 import nyanclans.storage.yaml.PluginConfiguration;
 import nyanclans.storage.yaml.db.DatabaseConnector;
@@ -50,11 +54,22 @@ public final class NyanClansPlugin extends JavaPlugin {
          *   connect to Vault;
          *   connect to ProtocolLib;
          */
+        // Add online players to database if they are not in it yet
+        Bukkit.getOnlinePlayers().parallelStream()
+            .filter(player -> !ClanPlayer.isPlayerExists(player.getName()))
+            .forEach(bukkitPlayer -> {
+                ClanPlayer player = new ClanPlayer(bukkitPlayer.getName());
+                player.setFirstServerJoin(new Date(System.currentTimeMillis()));
+                player.setLastServerJoin(player.getFirstServerJoin());
+                player.create();
+            });
+
         if (!PluginUtils.isInitialized()) {
             PluginUtils.init(this);
         }
 
         registerCommands();
+        registerListeners();
     }
 
     @Override public void onDisable() {
@@ -74,6 +89,10 @@ public final class NyanClansPlugin extends JavaPlugin {
     private void registerCommands() {
         new DeveloperCommand(messagesConfig, databaseConnector).register(this);
         new ClanCommand(messagesConfig, config).register(this);
+    }
+
+    private void registerListeners() {
+        new PlayerJoinHandler().register(this);
     }
 
     /**

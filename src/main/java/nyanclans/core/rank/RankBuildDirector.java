@@ -28,7 +28,7 @@ public final class RankBuildDirector {
     private static RankConfig config;
 
     public static void setConfig(final RankConfig config) {
-        if (RankBuildDirector.config != null) {
+        if (RankBuildDirector.config == null) {
             RankBuildDirector.config = config;
         }
     }
