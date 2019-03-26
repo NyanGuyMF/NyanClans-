@@ -76,6 +76,7 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
     private final Map<String, String> info = ImmutableMap.<String, String>builder()
             .put("reload-success", "&3NyanClans &8» &aMessage configuration has been reloaded.")
             .put("fresh-success", "&3NyanClans &8» &6«&b{0}&6» &afreshed successfully.")
+            .put("clan-created", "&6«&e{0}&6» &eClan created.")
             .build();
 
     private final Map<String, String> error = ImmutableMap.<String,String>builder()
@@ -85,6 +86,8 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
             .put("invalid-clan-name", "&cYou've entered invalid clan name - «&6{0}&c».")
             .put("clan-already-exists", "&cClan with name «&6&c» already exists.")
             .put("you-already-in-clan", "&cYou're already in clan.")
+            .put("clan-create-error", "&6«&e{0}&6» &eCouldn't create clan.")
+            .put("rank-create-error", "&6«&e{0}&6» &eCouldn't create rank &6«&c{1}&6»&e.")
             .build();
 
     /**

@@ -21,7 +21,7 @@ import java.util.Objects;
 import org.bukkit.command.CommandSender;
 
 /** @author NyanGuyMF */
-public abstract class SubCommand<CommandPerformer, PermissionType> {
+public abstract class SubCommand<PermissionType> {
     /** Command name, basically its /command «name» [args]. */
     private final String name;
 
@@ -49,7 +49,7 @@ public abstract class SubCommand<CommandPerformer, PermissionType> {
         this.usage      = usage;
     }
 
-    public abstract boolean execute(CommandPerformer performer, String command, String[] args);
+    public abstract boolean execute(CommandSender performer, String[] args);
 
     /**
      * Check if {@link CommandPerformer} has permission
@@ -65,13 +65,8 @@ public abstract class SubCommand<CommandPerformer, PermissionType> {
      * @param   performer  Command sender instance to check.
      * @return <tt>true</tt> if has.
      */
-    public boolean hasPermission(final CommandPerformer performer) {
-        try {
-            if (performer instanceof CommandSender)
-                return ((CommandSender) performer).hasPermission(getPermission().toString());
-        } catch (ClassCastException ignore) {}
-
-        return false;
+    public boolean hasPermission(final CommandSender performer) {
+        return performer.hasPermission(getPermission().toString());
     }
 
     /**
@@ -81,10 +76,8 @@ public abstract class SubCommand<CommandPerformer, PermissionType> {
      * @param   performer  The one who performed command.
      * @return Always <tt>true</tt>.
      */
-    public boolean sendUsage(final CommandPerformer performer) {
-        if (performer instanceof CommandSender) {
-            ((CommandSender) performer).sendMessage(getUsage());
-        }
+    public boolean sendUsage(final CommandSender performer) {
+        performer.sendMessage(getUsage());
 
         return true;
     }
@@ -106,9 +99,9 @@ public abstract class SubCommand<CommandPerformer, PermissionType> {
         if (!(obj instanceof SubCommand))
             return false;
 
-        SubCommand<CommandPerformer, PermissionType> other;
+        SubCommand<PermissionType> other;
         try {
-            other = (SubCommand<CommandPerformer, PermissionType>) obj;
+            other = (SubCommand<PermissionType>) obj;
         } catch (ClassCastException ex) {
             return false;
         }

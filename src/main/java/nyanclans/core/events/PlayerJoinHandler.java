@@ -41,7 +41,7 @@ public final class PlayerJoinHandler implements Listener {
     }
 
     private void handleJoinEvent(final PlayerJoinEvent event) {
-        if (ClanPlayer.exists(event.getPlayer().getName())) {
+        if (ClanPlayer.isPlayerExists(event.getPlayer().getName())) {
             updatePlayer(event.getPlayer());
             return;
         }

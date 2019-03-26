@@ -27,10 +27,10 @@ import java.util.Map;
  *
  * @author NyanGuyMF
  */
-public abstract class SubCommandManager<CommandPerformer, PermissionType>
-        extends SubCommand<CommandPerformer, PermissionType>
-        implements CommandManager<CommandPerformer, PermissionType> {
-    private Map<String, SubCommand<CommandPerformer, PermissionType>> subCommands;
+public abstract class SubCommandManager<PermissionType>
+        extends SubCommand<PermissionType>
+        implements CommandManager<PermissionType> {
+    private Map<String, SubCommand< PermissionType>> subCommands;
 
     public SubCommandManager(final String name, final PermissionType permission, final String usage) {
         super(name, permission, usage);
@@ -39,7 +39,7 @@ public abstract class SubCommandManager<CommandPerformer, PermissionType>
     }
 
     @Override
-    public final void addSubCommand(final SubCommand<CommandPerformer, PermissionType> subCommand) {
+    public final void addSubCommand(final SubCommand<PermissionType> subCommand) {
         subCommands.put(subCommand.getName(), subCommand);
     }
 
@@ -49,7 +49,7 @@ public abstract class SubCommandManager<CommandPerformer, PermissionType>
     }
 
     @Override
-    public final SubCommand<CommandPerformer, PermissionType> getSubCommand(final String subCommandName) {
+    public final SubCommand<PermissionType> getSubCommand(final String subCommandName) {
         return subCommands.get(subCommandName);
     }
 }

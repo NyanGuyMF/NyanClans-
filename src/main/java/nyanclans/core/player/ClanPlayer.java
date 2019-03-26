@@ -29,8 +29,8 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 
 import nyanclans.core.clan.Clan;
-import nyanclans.core.clan.Rank;
-import nyanclans.core.clan.RankPermission;
+import nyanclans.core.rank.Rank;
+import nyanclans.core.rank.RankPermission;
 import nyanclans.storage.Storagable;
 
 /** @author NyanGuyMF */
@@ -65,6 +65,15 @@ public class ClanPlayer implements Storagable, Rankable<Rank, RankPermission> {
         setName(playerName);
     }
 
+    /**
+     * Check is {@link ClanPlayer} member of any {@link Clan}.
+     *
+     * @return <tt>true</tt> if player is member.
+     */
+    public boolean isClanMember() {
+        return getClan() != null;
+    }
+
     @Override
     public boolean hasPermission(final RankPermission permission) {
         if (rank == null)
@@ -78,12 +87,30 @@ public class ClanPlayer implements Storagable, Rankable<Rank, RankPermission> {
     }
 
     public static void initDao(final Dao<ClanPlayer, String> dao) {
-        if (ClanPlayer.dao != null) {
+        if (ClanPlayer.dao == null) {
             ClanPlayer.dao = dao;
         }
     }
 
-    public static boolean exists(final String player) {
+    /**
+     * Gets player by name.
+     * <p>
+     * If player not found it will return <tt>null</tt>.
+     *
+     * @param   playerName  Player name for query.
+     * @return {@link ClanPlayer} instance for given name or
+     * <tt>null</tt> value if not found.
+     */
+    public static ClanPlayer playerByName(final String playerName) {
+        try {
+            return ClanPlayer.dao.queryForId(playerName);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public static boolean isPlayerExists(final String player) {
         try {
             return ClanPlayer.dao.idExists(player);
         } catch (SQLException e) {

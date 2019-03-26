@@ -33,6 +33,7 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import nyanclans.core.player.ClanPlayer;
+import nyanclans.core.rank.Rank;
 import nyanclans.storage.Storagable;
 
 /** @author NyanGuyMF */
@@ -51,22 +52,70 @@ public final class Clan implements Storagable {
     @ForeignCollectionField
     private Collection<ClanPlayer> members = new HashSet<>();
 
+    @ForeignCollectionField
+    private Collection<Rank> ranks = new HashSet<>();
+
     @DatabaseField(columnName="created_at", dataType=DataType.DATE_STRING)
     private Date createdAt;
 
+    public Clan() {}
+
+    public Clan(final String name, final ClanPlayer leader) {
+        this.leader = leader;
+        this.name   = name;
+        createdAt   = new Date();
+    }
+
     public static void initDao(final Dao<Clan, String> dao) {
-        if (Clan.dao != null) {
+        if (Clan.dao == null) {
             Clan.dao = dao;
         }
     }
 
-    public static boolean exists(final String clan) {
+    public static boolean isClanExists(final String clan) {
         try {
             return Clan.dao.idExists(clan);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    /**
+     * Gets clan's rank by given alias.
+     * <p>
+     * If rank with given alias doesn't exists it
+     * will return <tt>null</tt>.
+     *
+     * @param   alias   Rank's alias.
+     * @return {@link Rank} instance or <tt>null</tt>.
+     */
+    public Rank getRankByAlias(final String alias) {
+        for (Rank rank : ranks)
+            if (rank.getAlias().equals(alias))
+                return rank;
+
+        return null;
+    }
+
+    /**
+     * Adds given {@link Rank} instance to clan.
+     *
+     * @param   rank    {@link Rank} instance to add.
+     * @return <tt>true</tt> if rank added successfully.
+     */
+    public boolean addRank(final Rank rank) {
+        return getRanks().add(rank);
+    }
+
+    /**
+     * Adds new member into clan.
+     *
+     * @param   newMember   New member to add.
+     * @return <tt>true</tt> if player added successfully.
+     */
+    public boolean addMember(final ClanPlayer newMember) {
+        return getMembers().add(newMember);
     }
 
     @Override public boolean create() {
@@ -179,5 +228,15 @@ public final class Clan implements Storagable {
     /** Sets createdAt */
     public void setCreatedAt(final Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    /** @return the ranks */
+    public Collection<Rank> getRanks() {
+        return ranks;
+    }
+
+    /** Sets ranks */
+    public void setRanks(final Collection<Rank> ranks) {
+        this.ranks = ranks;
     }
 }

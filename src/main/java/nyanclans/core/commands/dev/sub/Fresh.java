@@ -32,7 +32,7 @@ import nyanclans.storage.yaml.db.DatabaseConnector;
 import nyanclans.storage.yaml.messages.MessagesManager;
 
 /** @author NyanGuyMF */
-public final class Fresh extends SubCommandManager<CommandSender, String> {
+public final class Fresh extends SubCommandManager<String> {
     private final DatabaseConnector databaseConnector;
     private MessagesManager messages;
 
@@ -50,8 +50,7 @@ public final class Fresh extends SubCommandManager<CommandSender, String> {
 
     @Override
     public boolean execute(
-        final CommandSender performer, final String command,
-        final String[] args
+        final CommandSender performer, final String[] args
     ) {
         if (args.length == 0)
             return super.sendUsage(performer);
@@ -62,18 +61,17 @@ public final class Fresh extends SubCommandManager<CommandSender, String> {
         if (!super.hasSubCommand(subCommand))
             return super.sendUsage(performer);
 
-        return super.getSubCommand(subCommand).execute(performer, subCommand, subCommandArgs);
+        return super.getSubCommand(subCommand).execute(performer, subCommandArgs);
     }
 
-    private final class AllCommand extends SubCommand<CommandSender, String> {
+    private final class AllCommand extends SubCommand<String> {
         public AllCommand(final String usage) {
             super("all", "nyanclans.dev.fresh.all", usage);
         }
 
         @Override
         public boolean execute(
-            final CommandSender performer, final String command,
-            final String[] args
+            final CommandSender performer, final String[] args
         ) {
             boolean isAllFreshed =
                         freshTable("Clan", databaseConnector.getClanDao(), performer)

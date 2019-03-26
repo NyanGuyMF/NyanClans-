@@ -21,7 +21,10 @@ import java.io.IOException;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import nyanclans.core.commands.clan.ClanCommand;
 import nyanclans.core.commands.dev.DeveloperCommand;
+import nyanclans.core.rank.RankBuildDirector;
+import nyanclans.storage.yaml.PluginConfiguration;
 import nyanclans.storage.yaml.db.DatabaseConnector;
 import nyanclans.storage.yaml.messages.MessagesManager;
 import nyanclans.utils.PluginUtils;
@@ -32,6 +35,7 @@ public final class NyanClansPlugin extends JavaPlugin {
     private DatabaseConnector databaseConnector;
     private DependencyManager dependencyManager;
     private MessagesManager messagesConfig;
+    private PluginConfiguration config;
 
     public NyanClansPlugin() {}
 
@@ -69,6 +73,7 @@ public final class NyanClansPlugin extends JavaPlugin {
     /** Registers all plug-in commands. */
     private void registerCommands() {
         new DeveloperCommand(messagesConfig, databaseConnector).register(this);
+        new ClanCommand(messagesConfig, config).register(this);
     }
 
     /**
@@ -97,6 +102,9 @@ public final class NyanClansPlugin extends JavaPlugin {
         }
 
         messagesConfig = loadMessagesYaml(pluginFolder);
+        config         = loadPluginConfig(pluginFolder);
+
+        RankBuildDirector.setConfig(config.getRanks());
     }
 
     /**
@@ -125,6 +133,22 @@ public final class NyanClansPlugin extends JavaPlugin {
             config.saveAndLoad();
         } else {
             config = new MessagesManager(pluginFolder);
+            config.loadAndSave();
+        }
+
+        return config;
+    }
+
+    /** The same as {@link #loadMessagesYaml(File)}. */
+    private PluginConfiguration loadPluginConfig(final File pluginFolder) {
+        File configFile = new File(pluginFolder, "config.yml");
+        PluginConfiguration config;
+
+        if (!configFile.exists()) {
+            config = new PluginConfiguration(pluginFolder);
+            config.saveAndLoad();
+        } else {
+            config = new PluginConfiguration(pluginFolder);
             config.loadAndSave();
         }
 

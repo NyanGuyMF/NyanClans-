@@ -28,6 +28,10 @@ import nyanclans.core.clan.Clan;
 class BaseRankBuilder implements RankBuilder {
     private Rank rank;
 
+    public BaseRankBuilder() {
+        rank = new Rank();
+    }
+
     @Override public BaseRankBuilder permissions(final RankPermission... permissions) {
         // I wanted to set it parallel, but Java API here isn't synchronized/violate
         Arrays.stream(permissions)

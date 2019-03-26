@@ -22,7 +22,7 @@ import nyanclans.core.commands.SubCommand;
 import nyanclans.storage.yaml.messages.MessagesManager;
 
 /** @author NyanGuyMF */
-public final class Reload extends SubCommand<CommandSender, String> {
+public final class Reload extends SubCommand<String> {
     private MessagesManager messages;
 
     public Reload(final MessagesManager messages) {
@@ -35,7 +35,7 @@ public final class Reload extends SubCommand<CommandSender, String> {
     }
 
     @Override
-    public boolean execute(final CommandSender sender, final String command, final String[] args) {
+    public boolean execute(final CommandSender sender, final String[] args) {
         if (!hasPermission(sender)) {
             sender.sendMessage(messages.error("no-permission"));
             return true;

@@ -23,7 +23,7 @@ import nyanclans.storage.yaml.messages.MessagesManager;
 import nyanclans.utils.Observer;
 
 /** @author nyanguymf */
-public final class PlayerInfo extends SubCommand<CommandSender, String> implements Observer<MessagesManager> {
+public final class PlayerInfo extends SubCommand<String> implements Observer<MessagesManager> {
 
     public PlayerInfo(final MessagesManager messages) {
         super(
@@ -34,7 +34,7 @@ public final class PlayerInfo extends SubCommand<CommandSender, String> implemen
     }
 
     @Override
-    public boolean execute(final CommandSender sender, final String command, final String[] args) {
+    public boolean execute(final CommandSender sender, final String[] args) {
         sender.sendMessage("Not implemented yet");
         return true;
     }

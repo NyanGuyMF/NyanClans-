@@ -34,7 +34,7 @@ import nyanclans.storage.yaml.messages.MessagesManager;
 
 /** @author NyanGuyMF */
 public final class DeveloperCommand
-        extends BaseCommandManager<CommandSender, String>
+        extends BaseCommandManager<String>
         implements CommandExecutor {
     private final DatabaseConnector databaseConnector;
     private MessagesManager messages;
@@ -62,7 +62,7 @@ public final class DeveloperCommand
         final String[] subCommandArgs = Arrays.copyOfRange(args, 1, args.length);
 
         if (super.hasSubCommand(subCommand))
-            return super.getSubCommand(subCommand).execute(sender, subCommand, subCommandArgs);
+            return super.getSubCommand(subCommand).execute(sender, subCommandArgs);
 
         sender.sendMessage(messages.usage("dev", "clandev"));
         return true;

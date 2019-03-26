@@ -22,7 +22,7 @@ import nyanclans.core.commands.SubCommand;
 import nyanclans.storage.yaml.messages.MessagesManager;
 
 /** @author nyanguymf */
-public final class Help extends SubCommand<CommandSender, String> {
+public final class Help extends SubCommand<String> {
     private MessagesManager messages;
 
     public Help(final MessagesManager messages) {
@@ -35,7 +35,7 @@ public final class Help extends SubCommand<CommandSender, String> {
     }
 
     @Override
-    public boolean execute(final CommandSender sender, final String command, final String[] args) {
+    public boolean execute(final CommandSender sender, final String[] args) {
         if (!hasPermission(sender)) {
             sender.sendMessage(messages.error("no-permission", super.getName()));
             return true;

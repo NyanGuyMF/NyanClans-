@@ -19,7 +19,6 @@ package nyanclans.storage.yaml;
 import java.io.File;
 
 import de.exlll.configlib.annotation.Comment;
-import de.exlll.configlib.annotation.ElementType;
 import de.exlll.configlib.configs.yaml.BukkitYamlConfiguration;
 
 /** @author NyanGuyMF - Vasiliy Bely */
@@ -31,11 +30,13 @@ public final class PluginConfiguration extends BukkitYamlConfiguration {
     @Comment("Regular expression for clan name. Set 'none' if it doesn't need.")
     private String clanNameRegex = "none";
 
-    @ElementType(RankConfig.class)
     private RankConfig ranks;
 
     public PluginConfiguration(final File pluginFolder) {
-        super(pluginFolder.toPath(), YamlFieldNameFormater.getProps());
+        super(
+            new File(pluginFolder, "config.yml").toPath(),
+            YamlFieldNameFormater.getProps()
+        );
         ranks = new RankConfig();
     }
 

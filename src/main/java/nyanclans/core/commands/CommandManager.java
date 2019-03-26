@@ -23,13 +23,13 @@ import java.util.Map;
  *
  * @author NyanGuyMF
  */
-public interface CommandManager<CommandPerformer, PermissionType> {
+public interface CommandManager<PermissionType> {
     /**
      * Adds given sub command to private {@link Map}.
      *
      * @param   subCommand  {@link SubCommand} which you want to add.
      */
-    void addSubCommand(final SubCommand<CommandPerformer, PermissionType> subCommand);
+    void addSubCommand(final SubCommand<PermissionType> subCommand);
 
     /**
      * Check does it have given sub command name.
@@ -49,5 +49,5 @@ public interface CommandManager<CommandPerformer, PermissionType> {
      * @param   subCommandName  Name of sub command which you want to get.
      * @return {@link SubCommand} or <tt>null</tt>.
      */
-    SubCommand<CommandPerformer, PermissionType> getSubCommand(final String subCommandName);
+    SubCommand<PermissionType> getSubCommand(final String subCommandName);
 }

@@ -26,6 +26,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import de.exlll.configlib.annotation.ConfigurationElement;
+import de.exlll.configlib.annotation.ElementType;
 import nyanclans.core.clan.Clan;
 import nyanclans.storage.Storagable;
 
@@ -53,6 +54,7 @@ public final class Rank implements Storagable {
     @DatabaseField(canBeNull=false)
     private String alias = "";
 
+    @ElementType(RankPermission.class)
     private Collection<RankPermission> permissions = new HashSet<>();
 
     /**
@@ -73,7 +75,7 @@ public final class Rank implements Storagable {
     }
 
     public static void initDao(final Dao<Rank, Integer> dao) {
-        if (Rank.dao != null) {
+        if (Rank.dao == null) {
             Rank.dao = dao;
         }
     }

@@ -16,18 +16,17 @@
  */
 package nyanclans.storage.yaml;
 
-import static nyanclans.core.rank.RankPermission.ALL;
-import static nyanclans.core.rank.RankPermission.BROADCAST;
-import static nyanclans.core.rank.RankPermission.CHAT;
-import static nyanclans.core.rank.RankPermission.DEPOSIT;
-import static nyanclans.core.rank.RankPermission.HOME_TP;
-import static nyanclans.core.rank.RankPermission.INVITE;
-import static nyanclans.core.rank.RankPermission.KICK;
-import static nyanclans.core.rank.RankPermission.KICK_BYPASS;
-import static nyanclans.core.rank.RankPermission.KICK_EXEMPT;
+import static nyanclans.core.rank.RankPermission.all;
+import static nyanclans.core.rank.RankPermission.broadcast;
+import static nyanclans.core.rank.RankPermission.chat;
+import static nyanclans.core.rank.RankPermission.deposit;
+import static nyanclans.core.rank.RankPermission.home_tp;
+import static nyanclans.core.rank.RankPermission.invite;
+import static nyanclans.core.rank.RankPermission.kick;
+import static nyanclans.core.rank.RankPermission.kick_bypass;
+import static nyanclans.core.rank.RankPermission.kick_exempt;
 
 import de.exlll.configlib.annotation.ConfigurationElement;
-import de.exlll.configlib.annotation.ElementType;
 import nyanclans.core.rank.Rank;
 import nyanclans.core.rank.RankBuildDirector;
 import nyanclans.core.rank.RankBuildDirector.RankTemplate;
@@ -38,36 +37,33 @@ public final class RankConfig {
     private int rankNameMaxLength = 16;
     private int rankNameMinLength = 3;
 
-    @ElementType(Rank.class)
     private Rank leader;
 
-    @ElementType(Rank.class)
     private Rank player;
 
-    @ElementType(Rank.class)
     private Rank moder;
 
     public RankConfig() {
         leader = RankBuildDirector.getBuilder(RankTemplate.CUSTOM)
                 .alias("leader")
                 .name("&6Leader")
-                .permissions(ALL)
+                .permissions(all)
                 .build();
         moder = RankBuildDirector.getBuilder(RankTemplate.CUSTOM)
                 .alias("leader")
                 .name("&6Leader")
                 .permissions(
-                    KICK,           INVITE,
-                    KICK_EXEMPT,    KICK_BYPASS,
-                    DEPOSIT,        HOME_TP,
-                    BROADCAST,      CHAT
+                    kick,           invite,
+                    kick_exempt,    kick_bypass,
+                    deposit,        home_tp,
+                    broadcast,      chat
                 )
                 .build();
         player = RankBuildDirector.getBuilder(RankTemplate.CUSTOM)
                 .alias("leader")
                 .name("&6Leader")
                 .permissions(
-                    DEPOSIT,    HOME_TP,    CHAT
+                    deposit,    home_tp,    chat
                 )
                 .build();
     }
