@@ -16,19 +16,18 @@
  */
 package nyanclans.storage.yaml;
 
+import de.exlll.configlib.configs.yaml.BukkitYamlConfiguration.BukkitYamlProperties;
 import de.exlll.configlib.format.FieldNameFormatter;
 
 /**
- * Singleon pattern.
+ * Singleton pattern.
  *
  * @author NyanGuyMF
  */
 public final class YamlFieldNameFormater implements FieldNameFormatter {
-    private static YamlFieldNameFormater instance;
+    private static BukkitYamlProperties props;
 
-    private YamlFieldNameFormater() {
-        YamlFieldNameFormater.instance = this;
-    }
+    private YamlFieldNameFormater() {}
 
     /**
      * Sets "-" between lower and upper case chars and
@@ -55,10 +54,22 @@ public final class YamlFieldNameFormater implements FieldNameFormatter {
         return builder.toString();
     }
 
-    public static YamlFieldNameFormater getInstance() {
-        if (YamlFieldNameFormater.instance != null)
-            return YamlFieldNameFormater.instance;
-        return
-            new YamlFieldNameFormater();
+    public static FieldNameFormatter getInstance() {
+        if (YamlFieldNameFormater.props != null)
+            return YamlFieldNameFormater.props.getFormatter();
+
+        return getProps().getFormatter();
+    }
+
+    public static BukkitYamlProperties getProps() {
+        if (YamlFieldNameFormater.props != null)
+            return YamlFieldNameFormater.props;
+
+        YamlFieldNameFormater.props = BukkitYamlProperties.builder()
+                .addFilter(fn -> !fn.getName().startsWith("ignore"))
+                .setFormatter(new YamlFieldNameFormater())
+                .build();
+
+        return YamlFieldNameFormater.props;
     }
 }

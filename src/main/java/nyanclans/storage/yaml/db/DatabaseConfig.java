@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
-package nyanclans.storage.yaml;
+package nyanclans.storage.yaml.db;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import de.exlll.configlib.annotation.Comment;
 import de.exlll.configlib.configs.yaml.BukkitYamlConfiguration;
+import nyanclans.storage.yaml.YamlFieldNameFormater;
 
 /** @author nyanguymf */
 public final class DatabaseConfig extends BukkitYamlConfiguration {
@@ -51,9 +52,7 @@ public final class DatabaseConfig extends BukkitYamlConfiguration {
     public DatabaseConfig(final File pluginFolder) {
         super(
             new File(pluginFolder, "database.yml").toPath(),
-            BukkitYamlProperties.builder()
-                .setFormatter(YamlFieldNameFormater.getInstance())
-                .build()
+            YamlFieldNameFormater.getProps()
         );
     }
 

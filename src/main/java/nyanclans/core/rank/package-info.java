@@ -8,16 +8,15 @@
  *
  * NyanClans is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
 /**
- * Contains YAML configuration files: database.yml as
- * {@link nyanclans.storage.yaml.db.DatabaseConfig}
+ * Provides all {@link Rank} classes and utilities.
  *
- * @author nyanguymf
+ * @author NyanGuyMF - Vasiliy Bely
  */
-package nyanclans.storage.yaml;
+package nyanclans.core.rank;

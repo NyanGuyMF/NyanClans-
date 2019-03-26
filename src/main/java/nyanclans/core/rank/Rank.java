@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
-package nyanclans.core.clan;
+package nyanclans.core.rank;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -25,6 +25,8 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import de.exlll.configlib.annotation.ConfigurationElement;
+import nyanclans.core.clan.Clan;
 import nyanclans.storage.Storagable;
 
 /*
@@ -34,23 +36,41 @@ import nyanclans.storage.Storagable;
  */
 
 /** @author NyanGuyMF */
+@ConfigurationElement
 @DatabaseTable(tableName="ranks")
 public final class Rank implements Storagable {
     private static Dao<Rank, Integer> dao;
 
-    @DatabaseField(generatedId=true)
-    private int id;
+    @DatabaseField(generatedId=true, columnName="id")
+    private int ignoreId;
 
-    @DatabaseField(foreign=true, foreignAutoRefresh=true)
-    private Clan clan;
-
-    @DatabaseField(canBeNull=false)
-    private String name;
+    @DatabaseField(foreign=true, foreignAutoRefresh=true, columnName="clan")
+    private Clan ignoreClan;
 
     @DatabaseField(canBeNull=false)
-    private String alias;
+    private String name = "";
+
+    @DatabaseField(canBeNull=false)
+    private String alias = "";
 
     private Collection<RankPermission> permissions = new HashSet<>();
+
+    /**
+     * Creates copy of given {@link Rank} instance.
+     *
+     * @param   rank    {@link Rank} instance to copy.
+     */
+    protected static Rank copyOf(final Rank rank) {
+        Rank copy = new Rank();
+
+        copy.ignoreId    = rank.ignoreId;
+        copy.ignoreClan  = rank.ignoreClan;
+        copy.name        = rank.name;
+        copy.alias       = rank.alias;
+        copy.permissions = rank.permissions;
+
+        return copy;
+    }
 
     public static void initDao(final Dao<Rank, Integer> dao) {
         if (Rank.dao != null) {
@@ -119,22 +139,22 @@ public final class Rank implements Storagable {
 
     /** Gets id */
     public int getId() {
-        return id;
+        return ignoreId;
     }
 
     /** Sets id */
     public void setId(final int id) {
-        this.id = id;
+        ignoreId = id;
     }
 
     /** Gets clan */
     public Clan getClan() {
-        return clan;
+        return ignoreClan;
     }
 
     /** Sets clan */
     public void setClan(final Clan clan) {
-        this.clan = clan;
+        ignoreClan = clan;
     }
 
     /** Gets name */

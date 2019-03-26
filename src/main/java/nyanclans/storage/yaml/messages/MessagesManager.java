@@ -82,6 +82,9 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
             .put("no-permission", "&cYou have no permission for &6{0} &ccommand.")
             .put("only-player", "&cOnly players can use «&6{0}&c» command.")
             .put("fresh-table", "&cCouldn't fresh table «&6{0}&c».")
+            .put("invalid-clan-name", "&cYou've entered invalid clan name - «&6{0}&c».")
+            .put("clan-already-exists", "&cClan with name «&6&c» already exists.")
+            .put("you-already-in-clan", "&cYou're already in clan.")
             .build();
 
     /**
@@ -100,10 +103,7 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
     public MessagesManager(final File pluginFolder) {
         super(
             new File(pluginFolder, "messages.yml").toPath(),
-            BukkitYamlProperties.builder()
-                .addFilter(fn -> !fn.getName().startsWith("ignore"))
-                .setFormatter(YamlFieldNameFormater.getInstance())
-                .build()
+            YamlFieldNameFormater.getProps()
         );
 
         usage.put(

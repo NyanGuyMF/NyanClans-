@@ -28,9 +28,8 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 
 import nyanclans.core.clan.Clan;
-import nyanclans.core.clan.Rank;
 import nyanclans.core.player.ClanPlayer;
-import nyanclans.storage.yaml.DatabaseConfig;
+import nyanclans.core.rank.Rank;
 import nyanclans.utils.dependency.DatabaseDriver;
 import nyanclans.utils.dependency.DependencyManager;
 
