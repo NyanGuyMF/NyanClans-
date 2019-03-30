@@ -69,5 +69,6 @@ public final class ClanCommand
 
     public void register(final JavaPlugin plugin) {
         plugin.getCommand("clan").setExecutor(this);
+        plugin.getCommand("clan").setTabCompleter(new ClanCompleter());
     }
 }
