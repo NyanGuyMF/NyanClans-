@@ -86,7 +86,7 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
             .put("only-player", "&cOnly players can use «&6{0}&c» command.")
             .put("fresh-table", "&cCouldn't fresh table «&6{0}&c».")
             .put("invalid-clan-name", "&cYou've entered invalid clan name - «&6{0}&c».")
-            .put("clan-already-exists", "&cClan with name «&6&c» already exists.")
+            .put("clan-already-exists", "&cClan with name «&6{0}&c» already exists.")
             .put("you-already-in-clan", "&cYou're already in clan.")
             .put("clan-create-error", "&6«&e{0}&6» &eCouldn't create clan.")
             .put("rank-create-error", "&6«&e{0}&6» &eCouldn't create rank &6«&c{1}&6»&e.")
