@@ -29,6 +29,12 @@ public final class ClanConfig {
     @Comment("Regular expression for clan name. Set 'none' if it doesn't need.")
     private String clanNameRegex = "none";
 
+    @Comment({
+        "Will be replaced instead of {clan} and {clan-colored} placeholders in chat."
+        , "You can use {clan-name} placeholder in it to set clan name (both colored and not)."
+    })
+    private String clanPlaceholderFormat = "&6«&e{clan-name}&6» ";
+
     /** @return the minClanNameLength */
     public int getMinClanNameLength() {
         return minClanNameLength;
@@ -57,5 +63,15 @@ public final class ClanConfig {
     /** Sets clanNameRegex */
     public void setClanNameRegex(final String clanNameRegex) {
         this.clanNameRegex = clanNameRegex;
+    }
+
+    /** @return the clanPlaceholderFormat */
+    public String getClanPlaceholderFormat() {
+        return clanPlaceholderFormat;
+    }
+
+    /** Sets clanPlaceholderFormat */
+    public void setClanPlaceholderFormat(String clanPlaceholderFormat) {
+        this.clanPlaceholderFormat = clanPlaceholderFormat;
     }
 }
