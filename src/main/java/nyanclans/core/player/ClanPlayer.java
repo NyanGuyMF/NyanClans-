@@ -74,10 +74,12 @@ public class ClanPlayer implements Storagable, Rankable<Rank, RankPermission> {
         return getClan() != null;
     }
 
-    @Override
-    public boolean hasPermission(final RankPermission permission) {
+    @Override public boolean hasPermission(final RankPermission permission) {
         if (rank == null)
             return false;
+
+        if (rank.getPermissions().contains(RankPermission.all))
+            return true;
 
         for (RankPermission perm : rank.getPermissions())
             if (perm.equals(permission))

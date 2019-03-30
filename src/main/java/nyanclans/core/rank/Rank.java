@@ -17,11 +17,12 @@
 package nyanclans.core.rank;
 
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import com.google.common.collect.ImmutableMap;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -55,7 +56,10 @@ public final class Rank implements Storagable {
     private String alias = "";
 
     @ElementType(RankPermission.class)
-    private Collection<RankPermission> permissions = new HashSet<>();
+    @DatabaseField(dataType=DataType.SERIALIZABLE)
+    private HashSet<RankPermission> permissions = new HashSet<>();
+
+    public Rank() {}
 
     /**
      * Creates copy of given {@link Rank} instance.
@@ -180,12 +184,12 @@ public final class Rank implements Storagable {
     }
 
     /** @return the permissions */
-    public Collection<RankPermission> getPermissions() {
+    public Set<RankPermission> getPermissions() {
         return permissions;
     }
 
     /** Sets permissions */
-    public void setPermissions(final Collection<RankPermission> permissions) {
+    public void setPermissions(final HashSet<RankPermission> permissions) {
         this.permissions = permissions;
     }
 }

@@ -25,6 +25,9 @@ public enum RankPermission {
        -------- */
     all,
 
+    /** Allows to delete rank. */
+    delete,
+
     /** Allows to kick players from clan. */
     kick,
 
@@ -67,4 +70,6 @@ public enum RankPermission {
     rank_set,
 
     rank_create;
+
+    RankPermission() {}
 }

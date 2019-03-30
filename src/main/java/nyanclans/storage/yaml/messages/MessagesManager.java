@@ -77,10 +77,12 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
             .put("reload-success", "&3NyanClans &8» &aMessage configuration has been reloaded.")
             .put("fresh-success", "&3NyanClans &8» &6«&b{0}&6» &afreshed successfully.")
             .put("clan-created", "&6«&e{0}&6» &eClan created.")
+            .put("clan-deleted", "&6«&e{0}&6» &c{1} &ehas deleted clan.")
             .build();
 
     private final Map<String, String> error = ImmutableMap.<String,String>builder()
             .put("no-permission", "&cYou have no permission for &6{0} &ccommand.")
+            .put("not-clan-member", "&cYou're not clan member.")
             .put("only-player", "&cOnly players can use «&6{0}&c» command.")
             .put("fresh-table", "&cCouldn't fresh table «&6{0}&c».")
             .put("invalid-clan-name", "&cYou've entered invalid clan name - «&6{0}&c».")
