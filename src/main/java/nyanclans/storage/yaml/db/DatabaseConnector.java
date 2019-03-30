@@ -243,7 +243,7 @@ public final class DatabaseConnector {
      * @return <tt>true</tt> if all tables was created successfully.
      */
     public boolean createTables() {
-        boolean isAllConnected = true;
+        boolean isAllCreated = true;
 
         try {
             if (!getPlayerDao().isTableExists()) {
@@ -251,8 +251,8 @@ public final class DatabaseConnector {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            if (isAllConnected) {
-                isAllConnected = false;
+            if (isAllCreated) {
+                isAllCreated = false;
             }
         }
 
@@ -262,8 +262,8 @@ public final class DatabaseConnector {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            if (isAllConnected) {
-                isAllConnected = false;
+            if (isAllCreated) {
+                isAllCreated = false;
             }
         }
 
@@ -273,12 +273,12 @@ public final class DatabaseConnector {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            if (isAllConnected) {
-                isAllConnected = false;
+            if (isAllCreated) {
+                isAllCreated = false;
             }
         }
 
-        return isAllConnected;
+        return isAllCreated;
     }
 
     /**
