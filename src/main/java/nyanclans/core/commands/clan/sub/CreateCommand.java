@@ -111,13 +111,15 @@ public final class CreateCommand extends SubCommand<RankPermission> {
         }
 
         // Ranks and clan are successfully created, now lets setup leader and members
-        leader.setRank(leaderRank);
-        leader.save();
         clan.addRank(leaderRank);
         clan.addRank(playerRank);
         clan.addRank(moderRank);
         clan.addMember(leader);
         clan.save();
+
+        leader.setRank(leaderRank);
+        leader.setClan(clan);
+        leader.save();
 
         // All done successfully, notify player about it
         performer.sendMessage(messages.info("clan-created", clan.getName()));
