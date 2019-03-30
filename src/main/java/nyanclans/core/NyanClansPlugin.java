@@ -25,6 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import nyanclans.core.commands.clan.ClanCommand;
 import nyanclans.core.commands.dev.DeveloperCommand;
+import nyanclans.core.events.ChatMessageHandler;
 import nyanclans.core.events.PlayerJoinHandler;
 import nyanclans.core.player.ClanPlayer;
 import nyanclans.core.rank.RankBuildDirector;
@@ -93,6 +94,7 @@ public final class NyanClansPlugin extends JavaPlugin {
 
     private void registerListeners() {
         new PlayerJoinHandler().register(this);
+        new ChatMessageHandler(config.getClans()).register(this);
     }
 
     /**
