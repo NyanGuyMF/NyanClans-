@@ -18,18 +18,11 @@ package nyanclans.storage.yaml;
 
 import java.io.File;
 
-import de.exlll.configlib.annotation.Comment;
 import de.exlll.configlib.configs.yaml.BukkitYamlConfiguration;
 
 /** @author NyanGuyMF - Vasiliy Bely */
 public final class PluginConfiguration extends BukkitYamlConfiguration {
-    private int minClanNameLength = 3;
-
-    private int maxClanNameLength = 24;
-
-    @Comment("Regular expression for clan name. Set 'none' if it doesn't need.")
-    private String clanNameRegex = "none";
-
+    private ClanConfig clans;
     private RankConfig ranks;
 
     public PluginConfiguration(final File pluginFolder) {
@@ -37,6 +30,7 @@ public final class PluginConfiguration extends BukkitYamlConfiguration {
             new File(pluginFolder, "config.yml").toPath(),
             YamlFieldNameFormater.getProps()
         );
+        setClans(new ClanConfig());
         ranks = new RankConfig();
     }
 
@@ -45,34 +39,14 @@ public final class PluginConfiguration extends BukkitYamlConfiguration {
         super.load();
     }
 
-    /** @return the minClanNameLength */
-    public int getMinClanNameLength() {
-        return minClanNameLength;
+    /** @return the clans */
+    public ClanConfig getClans() {
+        return clans;
     }
 
-    /** Sets minClanNameLength */
-    public void setMinClanNameLength(final int minClanNameLength) {
-        this.minClanNameLength = minClanNameLength;
-    }
-
-    /** @return the maxClanNameLength */
-    public int getMaxClanNameLength() {
-        return maxClanNameLength;
-    }
-
-    /** Sets maxClanNameLength */
-    public void setMaxClanNameLength(final int maxClanNameLength) {
-        this.maxClanNameLength = maxClanNameLength;
-    }
-
-    /** @return the clanNameRegex */
-    public String getClanNameRegex() {
-        return clanNameRegex;
-    }
-
-    /** Sets clanNameRegex */
-    public void setClanNameRegex(final String clanNameRegex) {
-        this.clanNameRegex = clanNameRegex;
+    /** Sets clans */
+    public void setClans(final ClanConfig clans) {
+        this.clans = clans;
     }
 
     /** @return the ranks */
