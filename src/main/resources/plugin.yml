@@ -10,4 +10,8 @@ commands:
   clandev:
     description: 'Developer command'
   clan:
+    aliases: ['c']
     description: 'Main clans command'
+  clanchat:
+    aliases: ['cc']
+    description: 'Sends message to clan chat'
