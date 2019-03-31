@@ -31,8 +31,8 @@ import nyanclans.core.player.ClanPlayer;
 import nyanclans.core.rank.Rank;
 import nyanclans.core.rank.RankBuildDirector;
 import nyanclans.core.rank.RankPermission;
-import nyanclans.storage.yaml.ClanConfig;
 import nyanclans.storage.yaml.PluginConfiguration;
+import nyanclans.storage.yaml.clan.ClanConfig;
 import nyanclans.storage.yaml.messages.MessagesManager;
 
 /** @author NyanGuyMF - Vasiliy Bely */

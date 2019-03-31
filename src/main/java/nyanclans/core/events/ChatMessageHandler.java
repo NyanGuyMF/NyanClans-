@@ -25,7 +25,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import nyanclans.core.player.ClanPlayer;
-import nyanclans.storage.yaml.ClanConfig;
+import nyanclans.storage.yaml.clan.ClanConfig;
 
 /** @author NyanGuyMF - Vasiliy Bely */
 public final class ChatMessageHandler implements Listener {

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with NyanClans. If not, see <https://www.gnu.org/licenses/>.
  */
-package nyanclans.storage.yaml;
+package nyanclans.storage.yaml.clan;
 
 import de.exlll.configlib.annotation.Comment;
 import de.exlll.configlib.annotation.ConfigurationElement;
@@ -22,6 +22,8 @@ import de.exlll.configlib.annotation.ConfigurationElement;
 /** @author NyanGuyMF - Vasiliy Bely */
 @ConfigurationElement
 public final class ClanConfig {
+    private ClanChatConfig chat;
+
     private int minClanNameLength = 3;
 
     private int maxClanNameLength = 24;
@@ -34,6 +36,20 @@ public final class ClanConfig {
         , "You can use {clan-name} placeholder in it to set clan name (both colored and not)."
     })
     private String clanPlaceholderFormat = "&6«&e{clan-name}&6» ";
+
+    public ClanConfig() {
+        setChat(new ClanChatConfig());
+    }
+
+    /** @return the chat */
+    public ClanChatConfig getChat() {
+        return chat;
+    }
+
+    /** Sets chat */
+    public void setChat(ClanChatConfig chat) {
+        this.chat = chat;
+    }
 
     /** @return the minClanNameLength */
     public int getMinClanNameLength() {
@@ -71,7 +87,7 @@ public final class ClanConfig {
     }
 
     /** Sets clanPlaceholderFormat */
-    public void setClanPlaceholderFormat(String clanPlaceholderFormat) {
+    public void setClanPlaceholderFormat(final String clanPlaceholderFormat) {
         this.clanPlaceholderFormat = clanPlaceholderFormat;
     }
 }

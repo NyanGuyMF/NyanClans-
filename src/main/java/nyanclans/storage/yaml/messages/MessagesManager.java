@@ -127,6 +127,12 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
                 .put("delete", "&e/clan delete")
                 .build()
         );
+        usage.put(
+            "clanchat",
+            ImmutableMap.<String, String>builder()
+                .put("clanchat", "&eEnter &6{0} &6«&cmessage&6» &e or &6/cc &6«&cmessage&6»")
+                .build()
+        );
 
         help.put(
             "dev",

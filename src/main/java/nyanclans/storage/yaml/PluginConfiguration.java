@@ -19,6 +19,7 @@ package nyanclans.storage.yaml;
 import java.io.File;
 
 import de.exlll.configlib.configs.yaml.BukkitYamlConfiguration;
+import nyanclans.storage.yaml.clan.ClanConfig;
 
 /** @author NyanGuyMF - Vasiliy Bely */
 public final class PluginConfiguration extends BukkitYamlConfiguration {

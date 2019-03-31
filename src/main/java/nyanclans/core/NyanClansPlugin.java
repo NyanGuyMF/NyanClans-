@@ -23,8 +23,10 @@ import java.util.Date;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import nyanclans.core.commands.clan.ClanChatCommand;
 import nyanclans.core.commands.clan.ClanCommand;
 import nyanclans.core.commands.dev.DeveloperCommand;
+import nyanclans.core.events.AsyncClanChatMessageEvent;
 import nyanclans.core.events.ChatMessageHandler;
 import nyanclans.core.events.PlayerJoinHandler;
 import nyanclans.core.player.ClanPlayer;
@@ -68,6 +70,7 @@ public final class NyanClansPlugin extends JavaPlugin {
         if (!PluginUtils.isInitialized()) {
             PluginUtils.init(this);
         }
+        AsyncClanChatMessageEvent.init(config.getClans().getChat());
 
         registerCommands();
         registerListeners();
@@ -90,6 +93,7 @@ public final class NyanClansPlugin extends JavaPlugin {
     private void registerCommands() {
         new DeveloperCommand(messagesConfig, databaseConnector).register(this);
         new ClanCommand(messagesConfig, config).register(this);
+        new ClanChatCommand(messagesConfig, config.getClans()).register(this);
     }
 
     private void registerListeners() {

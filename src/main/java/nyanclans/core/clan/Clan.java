@@ -19,12 +19,17 @@ package nyanclans.core.clan;
 import static java.util.Objects.hash;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DataType;
@@ -79,6 +84,32 @@ public final class Clan implements Storagable {
             e.printStackTrace();
             return false;
         }
+    }
+
+    /**
+     * Converts members list into online players.
+     * <p>
+     * Returns empty list if there are no online member
+     * in clan.
+     *
+     * @return List of clan online members.
+     */
+    public List<Player> getOnlineMembers() {
+        List<Player> online = new ArrayList<>();
+
+        if (Bukkit.getOnlinePlayers().size() == 0)
+            return online;
+
+        for (ClanPlayer member : getMembers()) {
+            @SuppressWarnings("deprecation")
+            Player player = Bukkit.getPlayer(member.getName());
+
+            if ((player != null) && (player.isOnline())) {
+                online.add(player);
+            }
+        }
+
+        return online;
     }
 
     /**
