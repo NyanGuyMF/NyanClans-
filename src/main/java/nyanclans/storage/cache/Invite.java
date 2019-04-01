@@ -19,29 +19,65 @@ package nyanclans.storage.cache;
 import nyanclans.core.clan.Clan;
 import nyanclans.core.player.ClanPlayer;
 
-/** @author NyanGuyMF - Vasiliy Bely */
+/**
+ * Represents invite to clan from one player to another.
+ *
+ * @author NyanGuyMF - Vasiliy Bely
+ */
 public final class Invite {
-    private ClanPlayer player;
+    private ClanPlayer invitedPlayer;
+
+    private ClanPlayer inviter;
 
     private Clan clan;
 
-    /** @return the player */
-    public ClanPlayer getPlayer() {
-        return player;
+    public Invite(final ClanPlayer invitedPlayer, final ClanPlayer inviter, final Clan clan) {
+        this.invitedPlayer = invitedPlayer;
+        this.inviter = inviter;
+        this.clan = clan;
     }
 
-    /** Sets player */
-    public void setPlayer(final ClanPlayer player) {
-        this.player = player;
-    }
-
-    /** @return the clan */
-    public Clan getClan() {
+    /**
+     * Gets the clan, to which player was invited
+     * by other player.
+     *
+     * @return Clan, to which player was invited.
+     */
+    public synchronized Clan getClan() {
         return clan;
     }
 
+    /**
+     * Gets the player, who has invited other player
+     * to his clan.
+     *
+     * @return Inviter.
+     */
+    public synchronized ClanPlayer getInviter() {
+        return inviter;
+    }
+
+    /**
+     * Gets the player, who was invited.
+     *
+     * @return Invited player.
+     */
+    public synchronized ClanPlayer getInvited() {
+        return invitedPlayer;
+    }
+
     /** Sets clan */
-    public void setClan(final Clan clan) {
+    protected void setClan(final Clan clan) {
         this.clan = clan;
+    }
+
+    /** Sets inviter */
+    protected void setInviter(final ClanPlayer inviter) {
+        this.inviter = inviter;
+    }
+
+    /** Sets player */
+    protected void setPlayer(final ClanPlayer player) {
+        invitedPlayer = player;
     }
 }

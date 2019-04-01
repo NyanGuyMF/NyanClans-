@@ -90,6 +90,8 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
             .put("you-already-in-clan", "&cYou're already in clan.")
             .put("clan-create-error", "&6«&e{0}&6» &eCouldn't create clan.")
             .put("rank-create-error", "&6«&e{0}&6» &eCouldn't create rank &6«&c{1}&6»&e.")
+            .put("invited-is-other-member", "&cThe player «&6{0}&c» is already member of other clan!")
+            .put("invited-is-your-member", "&cThe player «&6{0}&c» is already member of your clan!")
             .build();
 
     /**

@@ -41,9 +41,9 @@ public final class InviteCache {
      *      <tt>null</tt> if it's first invite.
      */
     public Invite cacheInvite(final Invite invite) {
-        cachePlayer(invite.getPlayer().getName());
+        cachePlayer(invite.getInvited().getName());
 
-        return getCachedPlayer(invite.getPlayer().getName())
+        return getCachedPlayer(invite.getInvited().getName())
                 .put(invite.getClan().getName(), invite);
     }
 
