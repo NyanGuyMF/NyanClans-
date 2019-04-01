@@ -26,17 +26,15 @@ import java.util.regex.Pattern;
 import org.bukkit.command.CommandSender;
 
 import nyanclans.core.clan.Clan;
-import nyanclans.core.commands.SubCommand;
 import nyanclans.core.player.ClanPlayer;
 import nyanclans.core.rank.Rank;
 import nyanclans.core.rank.RankBuildDirector;
-import nyanclans.core.rank.RankPermission;
 import nyanclans.storage.yaml.PluginConfiguration;
 import nyanclans.storage.yaml.clan.ClanConfig;
 import nyanclans.storage.yaml.messages.MessagesManager;
 
 /** @author NyanGuyMF - Vasiliy Bely */
-public final class CreateCommand extends SubCommand<RankPermission> {
+public final class CreateCommand extends ClanSubCommand {
     private final MessagesManager messages;
     private final ClanConfig config;
 

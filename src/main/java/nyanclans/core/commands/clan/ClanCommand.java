@@ -59,8 +59,8 @@ public final class ClanCommand
             return true;
         }
 
-        final String     subCommand     = args[0].toLowerCase();
-        final String[]   subCommandArgs = Arrays.copyOfRange(args, 1, args.length);
+        final String   subCommand     = args[0].toLowerCase();
+        final String[] subCommandArgs = Arrays.copyOfRange(args, 1, args.length);
 
         if (super.hasSubCommand(subCommand))
             return super.getSubCommand(subCommand).execute(sender, subCommandArgs);

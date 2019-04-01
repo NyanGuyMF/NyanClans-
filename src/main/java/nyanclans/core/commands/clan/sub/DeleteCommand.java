@@ -21,13 +21,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import nyanclans.core.clan.Clan;
-import nyanclans.core.commands.SubCommand;
 import nyanclans.core.player.ClanPlayer;
 import nyanclans.core.rank.RankPermission;
 import nyanclans.storage.yaml.messages.MessagesManager;
 
 /** @author NyanGuyMF - Vasiliy Bely */
-public final class DeleteCommand extends SubCommand<RankPermission> {
+public final class DeleteCommand extends ClanSubCommand {
     private final MessagesManager messages;
 
     public DeleteCommand(final MessagesManager messages) {
