@@ -68,6 +68,11 @@
             <artifactId>commons-codec</artifactId>
             <version>1.5</version>
         </dependency>
+        <dependency>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-collections4</artifactId>
+          <version>4.3</version>
+        </dependency>
 	</dependencies>
 
 	<build>
@@ -95,6 +100,7 @@
                                     <include>com.j256.ormlite:ormlite-jdbc</include>
                                     <include>commons-codec:commons-codec</include>
                                     <include>me.rayzr522:jsonmessage</include>
+                                    <include>org.apache.commons:commons-collections4</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
