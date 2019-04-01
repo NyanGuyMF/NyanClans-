@@ -41,9 +41,7 @@ public final class DeleteCommand extends ClanSubCommand {
 
         // Usually its ConsoleCommandSender
         if (player == null) {
-            performer.sendMessage(messages.error(
-                    "only-player", "/clan " + super.getName()
-            ));
+            performer.sendMessage(messages.error("only-player", super.getFullName()));
             return true;
         }
 
@@ -53,9 +51,7 @@ public final class DeleteCommand extends ClanSubCommand {
         }
 
         if (!player.hasPermission(super.getPermission())) {
-            performer.sendMessage(messages.error(
-                    "no-permission", "/clan " + super.getName()
-            ));
+            performer.sendMessage(messages.error("no-permission", super.getFullName()));
             return true;
         }
 

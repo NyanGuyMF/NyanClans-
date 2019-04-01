@@ -29,9 +29,12 @@ import nyanclans.core.rank.RankPermission;
  * @author NyanGuyMF - Vasiliy Bely
  */
 public abstract class ClanSubCommand extends SubCommand<RankPermission> {
+    private String fullName;
 
     public ClanSubCommand(final String name, final RankPermission permission, final String usage) {
         super(name, permission, usage);
+
+        setFullName("/clan " + fullName);
     }
 
     @Override public final boolean hasPermission(final CommandSender sender) {
@@ -45,5 +48,15 @@ public abstract class ClanSubCommand extends SubCommand<RankPermission> {
 
     public final boolean hasPermission(final ClanPlayer player) {
         return player.hasPermission(super.getPermission());
+    }
+
+    /** @return the fullName */
+    public String getFullName() {
+        return fullName;
+    }
+
+    /** Sets fullName */
+    protected void setFullName(final String fullName) {
+        this.fullName = fullName;
     }
 }
