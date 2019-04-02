@@ -122,7 +122,6 @@ public final class InviteCache {
      * @param   clan    Specific clan, that have invited player.
      * @return Cached value or <tt>null</tt>.
      *
-     * @throws NullPointerException if player wasn't cached.
      * @see #isInviteCached(String, String)
      */
     public synchronized Invite removeCachedInvite(final String player, final String clan) {
