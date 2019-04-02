@@ -40,6 +40,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import nyanclans.core.player.ClanPlayer;
 import nyanclans.core.rank.Rank;
 import nyanclans.storage.Storagable;
+import nyanclans.storage.yaml.messages.MessagesManager;
 
 /** @author NyanGuyMF */
 @DatabaseTable(tableName = "clans")
@@ -53,6 +54,8 @@ public final class Clan implements Storagable {
     protected ClanPlayer leader;
 
     @Column private double balance = 0.0;
+
+    @Column private double rating = 0.0;
 
     @ForeignCollectionField
     private Collection<ClanPlayer> members = new HashSet<>();
@@ -211,6 +214,11 @@ public final class Clan implements Storagable {
         return Objects.equals(name, other.name);
     }
 
+    /** Gets name and translates colors. */
+    public String getColoredName() {
+        return MessagesManager.colored(getName());
+    }
+
     /** Gets name */
     public String getName() {
         return name;
@@ -239,6 +247,16 @@ public final class Clan implements Storagable {
     /** Sets balance */
     public void setBalance(final double balance) {
         this.balance = balance;
+    }
+
+    /** @return the rating */
+    public double getRating() {
+        return rating;
+    }
+
+    /** Sets rating */
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     /** Gets members */
