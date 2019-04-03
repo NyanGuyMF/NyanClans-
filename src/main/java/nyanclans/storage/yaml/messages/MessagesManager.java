@@ -127,6 +127,9 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
                 .put("clan", "&eEnter &c/clan help &efor help")
                 .put("create", "&e/clan create &6«&cclan name&6»")
                 .put("delete", "&e/clan delete")
+                .put("invite", "&e/clan invite &6«&cplayer&c»")
+                .put("accept", "&e/clan accept &6[&cclan&6]")
+                .put("deny", "&e/clan deny &6[&cclan&6]")
                 .build()
         );
         usage.put(
@@ -144,12 +147,14 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
                 .put("help", "&e/clandev help &f- this menu")
                 .build()
         );
-
         help.put(
             "clan",
             ImmutableMap.<String, String>builder()
                 .put("create", "&e/clan create &6«&cclan name&6» &f- create new clan")
                 .put("delete", "&e/clan delete &f- delete your clan")
+                .put("invite", "&e/clan invite &6«&cplayer&c» &f- invite player to your clan")
+                .put("accept", "&e/clan accept &6[&cclan&6] &f- accept last or specific clan invite")
+                .put("deny", "&e/clan deny &6[&cclan&6] &f- deny last or specific clan invite")
                 .build()
         );
     }
