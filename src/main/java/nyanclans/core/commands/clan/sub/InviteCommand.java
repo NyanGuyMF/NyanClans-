@@ -28,17 +28,18 @@ import java.nio.file.Files;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.EnumWrappers.ChatType;
 
+import nyanclans.core.NyanClansPlugin;
 import nyanclans.core.events.ReloadEvent;
 import nyanclans.core.player.ClanPlayer;
 import nyanclans.core.rank.RankPermission;
 import nyanclans.storage.cache.Invite;
 import nyanclans.storage.cache.InviteCache;
+import nyanclans.storage.yaml.clan.ClanConfig;
 import nyanclans.storage.yaml.messages.MessagesManager;
 import nyanclans.utils.Observer;
 import nyanclans.utils.PluginUtils;
@@ -46,18 +47,20 @@ import nyanclans.utils.PluginUtils;
 /** @author NyanGuyMF - Vasiliy Bely */
 public final class InviteCommand extends ClanSubCommand implements Observer<ReloadEvent> {
     private final MessagesManager messages;
+    private final ClanConfig clanConfig;
     private final InviteCache inviteCache;
     private String inviteMessageFormat;
 
-    public InviteCommand(final MessagesManager messages, final Plugin plugin) {
+    public InviteCommand(final NyanClansPlugin plugin) {
         super(
-            "invite", RankPermission.invite, messages.usage("clan", "invite")
+            "invite", RankPermission.invite, plugin.getMessagesConfig().usage("clan", "invite")
         );
 
-        this.messages = messages;
+        messages      = plugin.getMessagesConfig();
+        clanConfig    = plugin.getConfiguration().getClans();
         inviteCache   = new InviteCache();
-        new ReloadEvent().addObserver(this);
 
+        new ReloadEvent().addObserver(this);
         update(new File(plugin.getDataFolder(), "invite-message.json"));
     }
 
@@ -113,9 +116,9 @@ public final class InviteCommand extends ClanSubCommand implements Observer<Relo
 
         // add invite to cache and schedule remove function for it.
         inviteCache.cacheInvite(invite);
-        PluginUtils.runTask(() -> {
+        PluginUtils.runTaskLater(() -> {
             inviteCache.removeCachedInvite(player.getName(), player.getClan().getName());
-        });
+        }, clanConfig.getInviteExpiresAfter());
 
         final String clanRating = String.format("%1.2f", player.getClan().getRating());
         final String members    = String.valueOf(player.getClan().getMembers().size());

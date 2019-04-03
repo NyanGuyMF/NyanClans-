@@ -43,7 +43,7 @@ public final class ClanCommand
 
         super.addSubCommand(new CreateCommand(messages, plugin.getConfiguration()));
         super.addSubCommand(new DeleteCommand(messages));
-        super.addSubCommand(new InviteCommand(messages, plugin));
+        super.addSubCommand(new InviteCommand(plugin));
     }
 
     @Override

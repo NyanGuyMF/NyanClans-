@@ -28,6 +28,9 @@ public final class ClanConfig {
 
     private int maxClanNameLength = 24;
 
+    @Comment("Time in seconds until invite will expire.")
+    private int inviteExpiresAfter = 120;
+
     @Comment("Regular expression for clan name. Set 'none' if it doesn't need.")
     private String clanNameRegex = "none";
 
@@ -47,7 +50,7 @@ public final class ClanConfig {
     }
 
     /** Sets chat */
-    public void setChat(ClanChatConfig chat) {
+    public void setChat(final ClanChatConfig chat) {
         this.chat = chat;
     }
 
@@ -89,5 +92,15 @@ public final class ClanConfig {
     /** Sets clanPlaceholderFormat */
     public void setClanPlaceholderFormat(final String clanPlaceholderFormat) {
         this.clanPlaceholderFormat = clanPlaceholderFormat;
+    }
+
+    /** @return the inviteExpiresAfter */
+    public int getInviteExpiresAfter() {
+        return inviteExpiresAfter;
+    }
+
+    /** Sets inviteExpiresAfter */
+    public void setInviteExpiresAfter(int inviteExpiresAfter) {
+        this.inviteExpiresAfter = inviteExpiresAfter;
     }
 }
