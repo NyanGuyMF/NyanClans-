@@ -30,6 +30,7 @@ import de.exlll.configlib.annotation.ConfigurationElement;
 import de.exlll.configlib.annotation.ElementType;
 import nyanclans.core.clan.Clan;
 import nyanclans.storage.Storagable;
+import nyanclans.storage.yaml.messages.MessagesManager;
 
 /*
  * TODO: RankBuilder abstract class, ModerRankBuilder,
@@ -161,6 +162,11 @@ public final class Rank implements Storagable {
     /** Sets clan */
     public void setClan(final Clan clan) {
         ignoreClan = clan;
+    }
+
+    /** Gets name and translates colors. */
+    public String getColoredName() {
+        return MessagesManager.colored(getName());
     }
 
     /** Gets name */
