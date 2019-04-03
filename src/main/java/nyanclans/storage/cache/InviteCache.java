@@ -40,7 +40,7 @@ public final class InviteCache {
      * @return Old invite of player from clan or
      *      <tt>null</tt> if it's first invite.
      */
-    public Invite cacheInvite(final Invite invite) {
+    public synchronized Invite cacheInvite(final Invite invite) {
         cachePlayer(invite.getInvited().getName());
 
         return getCachedPlayer(invite.getInvited().getName())
@@ -106,10 +106,16 @@ public final class InviteCache {
      * Removes all invites of given player.
      *
      * @param   player  Player, whose invites you want to remove.
-     * @return Map with invites of player.
+     * @return <tt>true</tt> if player was removed and <tt>false</tt>
+     *      if player wasn't cached yet.
      */
-    public synchronized LinkedMap<String, Invite> removeCachedPlayer(final String player) {
-        return InviteCache.cache.remove(player);
+    public synchronized boolean removeCachedPlayer(final String player) {
+        if (!isPlayerCached(player))
+            return false;
+
+        getCachedPlayer(player).clear();
+
+        return InviteCache.cache.remove(player) != null;
     }
 
     /**
@@ -128,7 +134,7 @@ public final class InviteCache {
         if (!isPlayerCached(player))
             return null;
 
-        return InviteCache.cache.get(player).remove(clan);
+        return getCachedPlayer(player).remove(clan);
     }
 
     /**
