@@ -35,7 +35,9 @@ public final class ClanCompleter implements TabCompleter {
 
     public ClanCompleter() {
         subCommands = asList(
-            "create",   "delete"
+            "create",   "delete",
+            "invite",   "accept",
+            "deny"
         );
     }
 
