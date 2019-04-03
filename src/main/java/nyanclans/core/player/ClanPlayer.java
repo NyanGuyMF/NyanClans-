@@ -22,8 +22,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Objects;
 
-import org.bukkit.entity.Player;
-
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
@@ -56,10 +54,6 @@ public class ClanPlayer implements Storagable, Rankable<Rank, RankPermission> {
     private Date lastServerJoin;
 
     protected ClanPlayer() {}
-
-    public ClanPlayer(final Player bukkitPlayer) {
-        setName(bukkitPlayer.getName());
-    }
 
     public ClanPlayer(final String playerName) {
         setName(playerName);

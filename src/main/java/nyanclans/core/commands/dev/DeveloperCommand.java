@@ -24,6 +24,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import nyanclans.core.NyanClansPlugin;
 import nyanclans.core.commands.BaseCommandManager;
 import nyanclans.core.commands.dev.sub.Fresh;
 import nyanclans.core.commands.dev.sub.Help;
@@ -36,14 +37,15 @@ import nyanclans.storage.yaml.messages.MessagesManager;
 public final class DeveloperCommand
         extends BaseCommandManager<String>
         implements CommandExecutor {
+
+    private final NyanClansPlugin plugin;
     private final DatabaseConnector databaseConnector;
     private MessagesManager messages;
 
-    public DeveloperCommand(
-            final MessagesManager messages, final DatabaseConnector databaseConnector
-    ) {
-        this.messages          = messages;
-        this.databaseConnector = databaseConnector;
+    public DeveloperCommand(final NyanClansPlugin plugin) {
+        messages          = plugin.getMessagesConfig();
+        databaseConnector = plugin.getDatabaseConnector();
+        this.plugin       = plugin;
 
         setupSubCommands(messages);
     }
@@ -77,7 +79,7 @@ public final class DeveloperCommand
 
     private void setupSubCommands(final MessagesManager messages) {
         addSubCommand(new PlayerInfo(messages));
-        addSubCommand(new Reload(messages));
+        addSubCommand(new Reload(plugin));
         addSubCommand(new Help(messages));
         addSubCommand(new Fresh(messages, databaseConnector));
     }

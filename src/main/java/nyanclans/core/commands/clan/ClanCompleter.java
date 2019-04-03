@@ -17,10 +17,12 @@
 package nyanclans.core.commands.clan;
 
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -68,6 +70,8 @@ public final class ClanCompleter implements TabCompleter {
     private List<String> completeSecond(final CommandSender sender, final String arg) {
         if (arg.equalsIgnoreCase("delete"))
             return completeDelete(sender);
+        else if (arg.equalsIgnoreCase("completeInvite"))
+            return completeInvite(sender);
 
         // return empty list, not players names
         return asList("");
@@ -96,5 +100,29 @@ public final class ClanCompleter implements TabCompleter {
             return asList("");
 
         return asList(player.getClan().getName());
+    }
+
+    private List<String> completeInvite(final CommandSender sender) {
+        ClanPlayer player = ClanPlayer.playerByName(sender.getName());
+
+        // Usually its ConsoleCommandSender
+        if (player == null)
+            return asList("");
+
+        // player without clan cannot invite others
+        if (!player.isClanMember())
+            // return empty list, not players names
+            return asList("");
+
+        List<String> members = player.getClan().getMembers().parallelStream()
+                .map(member -> member.getName())
+                .collect(toList());
+
+        return Bukkit.getOnlinePlayers().parallelStream()
+                .filter(onlinePlayer -> {
+                    return !members.contains(onlinePlayer.getName());
+                })
+                .map(onlinePlayer -> onlinePlayer.getName())
+                .collect(toList());
     }
 }

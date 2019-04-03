@@ -49,6 +49,17 @@ public final class PluginUtils {
         return getScheduler().runTaskAsynchronously(PluginUtils.plugin, task);
     }
 
+    /**
+     * Runs given runnable after given delay in seconds.
+     *
+     * @param   task    The task to schedule.
+     * @param   delay   Delay before running in seconds.
+     * @return Scheduled bukkit task.
+     */
+    public static BukkitTask runTaskLater(final Runnable task, final int delay) {
+        return getScheduler().runTaskLater(PluginUtils.plugin, task, delay * 20);
+    }
+
     /** Gets isInitialized */
     public static boolean isInitialized() {
         return PluginUtils.isInitialized;

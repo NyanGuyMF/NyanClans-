@@ -18,6 +18,7 @@ package nyanclans.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Date;
 
 import org.bukkit.Bukkit;
@@ -29,6 +30,7 @@ import nyanclans.core.commands.dev.DeveloperCommand;
 import nyanclans.core.events.AsyncClanChatMessageEvent;
 import nyanclans.core.events.ChatMessageHandler;
 import nyanclans.core.events.PlayerJoinHandler;
+import nyanclans.core.events.ReloadEvent;
 import nyanclans.core.player.ClanPlayer;
 import nyanclans.core.rank.RankBuildDirector;
 import nyanclans.storage.yaml.PluginConfiguration;
@@ -71,6 +73,7 @@ public final class NyanClansPlugin extends JavaPlugin {
             PluginUtils.init(this);
         }
         AsyncClanChatMessageEvent.init(config.getClans().getChat());
+        ReloadEvent.init(this);
 
         registerCommands();
         registerListeners();
@@ -91,8 +94,8 @@ public final class NyanClansPlugin extends JavaPlugin {
 
     /** Registers all plug-in commands. */
     private void registerCommands() {
-        new DeveloperCommand(messagesConfig, databaseConnector).register(this);
-        new ClanCommand(messagesConfig, config).register(this);
+        new DeveloperCommand(this).register(this);
+        new ClanCommand(this).register(this);
         new ClanChatCommand(messagesConfig, config.getClans()).register(this);
     }
 
@@ -112,6 +115,15 @@ public final class NyanClansPlugin extends JavaPlugin {
     private void loadConfigs(final File pluginFolder) {
         if (!pluginFolder.exists()) {
             pluginFolder.mkdir();
+        }
+
+        File inviteMessage = new File(pluginFolder, "invite-message.json");
+        if (!inviteMessage.exists()) {
+            try {
+                Files.copy(getResource(inviteMessage.getName()), inviteMessage.toPath());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
 
         try {
@@ -198,6 +210,21 @@ public final class NyanClansPlugin extends JavaPlugin {
             break;
         }
 
+        return databaseConnector;
+    }
+
+    /** @return the messagesConfig */
+    public MessagesManager getMessagesConfig() {
+        return messagesConfig;
+    }
+
+    /** @return the config */
+    public PluginConfiguration getConfiguration() {
+        return config;
+    }
+
+    /** @return the databaseConnector */
+    public DatabaseConnector getDatabaseConnector() {
         return databaseConnector;
     }
 }

@@ -1,0 +1,169 @@
+{
+  "text": "",
+  "extra": [
+    {
+      "text": "{inviter}",
+      "color": "red",
+      "hoverEvent": {
+        "action": "show_text",
+        "value": [
+          "",
+          {
+            "text": "",
+            "extra": [
+              {
+                "text": "Player: ",
+                "color": "gold"
+              },
+              {
+                "text": "{inviter}",
+                "color": "aqua"
+              },
+              {
+                "text": "\n"
+              },
+              {
+                "text": "Clan: ",
+                "color": "gold"
+              },
+              {
+                "text": "{clan-name-colored}",
+                "color": "aqua"
+              },
+              {
+                "text": "\n"
+              },
+              {
+                "text": "Rank: ",
+                "color": "gold"
+              },
+              {
+                "text": "{inviter-rank}",
+                "color": "aqua"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "text": " has invited you to clan ",
+      "color": "yellow"
+    },
+    {
+      "text": "«",
+      "color": "gold"
+    },
+    {
+      "text": "{clan-name}",
+      "color": "red",
+      "hoverEvent": {
+        "action": "show_text",
+        "value": [
+          "",
+          {
+            "text": "",
+            "extra": [
+              {
+                "text": "Clan: ",
+                "color": "gold"
+              },
+              {
+                "text": "{clan-name-colored}",
+                "color": "aqua"
+              },
+              {
+                "text": "\n"
+              },
+              {
+                "text": "Leader: ",
+                "color": "gold"
+              },
+              {
+                "text": "{inviter}",
+                "color": "aqua"
+              },
+              {
+                "text": "\n"
+              },
+              {
+                "text": "Rating: ",
+                "color": "gold"
+              },
+              {
+                "text": "{clan-rating}",
+                "color": "aqua"
+              },
+              {
+                "text": "\n"
+              },
+              {
+                "text": "Members: ",
+                "color": "gold"
+              },
+              {
+                "text": "{clan-members}",
+                "color": "aqua"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "text": "»",
+      "color": "gold"
+    },
+    {
+      "text": ".",
+      "color": "yellow"
+    },
+    {
+      "text": "\n"
+    },
+    {
+      "text": "Enter or cick on chat ",
+      "color": "yellow"
+    },
+    {
+      "text": "«",
+      "color": "gold"
+    },
+    {
+      "text": "/c accept",
+      "color": "red",
+      "clickEvent": {
+        "action": "run_command",
+        "value": "/c accept {clan-name}"
+      }
+    },
+    {
+      "text": "»",
+      "color": "gold"
+    },
+    {
+      "text": " to accept or ",
+      "color": "yellow"
+    },
+    {
+      "text": "«",
+      "color": "gold"
+    },
+    {
+      "text": "/c deny",
+      "color": "red",
+      "clickEvent": {
+        "action": "run_command",
+        "value": "/c deny {clan-name}"
+      }
+    },
+    {
+      "text": "»",
+      "color": "gold"
+    },
+    {
+      "text": " to decline.",
+      "color": "yellow"
+    }
+  ]
+}

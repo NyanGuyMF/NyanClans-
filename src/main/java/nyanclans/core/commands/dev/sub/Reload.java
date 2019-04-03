@@ -18,32 +18,37 @@ package nyanclans.core.commands.dev.sub;
 
 import org.bukkit.command.CommandSender;
 
+import nyanclans.core.NyanClansPlugin;
 import nyanclans.core.commands.SubCommand;
-import nyanclans.storage.yaml.messages.MessagesManager;
+import nyanclans.core.events.ReloadEvent;
 
 /** @author NyanGuyMF */
 public final class Reload extends SubCommand<String> {
-    private MessagesManager messages;
+    private NyanClansPlugin plugin;
 
-    public Reload(final MessagesManager messages) {
+    public Reload(final NyanClansPlugin plugin) {
         super(
             "reload", "nyanclans.dev.reload",
             ""
         );
 
-        this.messages = messages;
+        this.plugin = plugin;
     }
 
     @Override
     public boolean execute(final CommandSender sender, final String[] args) {
         if (!hasPermission(sender)) {
-            sender.sendMessage(messages.error("no-permission"));
+            sender.sendMessage(plugin.getMessagesConfig().error("no-permission"));
             return true;
         }
 
-        messages.loadAndSave(); // it will reload messages
-        messages.notifyObservers();
-        sender.sendMessage(messages.info("reload-success"));
+        plugin.getMessagesConfig().loadAndSave(); // it will reload messages
+        plugin.getMessagesConfig().notifyObservers();
+        sender.sendMessage(plugin.getMessagesConfig().info("reload-success"));
+
+        ReloadEvent event = new ReloadEvent();
+        event.update(plugin);
+        event.notifyObservers();
 
         return true;
     }
