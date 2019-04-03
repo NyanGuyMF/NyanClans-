@@ -58,7 +58,7 @@ public final class PlayerJoinHandler implements Listener {
     }
 
     private void updatePlayer(final Player bukkitPlayer) {
-        ClanPlayer player = new ClanPlayer(bukkitPlayer);
+        ClanPlayer player = ClanPlayer.playerByName(bukkitPlayer.getName());
         player.setLastServerJoin(new Date(System.currentTimeMillis()));
         player.save();
     }
