@@ -27,10 +27,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import nyanclans.core.commands.clan.ClanChatCommand;
 import nyanclans.core.commands.clan.ClanCommand;
 import nyanclans.core.commands.dev.DeveloperCommand;
-import nyanclans.core.events.AsyncClanChatMessageEvent;
 import nyanclans.core.events.ChatMessageHandler;
+import nyanclans.core.events.ClanEvent;
 import nyanclans.core.events.PlayerJoinHandler;
-import nyanclans.core.events.ReloadEvent;
 import nyanclans.core.player.ClanPlayer;
 import nyanclans.core.rank.RankBuildDirector;
 import nyanclans.storage.yaml.PluginConfiguration;
@@ -72,8 +71,7 @@ public final class NyanClansPlugin extends JavaPlugin {
         if (!PluginUtils.isInitialized()) {
             PluginUtils.init(this);
         }
-        AsyncClanChatMessageEvent.init(config.getClans().getChat());
-        ReloadEvent.init(this);
+        ClanEvent.initEvents(this);
 
         registerCommands();
         registerListeners();

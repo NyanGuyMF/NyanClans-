@@ -92,6 +92,8 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
             .put("rank-create-error", "&6«&e{0}&6» &eCouldn't create rank &6«&c{1}&6»&e.")
             .put("invited-is-other-member", "&cThe player «&6{0}&c» is already member of other clan!")
             .put("invited-is-your-member", "&cThe player «&6{0}&c» is already member of your clan!")
+            .put("no-invites", "&cUnfotrunately, there are no invites for you.")
+            .put("no-such-invite", "&cUnfotrunately, there are no invite from «&6{0}&c» clan for you.")
             .build();
 
     /**

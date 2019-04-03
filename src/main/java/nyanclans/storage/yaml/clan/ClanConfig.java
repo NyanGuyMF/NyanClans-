@@ -22,7 +22,6 @@ import de.exlll.configlib.annotation.ConfigurationElement;
 /** @author NyanGuyMF - Vasiliy Bely */
 @ConfigurationElement
 public final class ClanConfig {
-    private ClanChatConfig chat;
 
     private int minClanNameLength = 3;
 
@@ -40,8 +39,12 @@ public final class ClanConfig {
     })
     private String clanPlaceholderFormat = "&6«&e{clan-name}&6» ";
 
+    private ClanChatConfig chat;
+    private RatingConfig rating;
+
     public ClanConfig() {
         setChat(new ClanChatConfig());
+        setRating(new RatingConfig());
     }
 
     /** @return the chat */
@@ -50,7 +53,7 @@ public final class ClanConfig {
     }
 
     /** Sets chat */
-    public void setChat(final ClanChatConfig chat) {
+    protected void setChat(final ClanChatConfig chat) {
         this.chat = chat;
     }
 
@@ -100,7 +103,17 @@ public final class ClanConfig {
     }
 
     /** Sets inviteExpiresAfter */
-    public void setInviteExpiresAfter(int inviteExpiresAfter) {
+    public void setInviteExpiresAfter(final int inviteExpiresAfter) {
         this.inviteExpiresAfter = inviteExpiresAfter;
+    }
+
+    /** @return the rating */
+    public RatingConfig getRating() {
+        return rating;
+    }
+
+    /** Sets rating */
+    protected void setRating(final RatingConfig rating) {
+        this.rating = rating;
     }
 }
