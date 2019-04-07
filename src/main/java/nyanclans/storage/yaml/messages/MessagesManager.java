@@ -78,6 +78,7 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
             .put("fresh-success", "&3NyanClans &8» &6«&b{0}&6» &afreshed successfully.")
             .put("clan-created", "&6«&e{0}&6» &eClan created.")
             .put("clan-deleted", "&6«&e{0}&6» &c{1} &ehas deleted clan.")
+            .put("player-join-clan", "&6«&e{0}&6» &c{1} has joined to clan by invition of {2}.")
             .build();
 
     private final Map<String, String> error = ImmutableMap.<String,String>builder()

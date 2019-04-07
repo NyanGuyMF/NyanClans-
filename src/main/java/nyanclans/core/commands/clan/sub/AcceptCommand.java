@@ -67,8 +67,22 @@ public final class AcceptCommand extends ClanSubCommand {
             }
         }
 
+        ClanPlayer inviter = invite.getInviter();
         Clan clan = invite.getClan();
+        inviteCache.removeCachedInvite(player.getName(), clan.getName());
 
+        clan.addMember(player);
+        clan.save();
+        player.setClan(clan);
+        player.setRank(clan.getRankByAlias("player"));
+        player.save();
+
+        String playerJoined = messages.info(
+            "player-join-clan", clan.getName(),
+            player.getName(), inviter.getName()
+        );
+        clan.getOnlineMembers().parallelStream()
+            .forEach(member -> member.sendMessage(playerJoined));
 
         return true;
     }
