@@ -19,6 +19,7 @@ package nyanclans.core.commands.clan.sub;
 import static com.comphenix.protocol.ProtocolLibrary.getProtocolManager;
 import static com.comphenix.protocol.wrappers.WrappedChatComponent.fromJson;
 import static nyanclans.core.player.ClanPlayer.playerByName;
+import static nyanclans.core.rank.RankPermission.invite;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +37,6 @@ import com.comphenix.protocol.wrappers.EnumWrappers.ChatType;
 import nyanclans.core.NyanClansPlugin;
 import nyanclans.core.events.ReloadEvent;
 import nyanclans.core.player.ClanPlayer;
-import nyanclans.core.rank.RankPermission;
 import nyanclans.storage.cache.Invite;
 import nyanclans.storage.cache.InviteCache;
 import nyanclans.storage.yaml.clan.ClanConfig;
@@ -53,7 +53,7 @@ public final class InviteCommand extends ClanSubCommand implements Observer<Relo
 
     public InviteCommand(final NyanClansPlugin plugin) {
         super(
-            "invite", RankPermission.invite, plugin.getMessagesConfig().usage("clan", "invite")
+            "invite", invite, plugin.getMessagesConfig().usage("clan", "invite")
         );
 
         messages      = plugin.getMessagesConfig();
@@ -99,18 +99,18 @@ public final class InviteCommand extends ClanSubCommand implements Observer<Relo
 
         // we can invite only player, who isn't clan member
         // TODO: think about luring players away from their clans
-//        if (invitedPlayer.isClanMember()) {
-//            String error;
-//
-//            if (invitedPlayer.getClan().equals(player.getClan())) {
-//                error = messages.error("invites-is-your-member", invitedPlayer.getName());
-//            } else {
-//                error = messages.error("invites-is-other-member", invitedPlayer.getName());
-//            }
-//
-//            performer.sendMessage(error);
-//            return true;
-//        }
+        if (invitedPlayer.isClanMember()) {
+            String error;
+
+            if (invitedPlayer.getClan().equals(player.getClan())) {
+                error = messages.error("invites-is-your-member", invitedPlayer.getName());
+            } else {
+                error = messages.error("invites-is-other-member", invitedPlayer.getName());
+            }
+
+            performer.sendMessage(error);
+            return true;
+        }
 
         Invite invite = new Invite(invitedPlayer, player, player.getClan());
 

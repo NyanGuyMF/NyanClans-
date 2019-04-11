@@ -34,6 +34,7 @@ public final class AcceptCommand extends ClanSubCommand {
         super("accept", null, messages.usage("clan", "accept"));
 
         this.messages = messages;
+        inviteCache = new InviteCache();
     }
 
     @Override

@@ -26,6 +26,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import nyanclans.core.NyanClansPlugin;
 import nyanclans.core.commands.BaseCommandManager;
+import nyanclans.core.commands.clan.sub.AcceptCommand;
 import nyanclans.core.commands.clan.sub.CreateCommand;
 import nyanclans.core.commands.clan.sub.DeleteCommand;
 import nyanclans.core.commands.clan.sub.InviteCommand;
@@ -44,6 +45,7 @@ public final class ClanCommand
         super.addSubCommand(new CreateCommand(messages, plugin.getConfiguration()));
         super.addSubCommand(new DeleteCommand(messages));
         super.addSubCommand(new InviteCommand(plugin));
+        super.addSubCommand(new AcceptCommand(messages));
     }
 
     @Override
