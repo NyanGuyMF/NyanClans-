@@ -249,13 +249,18 @@ public final class Clan implements Storagable {
         this.balance = balance;
     }
 
+    /** Increases current rating for given amount. */
+    public void increaseRating(final double amount) {
+        rating += amount;
+    }
+
     /** @return the rating */
     public double getRating() {
         return rating;
     }
 
     /** Sets rating */
-    public void setRating(double rating) {
+    public void setRating(final double rating) {
         this.rating = rating;
     }
 

@@ -19,19 +19,20 @@ package nyanclans.core.events;
 import java.util.ArrayList;
 import java.util.List;
 
+import nyanclans.core.clan.Clan;
 import nyanclans.core.player.ClanPlayer;
-import nyanclans.storage.yaml.clan.ClanChatConfig;
+import nyanclans.storage.yaml.clan.RatingConfig;
 import nyanclans.utils.Observable;
 import nyanclans.utils.Observer;
 import nyanclans.utils.PluginUtils;
 
 /** @author NyanGuyMF - Vasiliy Bely */
-public final class AsyncClanChatMessageEvent
+public final class AsyncClanJoinEvent
     extends ClanEvent
-    implements Observable<AsyncClanChatMessageEvent> {
+    implements Observable<AsyncClanJoinEvent> {
 
-    private static List<Observer<AsyncClanChatMessageEvent>> observers;
-    private static DefaultHandler<AsyncClanChatMessageEvent> defaultHandler;
+    private static List<Observer<AsyncClanJoinEvent>> observers;
+    private static DefaultHandler<AsyncClanJoinEvent> defaultHandler;
 
     private volatile String message;
     private volatile ClanPlayer player;
@@ -44,48 +45,37 @@ public final class AsyncClanChatMessageEvent
      *
      * @return <tt>true</tt> only if default handler wasn't set yet.
      */
-    protected static boolean init(final ClanChatConfig clanChatConfig) {
-        if (AsyncClanChatMessageEvent.defaultHandler != null)
+    protected static boolean init(final RatingConfig ratingConfig) {
+        if (AsyncClanJoinEvent.defaultHandler != null)
             return false;
 
-        AsyncClanChatMessageEvent.observers = new ArrayList<>();
-        AsyncClanChatMessageEvent.defaultHandler = new ClanChatMessageHandler(clanChatConfig);
+        AsyncClanJoinEvent.observers = new ArrayList<>();
+//        AsyncClanJoinEvent.defaultHandler = new ClanChatMessageHandler(clanChatConfig);
         return true;
     }
 
-    public AsyncClanChatMessageEvent(final ClanPlayer player, final String message) {
-        super(player.getClan(), true);
-
-        this.player = player;
-        this.message = message;
-
-        setHandled(false);
+    public AsyncClanJoinEvent(final Clan clan) {
+        super(clan, true);
     }
 
-    @Override public void addObserver(final Observer<AsyncClanChatMessageEvent> obs) {
-        AsyncClanChatMessageEvent.observers.add(obs);
+    @Override public void addObserver(final Observer<AsyncClanJoinEvent> obs) {
+        AsyncClanJoinEvent.observers.add(obs);
     }
 
-    @Override public void removeObserver(final Observer<AsyncClanChatMessageEvent> obs) {
-        AsyncClanChatMessageEvent.observers.remove(obs);
+    @Override public void removeObserver(final Observer<AsyncClanJoinEvent> obs) {
+        AsyncClanJoinEvent.observers.remove(obs);
     }
 
-    /**
-     * Will not fired if already handled.
-     *
-     * @see #setHandled(boolean)
-     * @see nyanclans.utils.Observable#notifyObservers()
-     */
     @Override public void notifyObservers() {
         if (isHandled())
             return;
 
         // maybe I should run every handlers in separated tasks
         // but I think it would be quite problematic to handle
-        PluginUtils.runTaskAsync(() -> AsyncClanChatMessageEvent.observers.forEach(obs -> {
+        PluginUtils.runTaskAsync(() -> AsyncClanJoinEvent.observers.forEach(obs -> {
             obs.update(this);
         }));
-        AsyncClanChatMessageEvent.defaultHandler.handle(this);
+        AsyncClanJoinEvent.defaultHandler.handle(this);
 
         setHandled(true);
     }

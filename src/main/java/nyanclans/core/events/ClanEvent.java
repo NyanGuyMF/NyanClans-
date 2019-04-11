@@ -16,6 +16,7 @@
  */
 package nyanclans.core.events;
 
+import nyanclans.core.NyanClansPlugin;
 import nyanclans.core.clan.Clan;
 
 /**
@@ -23,9 +24,18 @@ import nyanclans.core.clan.Clan;
  *
  * @author NyanGuyMF - Vasiliy Bely
  */
-public class ClanEvent {
+public abstract class ClanEvent {
     private Clan clan;
     private boolean isAsync;
+
+    public static void initEvents(final NyanClansPlugin plugin) {
+        if (plugin == null)
+            return;
+
+        AsyncClanChatMessageEvent.init(plugin.getConfiguration().getClans().getChat());
+        AsyncClanJoinEvent.init(plugin.getConfiguration().getClans().getRating());
+        ReloadEvent.init(plugin);
+    }
 
     public ClanEvent(final Clan clan) {
         setClan(clan);

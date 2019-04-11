@@ -22,11 +22,13 @@ import de.exlll.configlib.annotation.ConfigurationElement;
 /** @author NyanGuyMF - Vasiliy Bely */
 @ConfigurationElement
 public final class ClanConfig {
-    private ClanChatConfig chat;
 
     private int minClanNameLength = 3;
 
     private int maxClanNameLength = 24;
+
+    @Comment("Time in seconds until invite will expire.")
+    private int inviteExpiresAfter = 120;
 
     @Comment("Regular expression for clan name. Set 'none' if it doesn't need.")
     private String clanNameRegex = "none";
@@ -37,8 +39,12 @@ public final class ClanConfig {
     })
     private String clanPlaceholderFormat = "&6«&e{clan-name}&6» ";
 
+    private ClanChatConfig chat;
+    private RatingConfig rating;
+
     public ClanConfig() {
         setChat(new ClanChatConfig());
+        setRating(new RatingConfig());
     }
 
     /** @return the chat */
@@ -47,7 +53,7 @@ public final class ClanConfig {
     }
 
     /** Sets chat */
-    public void setChat(ClanChatConfig chat) {
+    protected void setChat(final ClanChatConfig chat) {
         this.chat = chat;
     }
 
@@ -89,5 +95,25 @@ public final class ClanConfig {
     /** Sets clanPlaceholderFormat */
     public void setClanPlaceholderFormat(final String clanPlaceholderFormat) {
         this.clanPlaceholderFormat = clanPlaceholderFormat;
+    }
+
+    /** @return the inviteExpiresAfter */
+    public int getInviteExpiresAfter() {
+        return inviteExpiresAfter;
+    }
+
+    /** Sets inviteExpiresAfter */
+    public void setInviteExpiresAfter(final int inviteExpiresAfter) {
+        this.inviteExpiresAfter = inviteExpiresAfter;
+    }
+
+    /** @return the rating */
+    public RatingConfig getRating() {
+        return rating;
+    }
+
+    /** Sets rating */
+    protected void setRating(final RatingConfig rating) {
+        this.rating = rating;
     }
 }

@@ -37,12 +37,6 @@ import nyanclans.utils.PluginUtils;
 
 /** @author NyanGuyMF */
 public class MessagesManager extends BukkitYamlConfiguration implements Observable<MessagesManager> {
-    private static final boolean TRANSLATE = true;
-
-    public enum MessageType {
-        ERROR, INFO, HELP, USAGE
-    }
-
     private final List<Observer<MessagesManager>> ignoreObservers = new ArrayList<>();
 
     /**
@@ -57,7 +51,7 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
      * Example: {@code help.get("dev").get("player")} will
      * get usage for "player" sub command of "dev".
      */
-    private final Map<String, Map<String, String>> usage = new HashMap<>();
+    private Map<String, Map<String, String>> usage = new HashMap<>();
 
     /**
      * Provides help message for each plug-in command
@@ -71,16 +65,17 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
      * Example: {@code help.get("dev").get("player")} will
      * get help for "player" sub command of "dev".
      */
-    private final Map<String, Map<String, String>> help = new HashMap<>();
+    private Map<String, Map<String, String>> help = new HashMap<>();
 
-    private final Map<String, String> info = ImmutableMap.<String, String>builder()
+    private Map<String, String> info = ImmutableMap.<String, String>builder()
             .put("reload-success", "&3NyanClans &8» &aMessage configuration has been reloaded.")
             .put("fresh-success", "&3NyanClans &8» &6«&b{0}&6» &afreshed successfully.")
             .put("clan-created", "&6«&e{0}&6» &eClan created.")
             .put("clan-deleted", "&6«&e{0}&6» &c{1} &ehas deleted clan.")
+            .put("player-join-clan", "&6«&e{0}&6» &c{1} has joined to clan by invition of {2}.")
             .build();
 
-    private final Map<String, String> error = ImmutableMap.<String,String>builder()
+    private Map<String, String> error = ImmutableMap.<String,String>builder()
             .put("no-permission", "&cYou have no permission for &6{0} &ccommand.")
             .put("not-clan-member", "&cYou're not clan member.")
             .put("only-player", "&cOnly players can use «&6{0}&c» command.")
@@ -92,6 +87,8 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
             .put("rank-create-error", "&6«&e{0}&6» &eCouldn't create rank &6«&c{1}&6»&e.")
             .put("invited-is-other-member", "&cThe player «&6{0}&c» is already member of other clan!")
             .put("invited-is-your-member", "&cThe player «&6{0}&c» is already member of your clan!")
+            .put("no-invites", "&cUnfotrunately, there are no invites for you.")
+            .put("no-such-invite", "&cUnfotrunately, there are no invite from «&6{0}&c» clan for you.")
             .build();
 
     /**
@@ -103,13 +100,13 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
      * <b>Important</b>: may cause {@link FileSystemException}
      * if you use {@link #load()} method too often on Unix systems.
      *
-     * @param   pluginFolder    Plug-in's folder provided by Bukkit.
-     * @throws FileNotFoundException if there is no <tt>messages.yml</tt>
+     * @param   messagesFile    Files with all plug-in messages.
+     * @throws FileNotFoundException if messages file doesn't exists.
      * file in given folder.
      */
-    public MessagesManager(final File pluginFolder) {
+    public MessagesManager(final File messagesFile)  {
         super(
-            new File(pluginFolder, "messages.yml").toPath(),
+            messagesFile.toPath(),
             YamlFieldNameFormater.getProps()
         );
 
@@ -127,6 +124,9 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
                 .put("clan", "&eEnter &c/clan help &efor help")
                 .put("create", "&e/clan create &6«&cclan name&6»")
                 .put("delete", "&e/clan delete")
+                .put("invite", "&e/clan invite &6«&cplayer&c»")
+                .put("accept", "&e/clan accept &6[&cclan&6]")
+                .put("deny", "&e/clan deny &6[&cclan&6]")
                 .build()
         );
         usage.put(
@@ -144,12 +144,14 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
                 .put("help", "&e/clandev help &f- this menu")
                 .build()
         );
-
         help.put(
             "clan",
             ImmutableMap.<String, String>builder()
                 .put("create", "&e/clan create &6«&cclan name&6» &f- create new clan")
                 .put("delete", "&e/clan delete &f- delete your clan")
+                .put("invite", "&e/clan invite &6«&cplayer&c» &f- invite player to your clan")
+                .put("accept", "&e/clan accept &6[&cclan&6] &f- accept last or specific clan invite")
+                .put("deny", "&e/clan deny &6[&cclan&6] &f- deny last or specific clan invite")
                 .build()
         );
     }
@@ -189,7 +191,7 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
      * @return List of help message or <tt>null</tt>.
      */
     public Collection<String> allHelpFor(final String command) {
-        return allHelpFor(command, MessagesManager.TRANSLATE);
+        return allHelpFor(command, true);
     }
 
     /**
@@ -234,7 +236,7 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
      */
     public String error(final String key, final String...args) {
         if (args.length == 0)
-            return error(key, MessagesManager.TRANSLATE);
+            return error(key, true);
         else
             return colored(args(error(key, false), args));
     }
@@ -277,7 +279,7 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
      */
     public String info(final String key, final String...args) {
         if (args.length == 0)
-            return info(key, MessagesManager.TRANSLATE);
+            return info(key, true);
         else
             return colored(args(info(key, false), args));
     }
@@ -325,7 +327,7 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
      */
     public String help(final String command, final String subCommand, final String...args) {
         if (args.length == 0)
-            return help(command, subCommand, MessagesManager.TRANSLATE);
+            return help(command, subCommand, true);
         else
             return colored(args(help(command, subCommand, false), args));
     }
@@ -379,7 +381,7 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
      */
     public String usage(final String command, final String subCommand, final String...args) {
         if (args.length == 0)
-            return usage(command, subCommand, MessagesManager.TRANSLATE);
+            return usage(command, subCommand, true);
         else
             return colored(args(usage(command, subCommand, false), args));
     }

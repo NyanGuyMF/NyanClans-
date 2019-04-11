@@ -33,7 +33,7 @@ public final class ReloadEvent implements Observable<ReloadEvent> {
     private static boolean isUpdated = false;
     private static NyanClansPlugin plugin;
 
-    public static void init(final NyanClansPlugin plugin) {
+    protected static void init(final NyanClansPlugin plugin) {
         ReloadEvent.observers = new ArrayList<>();
 
         if (plugin != null) {
