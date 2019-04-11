@@ -23,6 +23,7 @@ import nyanclans.storage.yaml.clan.ClanConfig;
 
 /** @author NyanGuyMF - Vasiliy Bely */
 public final class PluginConfiguration extends BukkitYamlConfiguration {
+    private String language = "en";
     private ClanConfig clans;
     private RankConfig ranks;
 
@@ -35,9 +36,14 @@ public final class PluginConfiguration extends BukkitYamlConfiguration {
         ranks = new RankConfig();
     }
 
-    public void saveAndLoad() {
-        super.save();
-        super.load();
+    /** @return the language */
+    public String getLanguage() {
+        return language;
+    }
+
+    /** Sets language */
+    public void setLanguage(final String language) {
+        this.language = language;
     }
 
     /** @return the clans */

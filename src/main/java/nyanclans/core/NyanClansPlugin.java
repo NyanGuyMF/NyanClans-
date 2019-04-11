@@ -136,8 +136,8 @@ public final class NyanClansPlugin extends JavaPlugin {
             databaseConnector.createTables();
         }
 
-        messagesConfig = loadMessagesYaml(pluginFolder);
         config         = loadPluginConfig(pluginFolder);
+        messagesConfig = loadMessagesYaml(pluginFolder, config.getLanguage());
 
         RankBuildDirector.setConfig(config.getRanks());
     }
@@ -152,22 +152,29 @@ public final class NyanClansPlugin extends JavaPlugin {
      * @param   pluginFolder    Plug-in's folder provided by Bukkit.
      * @return {@link MessagesManager} or <tt>null</tt>.
      */
-    private MessagesManager loadMessagesYaml(final File pluginFolder) {
-        File messages = new File(pluginFolder, "messages.yml");
-        MessagesManager config;
+    private MessagesManager loadMessagesYaml(final File pluginFolder, final String lang) {
+        File messages = new File(pluginFolder, "messages_" + lang + ".yml");
+        MessagesManager config = null;
 
         if (!messages.exists()) {
-            try {
-                messages.createNewFile();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                super.getPluginLoader().disablePlugin(this);
-                return null;
+            System.out.printf("Language file for «%s» not found\n", lang);
+            messages = new File(pluginFolder, "messages_en.yml");
+
+            if (!messages.exists()) {
+                try {
+                    messages.createNewFile();
+                } catch (IOException ex) {
+                    System.err.printf(
+                        "Unable to create messages file: %s\n"
+                        , ex.getLocalizedMessage()
+                    );
+                    return null;
+                }
             }
-            config = new MessagesManager(pluginFolder);
-            config.saveAndLoad();
+            config = new MessagesManager(messages);
+            config.save();
         } else {
-            config = new MessagesManager(pluginFolder);
+            config = new MessagesManager(messages);
             config.loadAndSave();
         }
 
@@ -180,12 +187,22 @@ public final class NyanClansPlugin extends JavaPlugin {
         PluginConfiguration config;
 
         if (!configFile.exists()) {
+            try {
+                configFile.createNewFile();
+            } catch (IOException ex) {
+                System.out.printf(
+                    "Unable to create config.yml: &s\n",
+                    ex.getLocalizedMessage()
+                );
+                return null;
+            }
             config = new PluginConfiguration(pluginFolder);
-            config.saveAndLoad();
+            config.save();
         } else {
             config = new PluginConfiguration(pluginFolder);
             config.loadAndSave();
         }
+
 
         return config;
     }
