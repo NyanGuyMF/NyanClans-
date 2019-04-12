@@ -72,8 +72,9 @@ public final class AcceptCommand extends ClanSubCommand {
         Clan clan = invite.getClan();
         inviteCache.removeCachedInvite(player.getName(), clan.getName());
 
-        clan.addMember(player);
+        clan.getMembers().add(player);
         clan.save();
+
         player.setClan(clan);
         player.setRank(clan.getRankByAlias("player"));
         player.save();

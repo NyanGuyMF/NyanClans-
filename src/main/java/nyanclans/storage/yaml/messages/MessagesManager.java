@@ -89,6 +89,8 @@ public class MessagesManager extends BukkitYamlConfiguration implements Observab
             .put("invited-is-your-member", "&cThe player «&6{0}&c» is already member of your clan!")
             .put("no-invites", "&cUnfotrunately, there are no invites for you.")
             .put("no-such-invite", "&cUnfotrunately, there are no invite from «&6{0}&c» clan for you.")
+            .put("player-offline", "&cPlayer &c«&6{0}&c» isn't online.")
+            .put("player-not-found", "&cPlayer &c«&6{0}&c» not found.")
             .build();
 
     /**

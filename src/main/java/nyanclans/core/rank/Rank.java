@@ -16,6 +16,7 @@
  */
 package nyanclans.core.rank;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,7 +42,9 @@ import nyanclans.storage.yaml.messages.MessagesManager;
 /** @author NyanGuyMF */
 @ConfigurationElement
 @DatabaseTable(tableName="ranks")
-public final class Rank implements Storagable {
+public final class Rank implements Storagable, Serializable {
+    private static final long serialVersionUID = -3885511216793249204L;
+
     private static Dao<Rank, Integer> dao;
 
     @DatabaseField(generatedId=true, columnName="id")

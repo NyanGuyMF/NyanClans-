@@ -20,7 +20,6 @@ import static java.util.Objects.hash;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -34,7 +33,6 @@ import org.bukkit.entity.Player;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import nyanclans.core.player.ClanPlayer;
@@ -57,11 +55,11 @@ public final class Clan implements Storagable {
 
     @Column private double rating = 0.0;
 
-    @ForeignCollectionField
-    private Collection<ClanPlayer> members = new HashSet<>();
+    @DatabaseField(dataType=DataType.SERIALIZABLE)
+    private HashSet<ClanPlayer> members = new HashSet<>();
 
-    @ForeignCollectionField
-    private Collection<Rank> ranks = new HashSet<>();
+    @DatabaseField(dataType=DataType.SERIALIZABLE)
+    private HashSet<Rank> ranks = new HashSet<>();
 
     @DatabaseField(columnName="created_at", dataType=DataType.DATE_STRING)
     private Date createdAt;
@@ -265,12 +263,12 @@ public final class Clan implements Storagable {
     }
 
     /** Gets members */
-    public Collection<ClanPlayer> getMembers() {
+    public HashSet<ClanPlayer> getMembers() {
         return members;
     }
 
     /** Sets members */
-    public void setMembers(final Collection<ClanPlayer> members) {
+    public void setMembers(final HashSet<ClanPlayer> members) {
         this.members = members;
     }
 
@@ -285,12 +283,12 @@ public final class Clan implements Storagable {
     }
 
     /** @return the ranks */
-    public Collection<Rank> getRanks() {
+    public HashSet<Rank> getRanks() {
         return ranks;
     }
 
     /** Sets ranks */
-    public void setRanks(final Collection<Rank> ranks) {
+    public void setRanks(final HashSet<Rank> ranks) {
         this.ranks = ranks;
     }
 }

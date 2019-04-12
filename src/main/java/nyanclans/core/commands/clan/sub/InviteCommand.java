@@ -27,6 +27,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -97,15 +98,32 @@ public final class InviteCommand extends ClanSubCommand implements Observer<Relo
             return true;
         }
 
+        // now we must be sure that player exists on server and he is online
+        @SuppressWarnings("deprecation")
+        Player bInvitedPlayer = Bukkit.getPlayer(invitedPlayer.getName());
+        if (bInvitedPlayer == null) {
+            performer.sendMessage(messages.error(
+                "player-not-found", invitedPlayer.getName()
+            ));
+            return true;
+        }
+
+        if (!bInvitedPlayer.isOnline()) {
+            performer.sendMessage(messages.error(
+                "player-offline", invitedPlayer.getName()
+            ));
+            return true;
+        }
+
         // we can invite only player, who isn't clan member
         // TODO: think about luring players away from their clans
         if (invitedPlayer.isClanMember()) {
             String error;
 
             if (invitedPlayer.getClan().equals(player.getClan())) {
-                error = messages.error("invites-is-your-member", invitedPlayer.getName());
+                error = messages.error("invited-is-your-member", invitedPlayer.getName());
             } else {
-                error = messages.error("invites-is-other-member", invitedPlayer.getName());
+                error = messages.error("invited-is-other-member", invitedPlayer.getName());
             }
 
             performer.sendMessage(error);
@@ -114,7 +132,7 @@ public final class InviteCommand extends ClanSubCommand implements Observer<Relo
 
         Invite invite = new Invite(invitedPlayer, player, player.getClan());
 
-        // add invite to cache and schedule remove function for it.
+        // ensure that cached invite will be deleted after "invite-expires-after"
         inviteCache.cacheInvite(invite);
         PluginUtils.runTaskLater(() -> {
             inviteCache.removeCachedInvite(player.getName(), player.getClan().getName());
@@ -131,7 +149,7 @@ public final class InviteCommand extends ClanSubCommand implements Observer<Relo
                 .replace("{inviter-rank}", player.getRank().getColoredName())
                 .replace("{invited}", invitedPlayer.getName());
 
-        sendMessage((Player) performer, message);
+        sendMessage(bInvitedPlayer, message);
 
         return true;
     }

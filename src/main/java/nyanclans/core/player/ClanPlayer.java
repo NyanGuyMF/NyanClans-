@@ -18,6 +18,7 @@ package nyanclans.core.player;
 
 import static java.util.Objects.hash;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Objects;
@@ -32,7 +33,11 @@ import nyanclans.core.rank.RankPermission;
 import nyanclans.storage.Storagable;
 
 /** @author NyanGuyMF */
-public class ClanPlayer implements Storagable, Rankable<Rank, RankPermission> {
+public class ClanPlayer
+    implements Storagable, Rankable<Rank, RankPermission>, Serializable
+{
+    private static final long serialVersionUID = 5469322711258521853L;
+
     private static Dao<ClanPlayer, String> dao;
 
     @DatabaseField(id=true, canBeNull=false, columnName="player_name", unique=true)
